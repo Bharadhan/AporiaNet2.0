@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        Log.d("AppLog", "key:" + FacebookSdk.getApplicationSignature(this));
+
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         getWindow().setBackgroundDrawable(null);
