@@ -19,6 +19,7 @@
             </intent-filter>
             <meta-data android:name="com.facebook.sdk.ApplicationId"
                 android:value="@string/facebook_application_id"/>
+
         </activity>
 
         <activity android:name="com.facebook.FacebookActivity"
