@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="elevation">0dp</dimen>
+    <dimen name="list_item_main_height_width">88dp</dimen>
+    <dimen name="list_item_TextView">44dp</dimen>
+    <dimen name="list_item_secondary_RelativeLayout_paddingLeft">16dp</dimen>
+    <dimen name="standard_padding">16dp</dimen>
+    <dimen name="actionbar_text_size">18sp</dimen>
+    <dimen name="home_IV_dimension">190dp</dimen>
+    <dimen name="new_question_button">16dp</dimen>
+    <dimen name="list_forum_textView_padding_left">16dp</dimen>
+    <dimen name="list_forum_textView_padding_up">6dp</dimen>
+    <dimen name="list_forum_textView_padding_down">6dp</dimen>
+    <dimen name="list_item_informationPadding">6dp</dimen>
+    <dimen name="new_question_editText">0dp</dimen>
+    <dimen name="new_question_editText_letter_padding">10dp</dimen>
+</resources>

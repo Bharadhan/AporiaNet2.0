@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">AporiaNet</string>
+    <string name="list_item_lessonName_TextView">Lesson Name</string>
+    <string name="list_item_lessonDirection_TextView">Lesson Direction</string>
+    <!-- Category name for the first year  [CHAR LIMIT=20] -->
+    <string name="category_first_year">Α´ ΛΥΚΕΙΟΥ </string>
+    <!-- Category name for the second year [CHAR LIMIT=20] -->
+    <string name="category_second_year">Β´ ΛΥΚΕΙΟΥ</string>
+    <!-- Category name for the third years [CHAR LIMIT=20] -->
+    <string name="category_third_year">Γ´ ΛΥΚΕΙΟΥ</string>
+    <!-- Category name for robotic [CHAR LIMIT=20] -->
+    <string name="category_robotic">ΡΟΜΠΟΤΙΚΗ</string>
+    <string name="algevra">ΑΛΓΕΒΡΑ</string>
+    <string name="arxaia">ΑΡΧΑΙΑ</string>
+    <string name="ekuesi">ΕΚΘΕΣΗ</string>
+    <string name="geometria">ΓΕΩΜΕΤΡΙΑ</string>
+    <string name="fysiki">ΦΥΣΙΚΗ</string>
+    <string name="xhmeia">ΧΗΜΕΙΑ</string>
+    <string name="mathimatika">ΜΑΘΗΜΑΤΙΚΑ</string>
+    <string name="biologia">ΒΙΟΛΟΓΙΑ</string>
+    <string name="aoth">ΑΟΘ</string>
+    <string name="ae">ΑΕ</string>
+    <string name="arxaia_gnosto">ΑΡΧΑΙΑ ΓΝΩΣΤΟ</string>
+    <string name="arxaia_agnosto">ΑΡΧΑΙΑ ΑΓΝΩΣΤΟ</string>
+    <string name="istoria">ΙΣΤΟΡΙΑ</string>
+    <string name="latinika">ΛΑΤΙΝΙΚΑ</string>
+    <string name="firstYearDirection">-</string>
+    <string name="secondYearGeneralDirection">-</string>
+    <string name="secondYearSpecialDirection">ΠΡΟΣΑΝΑΤΟΛΙΣΜΟΥ</string>
+    <string name="thirdYearThetikon">ΘΕΤΙΚΩΝ</string>
+    <string name="thirdYearYgeias">ΥΓΕΙΑΣ</string>
+    <string name="thirdYearOikonomias">ΟΙΚΟΝΟΜΙΑΣ</string>
+    <string name="thirdYearAnthropistikon">ΑΝΘΡΩΠΙΣΤΙΚΩΝ ΣΠΟΥΔΩΝ</string>
+    <string name="thirdYearThetikonAndYgeias">ΘΕΤΙΚΩΝ ΚΑΙ ΥΓΕΙΑΣ</string>
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">User Settings</string>
+    <string name="user_name">User Name</string>
+    <string name="settings_user_name_default" translatable="false">Unknown</string>
+    <string name="settings_user_name_label">User Name</string>
+    <string name="settings_user_name_key" translatable="false">user name</string>
+    <string name="newQuestion">ΝΕΑ ΕΡΩΤΗΣΗ</string>
+    <string name="newQuestionCreation">Δημιουργία νέας ερώτησης</string>
+    <string name="rejectBtn">Ακύρωση</string>
+    <string name="submitBtn">Υποβολή</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="facebook_application_id" translatable="false">679206265746885</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb679206265746885</string>
+</resources>

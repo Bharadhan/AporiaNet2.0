@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/forum"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lesson"
+        android:text="@string/algevra"
+        android:paddingLeft="@dimen/list_forum_textView_padding_left"
+        android:paddingTop="@dimen/list_forum_textView_padding_up"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/derection"
+        android:layout_toRightOf="@+id/lesson"
+        android:text="@string/thirdYearAnthropistikon"
+        android:paddingLeft="@dimen/list_forum_textView_padding_left"
+        android:paddingTop="@dimen/list_forum_textView_padding_up"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/yearClass"
+        android:text="@string/category_robotic"
+        android:layout_below="@+id/lesson"
+        android:paddingLeft="@dimen/list_forum_textView_padding_left"
+        android:paddingTop="@dimen/list_forum_textView_padding_up"
+        android:paddingBottom="@dimen/list_forum_textView_padding_down"
+        android:textColor="@color/white"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/newQuestionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yearClass"
+        android:layout_centerHorizontal="true"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:text="@string/newQuestion"
+        android:textColor="@color/white"
+        android:padding="@dimen/new_question_button"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpagerForum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newQuestionButton"
+        android:background="@color/white"/>
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- Primary color of the app (shown in the app bar) -->
+    <color name="primary_color">#4A312A</color>
+    <!-- Background color for app -->
+    <color name="tan_background">#FFF7DA</color>
+    <!-- Background color for the first year category -->
+    <color name="category_first_year">#757575</color>
+    <color name="white">#FFFFFF</color>
+</resources>
