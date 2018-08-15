@@ -104,7 +104,7 @@ Please let us know what you think of the Service, these Terms and, in general, *
 Questions or comments about the Service may be directed to us at the email address **voutselas.christos@gmail.com**.
 
 
-**-------------------------------------------------------------------------------------------------------------------------**
+**-------------------------------------------------------------------------------------------------------------------**
 
 ##**Privacy Policy**
 
