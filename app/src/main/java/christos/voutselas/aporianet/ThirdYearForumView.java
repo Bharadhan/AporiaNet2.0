@@ -1,6 +1,5 @@
 package christos.voutselas.aporianet;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +23,8 @@ public class ThirdYearForumView extends AppCompatActivity
     String yearOfClass = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);

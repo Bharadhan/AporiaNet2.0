@@ -1,6 +1,5 @@
 package christos.voutselas.aporianet;
 
-
 /**
  * {@link Word} represents a list of lessons that the user can choose.
  * It contains resource IDs lesson direction, lesson name and

@@ -1,19 +1,13 @@
 package christos.voutselas.aporianet;
 
 import android.os.Bundle;
-import android.support.v13.view.inputmethod.EditorInfoCompat;
-import android.support.v13.view.inputmethod.InputConnectionCompat;
-import android.support.v13.view.inputmethod.InputContentInfoCompat;
-import android.support.v4.os.BuildCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-public class NewQuestionActivity extends AppCompatActivity {
+public class NewQuestionActivity extends AppCompatActivity
+{
 
     String useName = "";
     String lessonNameNewQuestion = "";
@@ -21,7 +15,8 @@ public class NewQuestionActivity extends AppCompatActivity {
     String yearOfClassNewQuestion = "";
     Button cancelBtn;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
         updateFields();
