@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity
                                             new AuthUI.IdpConfig.GoogleBuilder().build(),
                                             new AuthUI.IdpConfig.FacebookBuilder().build(),
                                             new AuthUI.IdpConfig.EmailBuilder().build()))
+                                    .setTosAndPrivacyPolicyUrls("https://github.com/ChristosVoutselas/AporiaNet2.0",
+                                            "https://www.freeprivacypolicy.com/privacy/view/b2a619c83c0db5dfd0ee5d425a3af7f8")
                                     .build(),
                             RC_SIGN_IN);
                 }
