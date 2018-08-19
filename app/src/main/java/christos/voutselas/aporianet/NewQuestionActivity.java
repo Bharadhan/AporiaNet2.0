@@ -1,25 +1,40 @@
 package christos.voutselas.aporianet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
-
-    String useName = "";
-    String lessonNameNewQuestion = "";
-    String lessonDirectionNewQuestion = "";
-    String yearOfClassNewQuestion = "";
-    Button cancelBtn;
+    private ImageButton mPhotoPickerButton;
+    private static final int RC_PHOTO_PICKER =  2;
+    private String useName = "";
+    private String lessonNameNewQuestion = "";
+    private String lessonDirectionNewQuestion = "";
+    private String yearOfClassNewQuestion = "";
+    private Button cancelBtn;
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
         updateFields();
+        mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
+
+        // ImagePickerButton shows an image picker to upload a image for a message
+        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+            }
+        });
 
         cancelBtn = (Button) findViewById(R.id.rejectBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
