@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -42,6 +43,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+        //I rather using a list, this way handling providers is separeted from the login methods
+        final List<AuthUI.IdpConfig> providers = Arrays.asList(
+                //new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build()
+        );
         try
         {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -105,6 +113,8 @@ public class MainActivity extends AppCompatActivity
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     onSignedInInitialize(user.getDisplayName());
+
+
                 }
                 else
                 {
@@ -114,12 +124,11 @@ public class MainActivity extends AppCompatActivity
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(true)
-                                    .setAvailableProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                            new AuthUI.IdpConfig.FacebookBuilder().build(),
-                                            new AuthUI.IdpConfig.EmailBuilder().build()))
+                                    .setAvailableProviders(providers)
                                     .setTosAndPrivacyPolicyUrls("https://github.com/ChristosVoutselas/AporiaNet2.0",
                                             "https://www.freeprivacypolicy.com/privacy/view/b2a619c83c0db5dfd0ee5d425a3af7f8")
+                                    .setLogo(R.drawable.logo)      // Set logo drawable
+                                    .setTheme(R.style.LoginTheme)
                                     .build(),
                             RC_SIGN_IN);
                 }
