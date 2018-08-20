@@ -14,4 +14,6 @@
     <dimen name="list_item_informationPadding">6dp</dimen>
     <dimen name="new_question_editText">0dp</dimen>
     <dimen name="new_question_editText_letter_padding">10dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

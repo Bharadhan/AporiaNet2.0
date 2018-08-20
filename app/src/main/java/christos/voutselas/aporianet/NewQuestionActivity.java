@@ -17,6 +17,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private String lessonDirectionNewQuestion = "";
     private String yearOfClassNewQuestion = "";
     private Button cancelBtn;
+    private Button sudmitBtn;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +42,27 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        sudmitBtn = (Button) findViewById(R.id.submitBtn);
+        sudmitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               ///////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
         });
     }

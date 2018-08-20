@@ -39,6 +39,7 @@
 
     <EditText
         android:layout_width="match_parent"
+        android:id="@+id/questions"
         android:layout_height="@dimen/new_question_editText"
         android:layout_weight="1"
         android:inputType="text|textMultiLine|textCapSentences"
