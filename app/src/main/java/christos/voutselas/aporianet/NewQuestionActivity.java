@@ -5,8 +5,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
+import static christos.voutselas.aporianet.MainActivity.ANONYMOUS;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -19,12 +27,21 @@ public class NewQuestionActivity extends AppCompatActivity
     private Button cancelBtn;
     private Button sudmitBtn;
 
+    private String mUsername;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseStorage mFirebaseStorage;
+    private DatabaseReference mMessagesDatabaseReference;
+    private EditText mMessageEditText;
+
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
         updateFields();
         mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
+        mMessageEditText = (EditText) findViewById(R.id.questions);
 
         // ImagePickerButton shows an image picker to upload a image for a message
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +67,22 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                ///////////////////////////////////////////////////////////////
+
+                mUsername = ANONYMOUS;
+
+                // Initialize Firebase components
+                mFirebaseDatabase = FirebaseDatabase.getInstance();
+                mFirebaseAuth = FirebaseAuth.getInstance();
+                mFirebaseStorage = FirebaseStorage.getInstance();
+
+                mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
+
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+                mMessagesDatabaseReference.push().setValue(friendlyMessage);
+
+                // Clear input box
+                mMessageEditText.setText("");
+
 
 
 
