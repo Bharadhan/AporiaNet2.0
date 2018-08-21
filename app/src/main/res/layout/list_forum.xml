@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/forum"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    tools:context="christos.voutselas.aporianet.NewQuestionActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,11 +49,12 @@
         android:textColor="@color/white"
         android:padding="@dimen/new_question_button"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpagerForum"
+    <ListView
+        android:id="@+id/listViewAs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/newQuestionButton"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        tools:listitem="@layout/item_message"/>
 
 </RelativeLayout>

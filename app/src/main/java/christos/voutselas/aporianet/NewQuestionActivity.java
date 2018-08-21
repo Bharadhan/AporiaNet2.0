@@ -8,12 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -35,17 +43,33 @@ public class NewQuestionActivity extends AppCompatActivity
     private boolean bHasContent;
     private boolean subJectHasContent;
     private String strSubject = "";
+    private DatabaseReference mFirebaseDatabaseReference;
+    private ChildEventListener mChildEventListener;
+    private MessageAdapter mMessageAdapter;
+    private ListView mMessageListView;
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
-        updateFields();
         mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
         mMessageEditText = (EditText) findViewById(R.id.questions);
         mSubbject = (EditText) findViewById(R.id.subjectArea);
+        setContentView(R.layout.list_forum);
+        mMessageListView = findViewById(R.id.listViewAs);
+        setContentView(R.layout.new_question);
 
         mUsername = MainActivity.useName;
+
+
+
+
+        // Initialize message ListView and its adapter
+        List<FriendlyMessage> friendlyMessages = new ArrayList<>();
+        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
+        mMessageListView.setAdapter(mMessageAdapter);
+
+        updateFields();
 
         // ImagePickerButton shows an image picker to upload a image for a message
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +100,8 @@ public class NewQuestionActivity extends AppCompatActivity
 
                 checkSubject();
 
+
+
                 if (bHasContent && subJectHasContent)
                 {
 
@@ -93,7 +119,15 @@ public class NewQuestionActivity extends AppCompatActivity
                     // Clear input box
                     mMessageEditText.setText("");
 
+
+
                     finish();
+
+                  //  attachDatabaseReadListener();
+
+
+
+
 
 
                 }
@@ -125,6 +159,8 @@ public class NewQuestionActivity extends AppCompatActivity
 
             }
         });
+
+
     }
 
     private void updateFields() {
@@ -170,4 +206,23 @@ public class NewQuestionActivity extends AppCompatActivity
             subJectHasContent = true;
         }
     }
+
+ /*   private void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    System.out.println("The updated post title is: " + friendlyMessage.getName());
+                    mMessageAdapter.add(friendlyMessage);
+                }
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+    } */
 }
