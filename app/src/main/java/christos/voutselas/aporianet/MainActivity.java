@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
     private String mUsername;
+    public static String useName;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity
                 if (user != null) {
                     onSignedInInitialize(user.getDisplayName());
 
+                    useName = mUsername;
 
                 }
                 else
@@ -135,7 +137,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         };
-
     }
 
     @Override
