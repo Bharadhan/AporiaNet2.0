@@ -37,6 +37,21 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/new_question_subject_hint"
+            android:background="@color/browser_actions_bg_grey"
+            android:padding="@dimen/new_question_editText_letter_padding"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/subjectArea"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
     <EditText
         android:layout_width="match_parent"
         android:id="@+id/questions"

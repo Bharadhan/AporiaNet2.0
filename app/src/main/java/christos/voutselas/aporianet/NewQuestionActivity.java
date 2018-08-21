@@ -3,21 +3,38 @@ package christos.voutselas.aporianet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
     private ImageButton mPhotoPickerButton;
     private static final int RC_PHOTO_PICKER =  2;
-    private String useName = "";
     private String lessonNameNewQuestion = "";
     private String lessonDirectionNewQuestion = "";
     private String yearOfClassNewQuestion = "";
+    private String subject = "";
     private Button cancelBtn;
     private Button sudmitBtn;
+    private String mUsername;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseStorage mFirebaseStorage;
+    private DatabaseReference mMessagesDatabaseReference;
+    private EditText mMessageEditText;
+    private EditText mSubbject;
+    private boolean bHasContent;
+    private boolean subJectHasContent;
+    private String strSubject = "";
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -25,6 +42,10 @@ public class NewQuestionActivity extends AppCompatActivity
         setContentView(R.layout.new_question);
         updateFields();
         mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
+        mMessageEditText = (EditText) findViewById(R.id.questions);
+        mSubbject = (EditText) findViewById(R.id.subjectArea);
+
+        mUsername = MainActivity.useName;
 
         // ImagePickerButton shows an image picker to upload a image for a message
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +72,45 @@ public class NewQuestionActivity extends AppCompatActivity
             public void onClick(View v) {
                ///////////////////////////////////////////////////////////////
 
+                checkEmptyText();
+
+                checkSubject();
+
+                if (bHasContent && subJectHasContent)
+                {
+
+                    // Initialize Firebase components
+                    mFirebaseDatabase = FirebaseDatabase.getInstance();
+                    mFirebaseAuth = FirebaseAuth.getInstance();
+                    mFirebaseStorage = FirebaseStorage.getInstance();
+
+                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(mUsername).child(strSubject);
+
+                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+                    mMessagesDatabaseReference.push().setValue(friendlyMessage);
+
+                    // Clear input box
+                    mMessageEditText.setText("");
+
+                    finish();
+
+
+                }
+                else if (!subJectHasContent)
+                {
+                    mSubbject.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
+                    mSubbject.requestFocus();
+                    return;
+                }
+                else
+                {
+                    mMessageEditText.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
+                    mMessageEditText.requestFocus();
+                }
+
+
+
 
 
 
@@ -68,7 +128,6 @@ public class NewQuestionActivity extends AppCompatActivity
     }
 
     private void updateFields() {
-        useName = getIntent().getStringExtra("strUserName");
         lessonNameNewQuestion = getIntent().getStringExtra("lessonName");
         lessonDirectionNewQuestion = getIntent().getStringExtra("lessonDirection");
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
@@ -80,5 +139,35 @@ public class NewQuestionActivity extends AppCompatActivity
         lessonNameTextViewNewQuestion.setText(lessonNameNewQuestion);
         lessonDirectionTextViewNewQuestion.setText(lessonDirectionNewQuestion);
         yearClassTextViewNewQuestion.setText(yearOfClassNewQuestion);
+    }
+
+    private void checkEmptyText ()
+    {
+        mMessageEditText = (EditText) findViewById(R.id.questions);
+        String strUserName = mMessageEditText.getText().toString();
+
+        if(TextUtils.isEmpty(strUserName)) {
+
+            bHasContent = false;
+        }
+        else
+        {
+            bHasContent = true;
+        }
+    }
+
+    private void checkSubject ()
+    {
+        mSubbject = (EditText) findViewById(R.id.subjectArea);
+        strSubject = mSubbject.getText().toString();
+
+        if(TextUtils.isEmpty(strSubject)) {
+
+            subJectHasContent = false;
+    }
+        else
+        {
+            subJectHasContent = true;
+        }
     }
 }
