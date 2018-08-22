@@ -14,12 +14,12 @@
         android:adjustViewBounds="true" />
 
     <TextView
-        android:id="@+id/messageTextView"
+        android:id="@+id/subjectMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        tools:text="Message" />
+        tools:text="@string/subject_message" />
 
     <TextView
         android:id="@+id/nameTextView"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        tools:text="Name" />
+        tools:text="@string/name_message" />
 
 </LinearLayout>
 

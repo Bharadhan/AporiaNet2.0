@@ -10,16 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +56,6 @@ public class NewQuestionActivity extends AppCompatActivity
 
         mUsername = MainActivity.useName;
 
-
-
-
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
@@ -94,13 +86,10 @@ public class NewQuestionActivity extends AppCompatActivity
         sudmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ///////////////////////////////////////////////////////////////
 
                 checkEmptyText();
 
                 checkSubject();
-
-
 
                 if (bHasContent && subJectHasContent)
                 {
@@ -119,16 +108,9 @@ public class NewQuestionActivity extends AppCompatActivity
                     // Clear input box
                     mMessageEditText.setText("");
 
-
-
                     finish();
 
                   //  attachDatabaseReadListener();
-
-
-
-
-
 
                 }
                 else if (!subJectHasContent)
@@ -142,28 +124,12 @@ public class NewQuestionActivity extends AppCompatActivity
                     mMessageEditText.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
                     mMessageEditText.requestFocus();
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
         });
-
-
     }
 
-    private void updateFields() {
+    private void updateFields()
+    {
         lessonNameNewQuestion = getIntent().getStringExtra("lessonName");
         lessonDirectionNewQuestion = getIntent().getStringExtra("lessonDirection");
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");

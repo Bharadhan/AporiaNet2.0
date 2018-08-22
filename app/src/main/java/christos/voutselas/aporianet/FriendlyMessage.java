@@ -1,12 +1,15 @@
 package christos.voutselas.aporianet;
 
-public class FriendlyMessage {
+public class FriendlyMessage
+{
 
     private String text;
     private String name;
     private String photoUrl;
 
-    public FriendlyMessage() {
+    public FriendlyMessage()
+    {
+
     }
 
     public FriendlyMessage(String text, String name, String photoUrl) {
@@ -31,11 +34,8 @@ public class FriendlyMessage {
         this.name = name;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
+    public String getPhotoUrl() { return photoUrl; }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+
 }
