@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build()
         );
+
         try
         {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-
             }
         }
         catch (PackageManager.NameNotFoundException e)
@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-
 
         // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -214,28 +212,6 @@ public class MainActivity extends AppCompatActivity
         //mMessageAdapter.clear();
         detachDatabaseReadListener();
     }
-
-  /*  private void attachDatabaseReadListener()
-    {
-        if (mChildEventListener == null)
-        {
-            mChildEventListener = new ChildEventListener()
-            {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s)
-                {
-                   // FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                   // mMessageAdapter.add(friendlyMessage);
-                }
-
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
-        }
-    } */
 
     private void detachDatabaseReadListener()
     {
