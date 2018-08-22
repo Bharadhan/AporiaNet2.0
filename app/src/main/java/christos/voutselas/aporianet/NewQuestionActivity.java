@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -100,7 +102,7 @@ public class NewQuestionActivity extends AppCompatActivity
                     mFirebaseStorage = FirebaseStorage.getInstance();
 
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
-                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(mUsername).child(strSubject);
+                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(mUsername);
 
                     FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
@@ -110,7 +112,7 @@ public class NewQuestionActivity extends AppCompatActivity
 
                     finish();
 
-                  //  attachDatabaseReadListener();
+                    attachDatabaseReadListener();
 
                 }
                 else if (!subJectHasContent)
@@ -173,7 +175,7 @@ public class NewQuestionActivity extends AppCompatActivity
         }
     }
 
- /*   private void attachDatabaseReadListener() {
+    private void attachDatabaseReadListener() {
         if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
@@ -190,5 +192,7 @@ public class NewQuestionActivity extends AppCompatActivity
             };
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
-    } */
+    }
+
+
 }
