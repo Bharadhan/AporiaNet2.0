@@ -193,6 +193,4 @@ public class NewQuestionActivity extends AppCompatActivity
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
     }
-
-
 }
