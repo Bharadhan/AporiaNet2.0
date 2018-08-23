@@ -12,14 +12,14 @@ import java.util.ArrayList;
 
 public class FirstYearForumView extends AppCompatActivity
 {
-    Integer lessoonNamePotition = 0;
-    Integer courseDirectionPotition = 0;
-    Integer yearClassPotition = 0;
-    Button newQuestion;
-    String strUserName = "";
-    String lessonName = "";
-    String lessonDirection = "";
-    String yearOfClass = "";
+    private Integer lessoonNamePotition = 0;
+    private Integer courseDirectionPotition = 0;
+    private Integer yearClassPotition = 0;
+    private Button newQuestion;
+    private String strUserName = "";
+    private String lessonName = "";
+    private String lessonDirection = "";
+    private String yearOfClass = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
