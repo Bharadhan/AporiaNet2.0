@@ -35,8 +35,6 @@ public class FirstYearForumView extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                userName();
-
                 Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
                 intent.putExtra("finalResults", strUserName);
                 intent.putExtra("lessonName", lessonName);
@@ -45,22 +43,6 @@ public class FirstYearForumView extends AppCompatActivity
                 startActivity(intent);
             }
         });
-    }
-
-    private final String userName()
-    {
-        final TextView lessonNameTextView = (TextView) findViewById(R.id.lesson);
-        final TextView lessonDirectionTextView = (TextView) findViewById(R.id.derection);
-        final TextView yearClassTextView = (TextView) findViewById(R.id.yearClass);
-
-        lessonName = lessonNameTextView.getText().toString();
-        lessonDirection = lessonDirectionTextView.getText().toString();
-        yearOfClass = yearClassTextView.getText().toString();
-
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        strUserName = SP.getString("username", "NA");
-        System.out.print(strUserName);
-        return strUserName;
     }
 
     private void updateView()
