@@ -45,6 +45,7 @@ public class FirstYearForumView extends AppCompatActivity
         });
     }
 
+
     private void updateView()
     {
         // Create a list of words
