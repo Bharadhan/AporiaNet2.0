@@ -13,14 +13,14 @@ import java.util.ArrayList;
 
 public class ThirdYearForumView extends AppCompatActivity
 {
-    Integer lessoonNamePotition = 0;
-    Integer courseDirectionPotition = 0;
-    Integer yearClassPotition = 0;
-    Button newQuestion;
-    String strUserName = "";
-    String lessonName = "";
-    String lessonDirection = "";
-    String yearOfClass = "";
+    private Integer lessoonNamePotition = 0;
+    private Integer courseDirectionPotition = 0;
+    private Integer yearClassPotition = 0;
+    private Button newQuestion;
+    private String strUserName = "";
+    private String lessonName = "";
+    private String lessonDirection = "";
+    private String yearOfClass = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,8 +35,6 @@ public class ThirdYearForumView extends AppCompatActivity
         newQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                userName();
 
                 Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
                 intent.putExtra("finalResults", strUserName);
@@ -78,21 +76,5 @@ public class ThirdYearForumView extends AppCompatActivity
         lessonNameTextView.setText(lessoonNamePotition);
         lessonDirectionTextView.setText(courseDirectionPotition);
         yearClassTextView.setText(yearClassPotition);
-    }
-
-    private final String userName()
-    {
-        final TextView lessonNameTextView = (TextView) findViewById(R.id.lesson);
-        final TextView lessonDirectionTextView = (TextView) findViewById(R.id.derection);
-        final TextView yearClassTextView = (TextView) findViewById(R.id.yearClass);
-
-        lessonName = lessonNameTextView.getText().toString();
-        lessonDirection = lessonDirectionTextView.getText().toString();
-        yearOfClass = yearClassTextView.getText().toString();
-
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        strUserName = SP.getString("username", "NA");
-        System.out.print(strUserName);
-        return strUserName;
     }
 }
