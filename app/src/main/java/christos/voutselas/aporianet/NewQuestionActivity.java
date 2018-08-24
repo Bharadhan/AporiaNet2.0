@@ -164,10 +164,11 @@ public class NewQuestionActivity extends AppCompatActivity
         mSubbject = (EditText) findViewById(R.id.subjectArea);
         strSubject = mSubbject.getText().toString();
 
-        if(TextUtils.isEmpty(strSubject)) {
+        if(TextUtils.isEmpty(strSubject))
+        {
 
             subJectHasContent = false;
-    }
+        }
         else
         {
             subJectHasContent = true;
