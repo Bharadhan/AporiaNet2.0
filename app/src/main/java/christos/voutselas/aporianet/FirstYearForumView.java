@@ -97,7 +97,6 @@ public class FirstYearForumView extends AppCompatActivity
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
