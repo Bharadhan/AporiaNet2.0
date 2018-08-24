@@ -29,7 +29,7 @@ public class App extends Application {
                 "https://play.google.com/store/apps/details?id=com.sembozdemir.renstagram");
 
         firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
-        firebaseRemoteConfig.fetch(60) // fetch every minutes
+        firebaseRemoteConfig.fetch(1200) // fetch every 20 minutes
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
