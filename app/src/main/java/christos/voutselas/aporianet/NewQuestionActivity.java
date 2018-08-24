@@ -95,7 +95,6 @@ public class NewQuestionActivity extends AppCompatActivity
 
                 if (bHasContent && subJectHasContent)
                 {
-
                     // Initialize Firebase components
                     mFirebaseDatabase = FirebaseDatabase.getInstance();
                     mFirebaseAuth = FirebaseAuth.getInstance();
@@ -111,9 +110,6 @@ public class NewQuestionActivity extends AppCompatActivity
                     mMessageEditText.setText("");
 
                     finish();
-
-               //     attachDatabaseReadListener();
-
                 }
                 else if (!subJectHasContent)
                 {
@@ -172,25 +168,6 @@ public class NewQuestionActivity extends AppCompatActivity
         else
         {
             subJectHasContent = true;
-        }
-    }
-
-    private void attachDatabaseReadListener() {
-        if (mChildEventListener == null) {
-            mChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    System.out.println("The updated post title is: " + friendlyMessage.getName());
-                    mMessageAdapter.add(friendlyMessage);
-                }
-
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
     }
 }
