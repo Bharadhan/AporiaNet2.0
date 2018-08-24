@@ -1,14 +1,19 @@
 package christos.voutselas.aporianet;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FirstYearForumView extends AppCompatActivity
 {
@@ -20,6 +25,11 @@ public class FirstYearForumView extends AppCompatActivity
     private String lessonName = "";
     private String lessonDirection = "";
     private String yearOfClass = "";
+    private ChildEventListener mChildEventListener;
+    private DatabaseReference mMessagesDatabaseReference;
+    private MessageAdapter mMessageAdapter;
+    private FirebaseDatabase mFirebaseDatabase;
+    private ListView mMessageListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +39,8 @@ public class FirstYearForumView extends AppCompatActivity
         setContentView(R.layout.list_forum);
 
         updateView();
+
+        readData();
 
         newQuestion = (Button) findViewById(R.id.newQuestionButton);
         newQuestion.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +56,6 @@ public class FirstYearForumView extends AppCompatActivity
             }
         });
     }
-
 
     private void updateView()
     {
@@ -68,5 +79,45 @@ public class FirstYearForumView extends AppCompatActivity
         lessonNameTextView.setText(lessoonNamePotition);
         lessonDirectionTextView.setText(courseDirectionPotition);
         yearClassTextView.setText(yearClassPotition);
+
+        lessonName = lessonNameTextView.getText().toString();
+        lessonDirection = lessonDirectionTextView.getText().toString();
+        yearOfClass = yearClassTextView.getText().toString();
+    }
+
+    private void readData()
+    {
+        mMessageListView = findViewById(R.id.listViewAs);
+
+        // Initialize message ListView and its adapter
+        List<FriendlyMessage> friendlyMessages = new ArrayList<>();
+        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
+        mMessageListView.setAdapter(mMessageAdapter);
+
+        // Initialize Firebase components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
+
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+
+        if (mChildEventListener == null)
+        {
+            mChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                {
+                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    System.out.println("The updated post title is: " + friendlyMessage.getName());
+                    mMessageAdapter.add(friendlyMessage);
+                    }
+
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
     }
 }

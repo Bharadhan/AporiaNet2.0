@@ -69,6 +69,10 @@ public class SecondYearForumView extends AppCompatActivity
         lessonNameTextView.setText(lessoonNamePotition);
         lessonDirectionTextView.setText(courseDirectionPotition);
         yearClassTextView.setText(yearClassPotition);
+
+        lessonName = lessonNameTextView.getText().toString();
+        lessonDirection = lessonDirectionTextView.getText().toString();
+        yearOfClass = yearClassTextView.getText().toString();
     }
 
 }

@@ -112,7 +112,7 @@ public class NewQuestionActivity extends AppCompatActivity
 
                     finish();
 
-                    attachDatabaseReadListener();
+               //     attachDatabaseReadListener();
 
                 }
                 else if (!subJectHasContent)
