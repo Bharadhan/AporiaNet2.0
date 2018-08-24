@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
@@ -22,9 +23,11 @@ public class FirstYearForumView extends AppCompatActivity
     private Integer yearClassPotition = 0;
     private Button newQuestion;
     private String strUserName = "";
-    private String lessonName = "";
+    private String lessonName;
     private String lessonDirection = "";
     private String yearOfClass = "";
+    private String strSubject = "";
+    private String mUsername;
     private ChildEventListener mChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
     private MessageAdapter mMessageAdapter;
@@ -87,17 +90,19 @@ public class FirstYearForumView extends AppCompatActivity
 
     private void readData()
     {
+        mUsername = MainActivity.useName;
+
         mMessageListView = findViewById(R.id.listViewAs);
 
         // Initialize message ListView and its adapter
-        List<FriendlyMessage> friendlyMessages = new ArrayList<>();
+        final List<FriendlyMessage> friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName).child(mUsername);
 
         if (mChildEventListener == null)
         {
