@@ -104,7 +104,7 @@ public class NewQuestionActivity extends AppCompatActivity
                 //            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(mUsername);
 
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
-                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(mUsername);
+                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
                     FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
