@@ -39,7 +39,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private EditText mSubbject;
     private boolean bHasContent;
     private boolean subJectHasContent;
-    private String strSubject = "";
+    public String strSubject = "";
     private DatabaseReference mFirebaseDatabaseReference;
     private ChildEventListener mChildEventListener;
     private MessageAdapter mMessageAdapter;
@@ -100,10 +100,13 @@ public class NewQuestionActivity extends AppCompatActivity
                     mFirebaseAuth = FirebaseAuth.getInstance();
                     mFirebaseStorage = FirebaseStorage.getInstance();
 
-                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
-                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(mUsername);
+               //     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                //            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(mUsername);
 
-                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, null);
+                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(mUsername);
+
+                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
                     // Clear input box

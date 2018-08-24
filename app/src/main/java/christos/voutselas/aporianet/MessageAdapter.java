@@ -47,7 +47,7 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
         {
             messageTextView.setVisibility(View.VISIBLE);
             photoImageView.setVisibility(View.GONE);
-            messageTextView.setText(message.getText());
+            messageTextView.setText(message.getSubject());
         }
         authorTextView.setText(message.getName());
 
