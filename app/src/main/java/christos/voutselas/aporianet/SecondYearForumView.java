@@ -1,9 +1,7 @@
 package christos.voutselas.aporianet;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +30,11 @@ public class SecondYearForumView extends AppCompatActivity
         updateView();
 
         newQuestion = (Button) findViewById(R.id.newQuestionButton);
-        newQuestion.setOnClickListener(new View.OnClickListener() {
+        newQuestion.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
                 Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
                 intent.putExtra("finalResults", strUserName);

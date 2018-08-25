@@ -35,13 +35,17 @@ public class CategoryAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        if (position == 0) {
+        if (position == 0)
+        {
             return new FirstYearFragment();
-        } else if (position == 1) {
+        } else if (position == 1)
+        {
             return new SecondYearFragment();
-        } else if (position == 2) {
+        } else if (position == 2)
+        {
             return new ThirdYearFragment();
-        } else {
+        } else
+            {
             return new RoboticFragment();
         }
     }
@@ -57,13 +61,18 @@ public class CategoryAdapter extends FragmentPagerAdapter
     @Override
     public CharSequence getPageTitle(int position)
     {
-        if (position == 0) {
+        if (position == 0)
+        {
             return mContext.getString(R.string.category_first_year);
-        } else if (position == 1) {
+        } else if (position == 1)
+        {
             return mContext.getString(R.string.category_second_year);
-        } else if (position == 2) {
+        }
+        else if (position == 2)
+        {
             return mContext.getString(R.string.category_third_year);
-        } else {
+        } else
+            {
             return mContext.getString(R.string.category_robotic);
         }
     }
