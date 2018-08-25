@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +33,7 @@ public class FirstYearForumView extends AppCompatActivity
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,10 +95,14 @@ public class FirstYearForumView extends AppCompatActivity
 
         mMessageListView = findViewById(R.id.listViewAs);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         // Initialize message ListView and its adapter
         final List<FriendlyMessage> friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
+
+        // Initialize progress bar
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -114,6 +119,7 @@ public class FirstYearForumView extends AppCompatActivity
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
                     System.out.println("The updated post title is: " + friendlyMessage.getName());
                     mMessageAdapter.add(friendlyMessage);
+                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     }
 
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

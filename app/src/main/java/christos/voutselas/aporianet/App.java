@@ -11,12 +11,14 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.HashMap;
 import java.util.Map;
 
-public class App extends Application {
+public class App extends Application
+{
 
     private static final String TAG = App.class.getSimpleName();
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
 
         final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -29,11 +31,13 @@ public class App extends Application {
                 "https://play.google.com/store/apps/details?id=com.sembozdemir.renstagram");
 
         firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
-        firebaseRemoteConfig.fetch(60) // fetch every minutes
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseRemoteConfig.fetch(10) // fetch every 10 sec
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful())
+                        {
                             Log.d(TAG, "remote config is fetched.");
                             firebaseRemoteConfig.activateFetched();
                         }

@@ -13,7 +13,8 @@ public class FriendlyMessage
 
     }
 
-    public FriendlyMessage(String text, String name, String subject, String photoUrl) {
+    public FriendlyMessage(String text, String name, String subject, String photoUrl)
+    {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
