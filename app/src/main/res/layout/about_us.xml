@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/paddingBottom"
+        android:paddingLeft="@dimen/paddingLeft"
+        android:paddingRight="@dimen/paddingRight"
+        android:paddingTop="@dimen/paddingTop">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/school_logo"
+            android:layout_marginBottom="@dimen/paddingBottom"
+            android:src="@drawable/school_logo" />
+
+        <TextView
+            style="@style/AboutUsTextView"
+            android:layout_below="@+id/school_logo"
+            android:id="@+id/address"
+            android:text="@string/address"
+            android:autoLink="all"
+            android:layout_marginBottom="@dimen/paddingBottom" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:foregroundGravity="center"
+            android:id="@+id/facebook"
+            android:layout_below="@+id/address"
+            android:layout_toLeftOf="@+id/twitter"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/facebook" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:id="@+id/twitter"
+            android:layout_below="@+id/address"
+            android:layout_toLeftOf="@+id/web"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/twitter" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:id="@+id/web"
+            android:layout_below="@+id/address"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/web" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:id="@+id/mail"
+            android:layout_below="@+id/address"
+            android:layout_toRightOf="@+id/web"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/mail" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:id="@+id/phone"
+            android:layout_below="@+id/address"
+            android:layout_toRightOf="@+id/mail"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/phone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/web"
+            android:paddingTop="@dimen/paddingTop"
+            android:text="@string/version"/>
+
+    </RelativeLayout>
+
+</ScrollView>

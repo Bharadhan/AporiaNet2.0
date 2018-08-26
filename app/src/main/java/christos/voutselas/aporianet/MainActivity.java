@@ -206,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             case R.id.sign_out_menu:
                 AuthUI.getInstance().signOut(this);
                 return true;
+            case R.id.about_us:
+                Intent intent = new Intent(getApplicationContext(), AboutUs.class);
+                startActivity(intent);
+
             default:
                 return super.onOptionsItemSelected(item);
         }

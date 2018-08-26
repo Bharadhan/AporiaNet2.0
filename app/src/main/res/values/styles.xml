@@ -79,6 +79,20 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:padding">24dp</item>
+        <item name="android:padding">@dimen/authMethodPicker_padding</item>
+    </style>
+
+    <style name="AboutUsTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AboutUsViewImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:layout_marginRight">@dimen/paddingBottomImage</item>
     </style>
 </resources>

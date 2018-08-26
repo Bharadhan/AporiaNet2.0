@@ -63,8 +63,7 @@ public class NewQuestionActivity extends AppCompatActivity
         updateFields();
 
         // ImagePickerButton shows an image picker to upload a image for a message
-        mPhotoPickerButton.setOnClickListener(new View.OnClickListener()
-        {
+        mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -75,21 +74,17 @@ public class NewQuestionActivity extends AppCompatActivity
         });
 
         cancelBtn = (Button) findViewById(R.id.rejectBtn);
-        cancelBtn.setOnClickListener(new View.OnClickListener()
-        {
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 finish();
             }
         });
 
         sudmitBtn = (Button) findViewById(R.id.submitBtn);
-        sudmitBtn.setOnClickListener(new View.OnClickListener()
-        {
+        sudmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
 
                 checkEmptyText();
 
@@ -101,6 +96,9 @@ public class NewQuestionActivity extends AppCompatActivity
                     mFirebaseDatabase = FirebaseDatabase.getInstance();
                     mFirebaseAuth = FirebaseAuth.getInstance();
                     mFirebaseStorage = FirebaseStorage.getInstance();
+
+               //     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                //            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(mUsername);
 
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                             .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
@@ -148,8 +146,7 @@ public class NewQuestionActivity extends AppCompatActivity
         mMessageEditText = (EditText) findViewById(R.id.questions);
         String strUserName = mMessageEditText.getText().toString();
 
-        if(TextUtils.isEmpty(strUserName))
-        {
+        if(TextUtils.isEmpty(strUserName)) {
 
             bHasContent = false;
         }
