@@ -74,6 +74,7 @@ public class FirstYearForumView extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                mMessagesDatabaseReference.removeEventListener(mChildEventListener);
                 FriendlyMessage message = friendlyMessages.get(position);
                 selectetUserNAme =  message.getName();
                 selectedSubject = message.getSubject();
