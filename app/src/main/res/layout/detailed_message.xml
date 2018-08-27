@@ -12,7 +12,7 @@
     tools:context="christos.voutselas.aporianet.NewQuestionActivity">
 
     <ListView
-        android:id="@+id/listViewAs"
+        android:id="@+id/listViewAs_detailed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout"

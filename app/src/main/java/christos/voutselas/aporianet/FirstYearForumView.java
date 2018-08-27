@@ -40,6 +40,8 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectetUserNAme = "";
     private String selectedSubject = "";
     private String selectedMainText = "";
+    private String key = "";
+    private String selectedKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,10 +78,15 @@ public class FirstYearForumView extends AppCompatActivity
                 selectetUserNAme =  message.getName();
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
+                selectedKey = message.getKey();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
+                intent.putExtra("lessonName", lessonName);
+                intent.putExtra("lessonDirection", lessonDirection);
+                intent.putExtra("yearOfClass", yearOfClass);
                 intent.putExtra("selectedUserName", selectetUserNAme);
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
+                intent.putExtra("selectedKey", selectedKey);
                 startActivity(intent);
             }
         });
@@ -141,11 +148,13 @@ public class FirstYearForumView extends AppCompatActivity
             mChildEventListener = new ChildEventListener()
             {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
                     System.out.println("The updated post title is: " + friendlyMessage.getName());
+                    key = dataSnapshot.getKey();
                     mMessageAdapter.add(friendlyMessage);
+                    friendlyMessage.setKey(key);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     }
 
