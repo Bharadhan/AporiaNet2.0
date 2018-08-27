@@ -6,8 +6,8 @@ android {
         applicationId "christos.voutselas.aporianet"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 25
-        versionName "0.4.2"
+        versionCode 26
+        versionName "0.4.3"
         resConfigs "en"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

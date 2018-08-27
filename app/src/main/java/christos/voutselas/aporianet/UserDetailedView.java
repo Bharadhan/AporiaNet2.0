@@ -40,6 +40,7 @@ public class UserDetailedView extends AppCompatActivity {
     private String key;
     private ChildEventListener mDChildEventListener;
     private String userText = "";
+    private String userTextFinal = "";
 
 
     @Override
@@ -119,9 +120,9 @@ public class UserDetailedView extends AppCompatActivity {
             {
                 //userText = "";
                 //setContentView(R.layout.detailed_message);
-                String userText1 = getIntent().getStringExtra("userText");
+                userTextFinal = userInput.getText().toString();
 
-                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText1, mUsername, "", "", null);
+                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userTextFinal, mUsername, "", "", null);
                 mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
                 // Clear input box
