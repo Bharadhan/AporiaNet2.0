@@ -108,6 +108,7 @@ public class NewQuestionActivity extends AppCompatActivity
                     FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
+
                     // Clear input box
                     mMessageEditText.setText("");
 
