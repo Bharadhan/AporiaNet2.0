@@ -41,15 +41,23 @@
             style="@style/AboutUsViewImageView"
             android:id="@+id/twitter"
             android:layout_below="@+id/address"
-            android:layout_toLeftOf="@+id/web"
+            android:layout_toLeftOf="@+id/aboutUslogo"
             android:layout_marginRight="@dimen/paddingBottomImage"
             android:src="@drawable/twitter" />
 
         <ImageView
             style="@style/AboutUsViewImageView"
-            android:id="@+id/web"
+            android:id="@+id/aboutUslogo"
             android:layout_below="@+id/address"
             android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/paddingBottomImage"
+            android:src="@drawable/aboutlogo" />
+
+        <ImageView
+            style="@style/AboutUsViewImageView"
+            android:id="@+id/web"
+            android:layout_below="@+id/address"
+            android:layout_toRightOf="@+id/aboutUslogo"
             android:layout_marginRight="@dimen/paddingBottomImage"
             android:src="@drawable/web" />
 
@@ -60,14 +68,6 @@
             android:layout_toRightOf="@+id/web"
             android:layout_marginRight="@dimen/paddingBottomImage"
             android:src="@drawable/mail" />
-
-        <ImageView
-            style="@style/AboutUsViewImageView"
-            android:id="@+id/phone"
-            android:layout_below="@+id/address"
-            android:layout_toRightOf="@+id/mail"
-            android:layout_marginRight="@dimen/paddingBottomImage"
-            android:src="@drawable/phone" />
 
         <TextView
             android:layout_width="wrap_content"

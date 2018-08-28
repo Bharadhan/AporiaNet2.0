@@ -53,14 +53,6 @@ public class AboutUs extends AppCompatActivity {
                 startMail();
             }
         });
-
-        call = (ImageView) findViewById(R.id.phone);
-        call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startCall();
-            }
-        });
     }
 
     private void startFacebook() {
