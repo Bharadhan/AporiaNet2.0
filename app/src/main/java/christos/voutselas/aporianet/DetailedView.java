@@ -3,8 +3,6 @@ package christos.voutselas.aporianet;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,59 +77,7 @@ public class DetailedView extends AppCompatActivity
 
         checkChildDetails();
 
-
-     /*   mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (!dataSnapshot.exists()){
-
-                    findQuestion();
-                }
-
-                if (dataSnapshot.getChildrenCount() > 1)
-                {
-                    mSendButton.setEnabled(false);
-
-                    mMessageEditText.setFocusable(false);
-                }
-                else
-                {
-                    mSendButton.setEnabled(true);
-
-                    mMessageEditText.setFocusable(true);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        }); */
-
         readData();
-
-        // Enable Send button when there's text to send
-   /*     mMessageEditText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                if (charSequence.toString().trim().length() > 0)
-                {
-                    mSendButton.setEnabled(true);
-                }
-                else
-                {
-                    mSendButton.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        }); */
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
@@ -139,16 +85,13 @@ public class DetailedView extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-             //   setContentView(R.layout.detailed_message);
                 mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
-             //   checkChildDetails();
                 userText = userInput.getText().toString();
 
                 changeView();
             }
         });
     }
-
 
     private void checkChildDetails()
     {
@@ -179,7 +122,6 @@ public class DetailedView extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
     }
 
     private void findQuestion()
@@ -206,9 +148,7 @@ public class DetailedView extends AppCompatActivity
                     System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
                     mDMessageAdapter.add(detailedFriendlyMessage);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
                 }
-
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -216,7 +156,6 @@ public class DetailedView extends AppCompatActivity
             };
             mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
         }
-
     }
 
     private void changeView()
