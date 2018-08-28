@@ -41,6 +41,7 @@ public class DetailedView extends AppCompatActivity
     private EditText userInput;
     private String mUsername;
     private String userText = "";
+    private String postedName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -98,26 +99,28 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (!dataSnapshot.exists()){
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.exists()) {
 
                     findQuestion();
-                }
+                } else {
+                   // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
+                   // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
-                if (dataSnapshot.getChildrenCount() > 1)
-                {
-                    mSendButton.setEnabled(false);
+                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(postedName))) {
+                        mSendButton.setEnabled(true);
 
-                    mMessageEditText.setFocusable(false);
-                }
-                else
-                {
-                    mSendButton.setEnabled(true);
+                        mMessageEditText.setFocusable(true);
+                    } else {
+                        mSendButton.setEnabled(false);
 
-                    mMessageEditText.setFocusable(true);
+                        mMessageEditText.setFocusable(false);
+                    }
                 }
             }
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -145,7 +148,7 @@ public class DetailedView extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
                     DetailedFriendlyMessage detailedFriendlyMessage = dDataSnapshot.getValue(DetailedFriendlyMessage.class);
-                    System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
+                    postedName = detailedFriendlyMessage.getName();
                     mDMessageAdapter.add(detailedFriendlyMessage);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 }
