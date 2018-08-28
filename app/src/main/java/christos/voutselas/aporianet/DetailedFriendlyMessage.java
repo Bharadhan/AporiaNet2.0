@@ -1,7 +1,6 @@
 package christos.voutselas.aporianet;
 
-public class FriendlyMessage
-{
+public class DetailedFriendlyMessage {
 
     public String text;
     private String name;
@@ -9,12 +8,12 @@ public class FriendlyMessage
     private String subject;
     private String key;
 
-    public FriendlyMessage()
+    public DetailedFriendlyMessage()
     {
 
     }
 
-    public FriendlyMessage(String text, String name, String subject, String photoUrl)
+    public DetailedFriendlyMessage(String text, String name, String subject, String key, String photoUrl)
     {
         this.text = text;
         this.name = name;

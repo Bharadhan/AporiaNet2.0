@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,6 +36,12 @@ public class FirstYearForumView extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
     private ProgressBar mProgressBar;
+    private List<FriendlyMessage> friendlyMessages;
+    private String selectetUserNAme = "";
+    private String selectedSubject = "";
+    private String selectedMainText = "";
+    private String key = "";
+    private String selectedKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,6 +67,33 @@ public class FirstYearForumView extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        mMessageListView.setOnItemClickListener(new OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+                FriendlyMessage message = friendlyMessages.get(position);
+                selectetUserNAme =  message.getName();
+                selectedSubject = message.getSubject();
+                selectedMainText = message.getText();
+                selectedKey = message.getKey();
+                Intent intent = new Intent(getApplicationContext(), DetailedView.class);
+                intent.putExtra("lessonName", lessonName);
+                intent.putExtra("lessonDirection", lessonDirection);
+                intent.putExtra("yearOfClass", yearOfClass);
+                intent.putExtra("selectedUserName", selectetUserNAme);
+                intent.putExtra("selectedSubject", selectedSubject);
+                intent.putExtra("selectedMainText", selectedMainText);
+                intent.putExtra("selectedKey", selectedKey);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 
     private void updateView()
@@ -97,7 +132,7 @@ public class FirstYearForumView extends AppCompatActivity
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         // Initialize message ListView and its adapter
-        final List<FriendlyMessage> friendlyMessages = new ArrayList<>();
+        friendlyMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
@@ -114,11 +149,13 @@ public class FirstYearForumView extends AppCompatActivity
             mChildEventListener = new ChildEventListener()
             {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s)
+                public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
                     System.out.println("The updated post title is: " + friendlyMessage.getName());
+                    key = dataSnapshot.getKey();
                     mMessageAdapter.add(friendlyMessage);
+                    friendlyMessage.setKey(key);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     }
 
@@ -129,5 +166,6 @@ public class FirstYearForumView extends AppCompatActivity
             };
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
+
     }
 }
