@@ -25,7 +25,6 @@
             android:layout_below="@+id/school_logo"
             android:id="@+id/address"
             android:text="@string/address"
-            android:autoLink="all"
             android:layout_marginBottom="@dimen/paddingBottom" />
 
         <ImageView
@@ -33,31 +32,15 @@
             android:foregroundGravity="center"
             android:id="@+id/facebook"
             android:layout_below="@+id/address"
-            android:layout_toLeftOf="@+id/twitter"
+            android:layout_toLeftOf="@+id/web"
             android:layout_marginRight="@dimen/paddingBottomImage"
             android:src="@drawable/facebook" />
 
         <ImageView
             style="@style/AboutUsViewImageView"
-            android:id="@+id/twitter"
-            android:layout_below="@+id/address"
-            android:layout_toLeftOf="@+id/aboutUslogo"
-            android:layout_marginRight="@dimen/paddingBottomImage"
-            android:src="@drawable/twitter" />
-
-        <ImageView
-            style="@style/AboutUsViewImageView"
-            android:id="@+id/aboutUslogo"
-            android:layout_below="@+id/address"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/paddingBottomImage"
-            android:src="@drawable/aboutlogo" />
-
-        <ImageView
-            style="@style/AboutUsViewImageView"
             android:id="@+id/web"
             android:layout_below="@+id/address"
-            android:layout_toRightOf="@+id/aboutUslogo"
+            android:layout_centerInParent="true"
             android:layout_marginRight="@dimen/paddingBottomImage"
             android:src="@drawable/web" />
 
