@@ -108,7 +108,7 @@ public class DetailedView extends AppCompatActivity
                    // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
                    // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
-                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(postedName))) {
+                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername))) {
                         mSendButton.setEnabled(true);
 
                         mMessageEditText.setFocusable(true);

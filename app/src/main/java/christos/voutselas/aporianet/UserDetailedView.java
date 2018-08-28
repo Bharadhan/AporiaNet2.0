@@ -75,12 +75,14 @@ public class UserDetailedView extends AppCompatActivity {
         DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
+
+        mSendButton.setEnabled(false);
+        mMessageEditText.setFocusable(false);
+
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         readData();
 
-        mSendButton.setEnabled(false);
-        mMessageEditText.setFocusable(false);
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
