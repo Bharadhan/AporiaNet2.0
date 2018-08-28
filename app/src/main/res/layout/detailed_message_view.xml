@@ -25,14 +25,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:gravity="center"
+        android:paddingLeft="@dimen/paddingTop"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dp"
+        android:id="@+id/separator"
+        android:visibility="visible"
+        android:background="@android:color/background_dark"/>
 
     <TextView
         android:id="@+id/main_question_detailed_message_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:paddingTop="@dimen/fui_body_padding_bottom"
         android:layout_weight="0"
         android:textAppearance="?android:attr/textAppearanceMedium"

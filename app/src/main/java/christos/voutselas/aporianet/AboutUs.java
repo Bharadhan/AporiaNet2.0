@@ -11,10 +11,8 @@ import android.widget.ImageView;
 public class AboutUs extends AppCompatActivity {
 
     private ImageView facebook;
-    private ImageView twittwer;
     private ImageView web;
     private ImageView mail;
-    private ImageView call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +25,6 @@ public class AboutUs extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startFacebook();
-            }
-        });
-
-        twittwer = (ImageView) findViewById(R.id.twitter);
-        twittwer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTwitter();
             }
         });
 
