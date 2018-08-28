@@ -149,9 +149,6 @@ public class DetailedView extends AppCompatActivity
     {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        // Initialize progress bar
-        mProgressBar.setVisibility(ProgressBar.VISIBLE);
-
         if (mDChildEventListener == null)
         {
             mDChildEventListener = new ChildEventListener()
