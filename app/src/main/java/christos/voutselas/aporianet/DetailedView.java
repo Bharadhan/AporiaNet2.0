@@ -38,7 +38,6 @@ public class DetailedView extends AppCompatActivity
     private String key = "";
     private ProgressBar mProgressBar;
     private ChildEventListener mDChildEventListener;
-    private String test = "";
     private EditText mMessageEditText;
     private Button mSendButton;
     private EditText userInput;
@@ -63,12 +62,12 @@ public class DetailedView extends AppCompatActivity
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.detailed_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
-
 
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -85,22 +84,18 @@ public class DetailedView extends AppCompatActivity
             {
                 if (dataSnapshot.exists()){
 
-                    System.out.print(test);
                     readData();
                 }
                 else
                 {
                     findQuestion();
                     readData();
-                    System.out.print(test);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-        //changeView();
 
         // Enable Send button when there's text to send
         mMessageEditText.addTextChangedListener(new TextWatcher()
@@ -136,7 +131,6 @@ public class DetailedView extends AppCompatActivity
 
                 userText = userInput.getText().toString();
 
-
                 changeView();
             }
         });
@@ -165,7 +159,6 @@ public class DetailedView extends AppCompatActivity
                 @Override
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
-                    test = "a";
                     DetailedFriendlyMessage detailedFriendlyMessage = dDataSnapshot.getValue(DetailedFriendlyMessage.class);
                     System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
                     mDMessageAdapter.add(detailedFriendlyMessage);
@@ -185,7 +178,6 @@ public class DetailedView extends AppCompatActivity
 
     private void changeView()
     {
-        //mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         Intent intent = new Intent(getApplicationContext(), UserDetailedView.class);
         intent.putExtra("lessonName", lessonNameNewQuestion);
         intent.putExtra("lessonDirection", lessonDirectionNewQuestion);
