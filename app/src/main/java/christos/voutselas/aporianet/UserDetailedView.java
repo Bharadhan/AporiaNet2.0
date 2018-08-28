@@ -2,8 +2,6 @@ package christos.voutselas.aporianet;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +37,6 @@ public class UserDetailedView extends AppCompatActivity {
     private ChildEventListener mDChildEventListener;
     private String userText = "";
     private String userTextFinal = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +75,14 @@ public class UserDetailedView extends AppCompatActivity {
         DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
+
+        mSendButton.setEnabled(false);
+        mMessageEditText.setFocusable(false);
+
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         readData();
 
-        // Enable Send button when there's text to send
-        mMessageEditText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
-            {
-                if (charSequence.toString().trim().length() > 0)
-                {
-                    mSendButton.setEnabled(true);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                }
-                else
-                {
-                    mSendButton.setEnabled(false);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
@@ -113,8 +90,6 @@ public class UserDetailedView extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                //userText = "";
-                //setContentView(R.layout.detailed_message);
                 userTextFinal = userInput.getText().toString();
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -127,7 +102,6 @@ public class UserDetailedView extends AppCompatActivity {
 
                 readData();
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
             }
         });
     }
@@ -138,7 +112,6 @@ public class UserDetailedView extends AppCompatActivity {
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
-
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         if (mDChildEventListener == null)
@@ -152,7 +125,6 @@ public class UserDetailedView extends AppCompatActivity {
                     System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
                     mDMessageAdapter.add(detailedFriendlyMessage);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -163,8 +135,5 @@ public class UserDetailedView extends AppCompatActivity {
             mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
             mProgressBar.setVisibility(ProgressBar.INVISIBLE);
         }
-
     }
-
-
 }
