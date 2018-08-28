@@ -77,28 +77,41 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+        checkChildDetails();
+
+
+     /*   mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                if (dataSnapshot.exists()){
+                if (!dataSnapshot.exists()){
 
-                    readData();
+                    findQuestion();
+                }
+
+                if (dataSnapshot.getChildrenCount() > 1)
+                {
+                    mSendButton.setEnabled(false);
+
+                    mMessageEditText.setFocusable(false);
                 }
                 else
                 {
-                    findQuestion();
-                    readData();
+                    mSendButton.setEnabled(true);
+
+                    mMessageEditText.setFocusable(true);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
-        });
+        }); */
+
+        readData();
 
         // Enable Send button when there's text to send
-        mMessageEditText.addTextChangedListener(new TextWatcher()
+   /*     mMessageEditText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -118,7 +131,7 @@ public class DetailedView extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable editable) {}
-        });
+        }); */
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
@@ -128,12 +141,45 @@ public class DetailedView extends AppCompatActivity
             {
              //   setContentView(R.layout.detailed_message);
                 mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
-
+             //   checkChildDetails();
                 userText = userInput.getText().toString();
 
                 changeView();
             }
         });
+    }
+
+
+    private void checkChildDetails()
+    {
+        mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (!dataSnapshot.exists()){
+
+                    findQuestion();
+                }
+
+                if (dataSnapshot.getChildrenCount() > 1)
+                {
+                    mSendButton.setEnabled(false);
+
+                    mMessageEditText.setFocusable(false);
+                }
+                else
+                {
+                    mSendButton.setEnabled(true);
+
+                    mMessageEditText.setFocusable(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
     }
 
     private void findQuestion()

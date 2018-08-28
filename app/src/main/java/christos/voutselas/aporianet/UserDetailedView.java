@@ -82,8 +82,12 @@ public class UserDetailedView extends AppCompatActivity {
 
         readData();
 
+        mSendButton.setEnabled(false);
+
+        mMessageEditText.setFocusable(false);
+
         // Enable Send button when there's text to send
-        mMessageEditText.addTextChangedListener(new TextWatcher()
+  /*      mMessageEditText.addTextChangedListener(new TextWatcher()
         {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -105,7 +109,7 @@ public class UserDetailedView extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {}
-        });
+        }); */
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()

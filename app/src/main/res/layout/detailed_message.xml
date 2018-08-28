@@ -34,8 +34,8 @@
 
         <ImageButton
             android:id="@+id/photoPickerButton"
-            android:layout_width="@dimen/answer_btn"
-            android:layout_height="@dimen/answer_btn"
+            android:layout_width="@dimen/answer_btn1"
+            android:layout_height="@dimen/answer_btn1"
             android:background="@android:drawable/ic_menu_gallery" />
 
         <EditText
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:enabled="false"
-            android:text="@string/send_button_label"/>
+            android:text="@string/send_button_label1"/>
 
     </LinearLayout>
 
