@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +29,9 @@ public class DetailedView extends AppCompatActivity
     private String yearOfClassNewQuestion = "";
     private String lessonDirectionNewQuestion = "";
     private String lessonNameNewQuestion = "";
+    private String mUsername;
+    private String userText = "";
+    private String postedName = "";
     private DetailedMessageAdapter mDMessageAdapter;
     private ListView mMessageListView;
     private FirebaseDatabase mFirebaseDatabase;
@@ -39,9 +44,6 @@ public class DetailedView extends AppCompatActivity
     private EditText mMessageEditText;
     private Button mSendButton;
     private EditText userInput;
-    private String mUsername;
-    private String userText = "";
-    private String postedName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,6 +52,7 @@ public class DetailedView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.detailed_message);
         userInput = (EditText) findViewById(R.id.messageEditText);
+
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("selectedKey");
@@ -65,7 +68,7 @@ public class DetailedView extends AppCompatActivity
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
-        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.detailed_message_view, dFriendlyMessages);
+        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
         // Initialize Firebase components
@@ -132,7 +135,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, "", "", null);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 

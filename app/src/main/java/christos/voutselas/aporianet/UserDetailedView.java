@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +39,8 @@ public class UserDetailedView extends AppCompatActivity {
     private ChildEventListener mDChildEventListener;
     private String userText = "";
     private String userTextFinal = "";
+    private TextView userAnswer;
+    private TextView userNameFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class UserDetailedView extends AppCompatActivity {
         mUsername = MainActivity.useName;
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+       // mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");
@@ -59,9 +63,9 @@ public class UserDetailedView extends AppCompatActivity {
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
-        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.detailed_message_view, dFriendlyMessages);
+        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        //mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -72,14 +76,14 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage("", "", "", "",userText, mUsername, null);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
 
         mSendButton.setEnabled(false);
         mMessageEditText.setFocusable(false);
 
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+       // mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         readData();
 
@@ -92,8 +96,7 @@ public class UserDetailedView extends AppCompatActivity {
             {
                 userTextFinal = userInput.getText().toString();
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
-                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userTextFinal, mUsername, "", "", null);
+                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage("", "", "", "", userTextFinal, mUsername, null);
                 mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -112,7 +115,7 @@ public class UserDetailedView extends AppCompatActivity {
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+       // mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         if (mDChildEventListener == null)
         {

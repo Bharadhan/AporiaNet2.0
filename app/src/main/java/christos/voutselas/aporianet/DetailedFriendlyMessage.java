@@ -7,19 +7,23 @@ public class DetailedFriendlyMessage {
     private String photoUrl;
     private String subject;
     private String key;
+    private String userAnswer;
+    private String answername;
 
     public DetailedFriendlyMessage()
     {
 
     }
 
-    public DetailedFriendlyMessage(String text, String name, String subject, String key, String photoUrl)
+    public DetailedFriendlyMessage(String text, String name, String subject, String key, String userAnswer, String answerName, String photoUrl)
     {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.subject = subject;
         this.key = key;
+        this.userAnswer = userAnswer;
+        this.answername = answerName;
     }
 
     public String getText() {
@@ -52,5 +56,21 @@ public class DetailedFriendlyMessage {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public String getAnswername() {
+        return answername;
+    }
+
+    public void setAnswername(String answername) {
+        this.answername = answername;
     }
 }
