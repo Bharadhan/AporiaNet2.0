@@ -33,7 +33,7 @@
         android:id="@+id/main_question_detailed_message_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
+        android:background="@drawable/question_border"
         android:gravity="left"
         android:paddingBottom="@dimen/detailed_message_textView_padding"
         android:paddingTop="@dimen/detailed_message_textView_padding"
