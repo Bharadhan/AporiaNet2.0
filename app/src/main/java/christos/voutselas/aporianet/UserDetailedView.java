@@ -39,8 +39,6 @@ public class UserDetailedView extends AppCompatActivity {
     private ChildEventListener mDChildEventListener;
     private String userText = "";
     private String userTextFinal = "";
-    private TextView userAnswer;
-    private TextView userNameFinal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,7 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage("", "", "", "",userText, mUsername, null);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null, "blue");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
 
@@ -88,7 +86,7 @@ public class UserDetailedView extends AppCompatActivity {
         readData();
 
 
-        // Send button sends a message and clears the EditText
+   /*     // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -96,7 +94,7 @@ public class UserDetailedView extends AppCompatActivity {
             {
                 userTextFinal = userInput.getText().toString();
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage("", "", "", "", userTextFinal, mUsername, null);
+                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userTextFinal, mUsername, "", "", null);
                 mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
@@ -106,7 +104,7 @@ public class UserDetailedView extends AppCompatActivity {
                 readData();
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
             }
-        });
+        }); */
     }
 
     private void readData()

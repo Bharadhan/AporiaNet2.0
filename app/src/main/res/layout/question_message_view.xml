@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:id="@+id/detailed_message_view"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/subjectMessageTextView_detailed_message_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/detailed_message_textView_marginBottom"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        tools:text="@string/subject_message" />
+
+    <TextView
+        android:id="@+id/nameTextView_detailed_message_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:paddingLeft="@dimen/detailed_message_textView_padding"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="@string/name_message" />
+
+    <TextView
+        android:id="@+id/main_question_detailed_message_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:gravity="left"
+        android:paddingBottom="@dimen/detailed_message_textView_padding"
+        android:paddingTop="@dimen/detailed_message_textView_padding"
+        android:paddingLeft="@dimen/detailed_message_textView_padding"
+        android:paddingRight="@dimen/detailed_message_textView_padding"
+        android:layout_marginRight="@dimen/detailed_message_textView_marginRight"
+        android:layout_weight="0"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="@string/main_message" />
+
+</LinearLayout>

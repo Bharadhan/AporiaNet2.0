@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,9 +27,6 @@ public class DetailedView extends AppCompatActivity
     private String yearOfClassNewQuestion = "";
     private String lessonDirectionNewQuestion = "";
     private String lessonNameNewQuestion = "";
-    private String mUsername;
-    private String userText = "";
-    private String postedName = "";
     private DetailedMessageAdapter mDMessageAdapter;
     private ListView mMessageListView;
     private FirebaseDatabase mFirebaseDatabase;
@@ -44,6 +39,9 @@ public class DetailedView extends AppCompatActivity
     private EditText mMessageEditText;
     private Button mSendButton;
     private EditText userInput;
+    private String mUsername;
+    private String userText = "";
+    private String postedName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +50,6 @@ public class DetailedView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.detailed_message);
         userInput = (EditText) findViewById(R.id.messageEditText);
-
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("selectedKey");
@@ -108,8 +105,8 @@ public class DetailedView extends AppCompatActivity
 
                     findQuestion();
                 } else {
-                   // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
-                   // postedName = String.valueOf(detailedFriendlyMessage.getName());
+                    // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
+                    // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
                     if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername))) {
                         mSendButton.setEnabled(true);
@@ -135,7 +132,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, "", "", null);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 
