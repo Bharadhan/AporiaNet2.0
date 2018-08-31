@@ -102,7 +102,6 @@ public class DetailedView extends AppCompatActivity
             }
         });
 
-
         voteBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -110,11 +109,10 @@ public class DetailedView extends AppCompatActivity
             {
                 mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
 
+                vote();
+
             }
         });
-
-
-
     }
 
     private void checkChildDetails()
@@ -131,8 +129,6 @@ public class DetailedView extends AppCompatActivity
 
                 }
                 else {
-                    // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
-                    // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
                     if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
                     {
@@ -151,9 +147,9 @@ public class DetailedView extends AppCompatActivity
 
                         mMessageEditText.setFocusable(false);
 
+                        //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
                         editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-
                         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
@@ -166,9 +162,9 @@ public class DetailedView extends AppCompatActivity
 
                         voteBtn.setVisibility(View.INVISIBLE);
 
+                        //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
                         editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-
                         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     }
@@ -185,7 +181,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey",0);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey","No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 
@@ -225,5 +221,13 @@ public class DetailedView extends AppCompatActivity
         intent.putExtra("selectedMainText", selectedMainText);
         intent.putExtra("userText", userText);
         startActivity(intent);
+    }
+
+    private void vote()
+    {
+        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+        VoteActivity voteB = new VoteActivity();
+        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter);
+
     }
 }

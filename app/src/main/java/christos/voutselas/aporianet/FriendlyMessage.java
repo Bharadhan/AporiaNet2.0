@@ -12,7 +12,7 @@ public class FriendlyMessage
     private String subject;
     private String key;
     private Integer potition;
-    private Integer votes;
+    private String votes;
 
 
     public FriendlyMessage()
@@ -20,7 +20,7 @@ public class FriendlyMessage
 
     }
 
-    public FriendlyMessage(String text, String name, String subject, String photoUrl, Integer votes)
+    public FriendlyMessage(String text, String name, String subject, String photoUrl, String votes)
     {
         this.text = text;
         this.name = name;
@@ -73,11 +73,11 @@ public class FriendlyMessage
         this.potition = potition;
     }
 
-    public Integer getVotes() {
+    public String getVotes() {
         return votes;
     }
 
-    public void setVotes(Integer votes) {
+    public void setVotes(String votes) {
         this.votes = votes;
     }
 }

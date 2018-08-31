@@ -8,14 +8,14 @@ public class DetailedFriendlyMessage {
     private String subject;
     private String key;
     private String color;
-    private Integer votesNumbers;
+    private String voted;
 
     public DetailedFriendlyMessage()
     {
 
     }
 
-    public DetailedFriendlyMessage(String text, String name, String subject, String key, String photoUrl, String color, Integer votesNumbers)
+    public DetailedFriendlyMessage(String text, String name, String subject, String key, String photoUrl, String color, String voted)
     {
         this.text = text;
         this.name = name;
@@ -23,7 +23,7 @@ public class DetailedFriendlyMessage {
         this.subject = subject;
         this.key = key;
         this.color = color;
-        this.votesNumbers = votesNumbers;
+        this.voted = voted;
     }
 
     public String getText() {
@@ -66,11 +66,11 @@ public class DetailedFriendlyMessage {
         this.color = color;
     }
 
-    public Integer getVotesNumbers() {
-        return votesNumbers;
+    public String getVoted() {
+        return voted;
     }
 
-    public void setVotesNumbers(Integer votesNumbers) {
-        this.votesNumbers = votesNumbers;
+    public void setVoted(String voted) {
+        this.voted = voted;
     }
 }
