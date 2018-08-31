@@ -42,6 +42,7 @@ public class UserDetailedView extends AppCompatActivity {
     private String userText = "";
     private String userTextFinal = "";
     private ImageView voteBtn;
+    private TextView votedMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class UserDetailedView extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         voteBtn = (ImageView) findViewById(R.id.fab);
         voteBtn.setVisibility(View.INVISIBLE);
+        votedMessage = (TextView) findViewById(R.id.voted);
+        votedMessage.setVisibility(View.INVISIBLE);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");

@@ -46,6 +46,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
+    private String vote = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,6 +85,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
+                vote = message.getVotes();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
                 intent.putExtra("lessonDirection", lessonDirection);
@@ -92,6 +94,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
+                intent.putExtra("vote", vote);
                 startActivity(intent);
             }
         });

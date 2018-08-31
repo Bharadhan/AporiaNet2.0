@@ -2,11 +2,7 @@ package christos.voutselas.aporianet;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -15,9 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class VoteActivity extends AppCompatActivity {
 
@@ -35,7 +28,6 @@ public class VoteActivity extends AppCompatActivity {
     private String keyNumber = "";
     private Integer voteNumber = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +44,9 @@ public class VoteActivity extends AppCompatActivity {
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
                 .child(lessonDirection).child(lessonName).child(keyNumber).child("questions");
 
-
         mMessagesDatabaseReferenceSecondary = mFirebaseDatabase.getReference().child(yearOfClass)
                 .child(lessonDirection).child(lessonName).child(keyNumber);
         mMessagesDatabaseReferenceSecondary.child("votes").setValue("Yes");
-
-
-
 
         if (mDChildEventListener == null)
         {
@@ -94,42 +82,5 @@ public class VoteActivity extends AppCompatActivity {
         mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName);
         VoteMessage votesNbr = new VoteMessage(1);
         mMessagesDatabaseReferenceV.push().setValue(votesNbr);
-       // mMessagesDatabaseReference.child("Voted").setValue("Yes");
-
-      /*  if (mDChildEventListener == null) {
-            mDChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne) {
-                    VoteMessage votesNbr = dDataSnapshot.getValue(VoteMessage.class);
-                    keyNumber = dDataSnapshot.getKey();
-                    voteNumber = votesNbr.getVotesNumbres();
-
-                    System.out.print(keyNumber);
-                    System.out.print(voteNumber);
-
-                    mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName).child(keyNumber);
-                    Map<String, Object> updates = new HashMap<>();
-                    updates.put("votesNumbres", voteNumber + 1);
-                    mMessagesDatabaseReferenceV.updateChildren(updates);
-
-
-                }
-
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                }
-
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                }
-
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                }
-
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            };
-            mMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
-
-
-        }*/
     }
 }

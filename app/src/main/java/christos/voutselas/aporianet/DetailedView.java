@@ -39,6 +39,7 @@ public class DetailedView extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mVoteMessagesDatabaseReference;
     private String key = "";
     private ProgressBar mProgressBar;
     private ChildEventListener mDChildEventListener;
@@ -49,6 +50,8 @@ public class DetailedView extends AppCompatActivity
     private String userText = "";
     private String postedName = "";
     private ImageView voteBtn;
+    private TextView votedMessage;
+    private String vote = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,10 +68,13 @@ public class DetailedView extends AppCompatActivity
         selectetUserName = getIntent().getStringExtra("selectedUserName");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
+        vote = getIntent().getStringExtra("vote");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        votedMessage = (TextView) findViewById(R.id.voted);
+        votedMessage.setVisibility(View.INVISIBLE);
         voteBtn = (ImageView) findViewById(R.id.fab);
         voteBtn.setVisibility(View.INVISIBLE);
 
@@ -133,19 +139,28 @@ public class DetailedView extends AppCompatActivity
                     if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
                     {
                         mSendButton.setEnabled(true);
-
                         mMessageEditText.setFocusable(true);
 
                         voteBtn.setVisibility(View.INVISIBLE);
+                        votedMessage.setVisibility(View.INVISIBLE);
 
                     }
                     else if (dataSnapshot.getChildrenCount() > 1 && (selectetUserName.equals(mUsername)))
                     {
-                        voteBtn.setVisibility(View.VISIBLE);
-
                         mSendButton.setEnabled(false);
-
                         mMessageEditText.setFocusable(false);
+
+                        switch (vote)
+                        {
+                            case "Yes":
+                                voteBtn.setVisibility(View.INVISIBLE);
+                                votedMessage.setVisibility(View.VISIBLE);
+                                break;
+
+                            case "No":
+                                votedMessage.setVisibility(View.INVISIBLE);
+                                voteBtn.setVisibility(View.VISIBLE);
+                        }
 
                         //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
@@ -157,10 +172,10 @@ public class DetailedView extends AppCompatActivity
                     else
                     {
                         mSendButton.setEnabled(false);
-
                         mMessageEditText.setFocusable(false);
 
                         voteBtn.setVisibility(View.INVISIBLE);
+                        votedMessage.setVisibility(View.INVISIBLE);
 
                         //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
@@ -188,6 +203,7 @@ public class DetailedView extends AppCompatActivity
     private void readData()
     {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         if (mDChildEventListener == null)
         {
@@ -228,6 +244,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
         voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter);
-
+        voteBtn.setVisibility(View.INVISIBLE);
+        votedMessage.setVisibility(View.VISIBLE);
     }
 }

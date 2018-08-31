@@ -60,5 +60,7 @@
         Κούμα 20 \n
         41221 Λάρισα \n
         Ελλάδα</string>
-    <string name="votes">0:</string>
+    <string name="already_vote">You already vote!! \n Thank you!!</string>
+    <string name="user_profile">User Profile</string>
+    <string name="credits">Total Credits: 0</string>
 </resources>
