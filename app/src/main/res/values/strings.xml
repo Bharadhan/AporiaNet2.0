@@ -52,6 +52,7 @@
     <string name="send_button_label1">Send</string>
     <string name="main_message">main message from user</string>
     <string name="name_message">name</string>
+    <string name="time">time</string>
     <string name="about_us">About Us</string>
     <string name="follow_us">Follow Us:</string>
     <string name="phoneNumber">+302410257933</string>
@@ -59,4 +60,5 @@
         Κούμα 20 \n
         41221 Λάρισα \n
         Ελλάδα</string>
+    <string name="votes">0:</string>
 </resources>

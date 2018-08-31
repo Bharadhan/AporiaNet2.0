@@ -59,6 +59,7 @@
         android:layout_height="@dimen/new_question_editText"
         android:layout_weight="1"
         android:inputType="text|textMultiLine|textCapSentences"
+        android:focusable="true"
         android:imeOptions="actionDone"
         android:background="@color/white"
         android:padding="@dimen/new_question_editText_letter_padding"

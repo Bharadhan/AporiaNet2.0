@@ -2,6 +2,7 @@ package christos.voutselas.aporianet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -10,10 +11,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
 {
+
+    //private Integer mPotition = FirstYearForumView.mPotition;
+
+
     public MessageAdapter(Context context, int resource, List<FriendlyMessage> objects)
     {
         super(context, resource, objects);
@@ -32,24 +38,26 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView);
 
         FriendlyMessage message = getItem(position);
+        FriendlyMessage message1 = getItem(position);
 
-        assert message != null;
-        boolean isPhoto = message.getPhotoUrl() != null;
+        assert message1 != null;
+        boolean isPhoto = message1.getPhotoUrl() != null;
         if (isPhoto)
         {
             messageTextView.setVisibility(View.GONE);
             photoImageView.setVisibility(View.VISIBLE);
             Glide.with(photoImageView.getContext())
-                    .load(message.getPhotoUrl())
+                    .load(message1.getPhotoUrl())
                     .into(photoImageView);
         }
         else
         {
             messageTextView.setVisibility(View.VISIBLE);
             photoImageView.setVisibility(View.GONE);
-            messageTextView.setText(message.getSubject());
+            messageTextView.setText(message1.getSubject());
+
         }
-        authorTextView.setText(message.getName());
+        authorTextView.setText(message1.getName());
 
         return convertView;
     }

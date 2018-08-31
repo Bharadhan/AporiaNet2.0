@@ -15,9 +15,18 @@
         android:id="@+id/listViewAs_detailed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout"
+        android:layout_above="@+id/fab"
         android:transcriptMode="alwaysScroll"
         tools:listitem="@layout/question_message_view"/>
+
+    <ImageView
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/baseline_thumb_up_alt_black_48"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -51,6 +60,7 @@
             android:text="@string/send_button_label1"/>
 
     </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"

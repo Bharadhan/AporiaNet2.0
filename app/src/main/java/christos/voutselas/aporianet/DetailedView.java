@@ -1,13 +1,19 @@
 package christos.voutselas.aporianet;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +48,7 @@ public class DetailedView extends AppCompatActivity
     private String mUsername;
     private String userText = "";
     private String postedName = "";
+    private ImageView voteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,6 +69,8 @@ public class DetailedView extends AppCompatActivity
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        voteBtn = (ImageView) findViewById(R.id.fab);
+        voteBtn.setVisibility(View.INVISIBLE);
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
@@ -92,6 +101,20 @@ public class DetailedView extends AppCompatActivity
                 changeView();
             }
         });
+
+
+        voteBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+
+            }
+        });
+
+
+
     }
 
     private void checkChildDetails()
@@ -99,23 +122,55 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
 
-                if (!dataSnapshot.exists()) {
-
+                if (!dataSnapshot.exists())
+                {
                     findQuestion();
-                } else {
+
+                }
+                else {
                     // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
                     // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
-                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername))) {
+                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
+                    {
                         mSendButton.setEnabled(true);
 
                         mMessageEditText.setFocusable(true);
-                    } else {
+
+                        voteBtn.setVisibility(View.INVISIBLE);
+
+                    }
+                    else if (dataSnapshot.getChildrenCount() > 1 && (selectetUserName.equals(mUsername)))
+                    {
+                        voteBtn.setVisibility(View.VISIBLE);
+
                         mSendButton.setEnabled(false);
 
                         mMessageEditText.setFocusable(false);
+
+                        EditText editText = (EditText) findViewById(R.id.messageEditText);
+                        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
+                    }
+                    else
+                    {
+                        mSendButton.setEnabled(false);
+
+                        mMessageEditText.setFocusable(false);
+
+                        voteBtn.setVisibility(View.INVISIBLE);
+
+                        EditText editText = (EditText) findViewById(R.id.messageEditText);
+                        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     }
                 }
             }
@@ -130,7 +185,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey",0);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 

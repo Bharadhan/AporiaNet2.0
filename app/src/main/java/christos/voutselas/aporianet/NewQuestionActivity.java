@@ -17,9 +17,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -46,6 +48,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private MessageAdapter mMessageAdapter;
     private ListView mMessageListView;
     private List<FriendlyMessage> friendlyMessages;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -90,6 +93,8 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+
+
                 checkEmptyText();
 
                 checkSubject();
@@ -105,7 +110,7 @@ public class NewQuestionActivity extends AppCompatActivity
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                             .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
-                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null);
+                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, 0);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
 

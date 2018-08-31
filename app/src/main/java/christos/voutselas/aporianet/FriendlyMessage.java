@@ -1,5 +1,8 @@
 package christos.voutselas.aporianet;
 
+
+import java.util.Map;
+
 public class FriendlyMessage
 {
 
@@ -8,19 +11,25 @@ public class FriendlyMessage
     private String photoUrl;
     private String subject;
     private String key;
+    private Integer potition;
+    private Integer votes;
+
 
     public FriendlyMessage()
     {
 
     }
 
-    public FriendlyMessage(String text, String name, String subject, String photoUrl)
+    public FriendlyMessage(String text, String name, String subject, String photoUrl, Integer votes)
     {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.subject = subject;
         this.key = key;
+        this.potition = potition;
+        this.votes = votes;
+
     }
 
     public String getText() {
@@ -53,5 +62,22 @@ public class FriendlyMessage
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+
+    public Integer getPotition() {
+        return potition;
+    }
+
+    public void setPotition(Integer potition) {
+        this.potition = potition;
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Integer votes) {
+        this.votes = votes;
     }
 }
