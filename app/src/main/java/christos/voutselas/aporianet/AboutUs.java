@@ -8,14 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-public class AboutUs extends AppCompatActivity {
+public class AboutUs extends AppCompatActivity
+{
 
     private ImageView facebook;
     private ImageView web;
     private ImageView mail;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.about_us);
@@ -45,29 +47,23 @@ public class AboutUs extends AppCompatActivity {
         });
     }
 
-    private void startFacebook() {
+    private void startFacebook()
+    {
         Intent facebookAppIntent;
-        try {
+        try
+        {
             facebookAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/317270851712586"));
             startActivity(facebookAppIntent);
-        } catch (ActivityNotFoundException e) {
+        }
+        catch (ActivityNotFoundException e)
+        {
             facebookAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://facebook.com/Ενιαίο-Φροντιστηριακό-Κέντρον-317270851712586"));
             startActivity(facebookAppIntent);
         }
     }
 
-    private void startTwitter() {
-        Intent twitterAppIntent;
-        try {
-            twitterAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=agrafdim"));
-            startActivity(twitterAppIntent);
-        } catch (ActivityNotFoundException e) {
-            twitterAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/agrafdim"));
-            startActivity(twitterAppIntent);
-        }
-    }
-
-    private void startWeb() {
+    private void startWeb()
+    {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -75,21 +71,14 @@ public class AboutUs extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void startMail() {
+    private void startMail()
+    {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("plain/text");
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"info@kentron.edu.gr"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "");
         intent.putExtra(Intent.EXTRA_TEXT, "");
         startActivity(Intent.createChooser(intent, ""));
-    }
-
-    private void startCall() {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        String temp = "tel:" + "+302410257933";
-        intent.setData(Uri.parse(temp));
-
-        startActivity(intent);
     }
 }
 

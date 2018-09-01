@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AporiaNet</string>
-    <string name="version">version 0.6.2</string>
+    <string name="version">version 0.8.0</string>
     <string name="firebase_web_host" translatable="false">aporianet.firebaseapp.com</string>
     <string name="list_item_lessonName_TextView">Lesson Name</string>
     <string name="list_item_lessonDirection_TextView">Lesson Direction</string>
@@ -52,6 +52,7 @@
     <string name="send_button_label1">Send</string>
     <string name="main_message">main message from user</string>
     <string name="name_message">name</string>
+    <string name="time">time</string>
     <string name="about_us">About Us</string>
     <string name="follow_us">Follow Us:</string>
     <string name="phoneNumber">+302410257933</string>
@@ -59,4 +60,8 @@
         Κούμα 20 \n
         41221 Λάρισα \n
         Ελλάδα</string>
+    <string name="already_vote">You already vote!! \n Thank you!!</string>
+    <string name="user_profile">User Profile</string>
+    <string name="credits">Total Credits: 0</string>
+
 </resources>

@@ -32,6 +32,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String mUsername;
     private ChildEventListener mChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference sizeMessagesDatabaseReference;
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
@@ -42,6 +43,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
+    private String vote = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -80,6 +82,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
+                vote = message.getVotes();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
                 intent.putExtra("lessonDirection", lessonDirection);
@@ -88,12 +91,10 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
+                intent.putExtra("vote", vote);
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     private void updateView()
@@ -133,6 +134,7 @@ public class FirstYearForumView extends AppCompatActivity
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         // Initialize message ListView and its adapter
         friendlyMessages = new ArrayList<>();
+
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
@@ -157,7 +159,7 @@ public class FirstYearForumView extends AppCompatActivity
                     mMessageAdapter.add(friendlyMessage);
                     friendlyMessage.setKey(key);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                    }
+                }
 
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}

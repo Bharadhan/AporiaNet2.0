@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +40,8 @@ public class UserDetailedView extends AppCompatActivity {
     private ChildEventListener mDChildEventListener;
     private String userText = "";
     private String userTextFinal = "";
+    private ImageView voteBtn;
+    private TextView votedMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,10 @@ public class UserDetailedView extends AppCompatActivity {
         mUsername = MainActivity.useName;
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        voteBtn = (ImageView) findViewById(R.id.fab);
+        voteBtn.setVisibility(View.INVISIBLE);
+        votedMessage = (TextView) findViewById(R.id.voted);
+        votedMessage.setVisibility(View.INVISIBLE);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");
@@ -59,9 +67,8 @@ public class UserDetailedView extends AppCompatActivity {
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
-        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.detailed_message_view, dFriendlyMessages);
+        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -70,40 +77,16 @@ public class UserDetailedView extends AppCompatActivity {
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null);
+
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null, "blue", "No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
 
         mSendButton.setEnabled(false);
         mMessageEditText.setFocusable(false);
 
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
         readData();
-
-
-        // Send button sends a message and clears the EditText
-        mSendButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                userTextFinal = userInput.getText().toString();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
-                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userTextFinal, mUsername, "", "", null);
-                mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
-                // Clear input box
-                mMessageEditText.setText("");
-
-                readData();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-        });
     }
 
     private void readData()
@@ -112,7 +95,6 @@ public class UserDetailedView extends AppCompatActivity {
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
-        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         if (mDChildEventListener == null)
         {

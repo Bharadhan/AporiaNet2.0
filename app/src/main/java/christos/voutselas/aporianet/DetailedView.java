@@ -1,13 +1,18 @@
 package christos.voutselas.aporianet;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +38,7 @@ public class DetailedView extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mVoteMessagesDatabaseReference;
     private String key = "";
     private ProgressBar mProgressBar;
     private ChildEventListener mDChildEventListener;
@@ -42,6 +48,9 @@ public class DetailedView extends AppCompatActivity
     private String mUsername;
     private String userText = "";
     private String postedName = "";
+    private ImageView voteBtn;
+    private TextView votedMessage;
+    private String vote = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,14 +67,19 @@ public class DetailedView extends AppCompatActivity
         selectetUserName = getIntent().getStringExtra("selectedUserName");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
+        vote = getIntent().getStringExtra("vote");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        votedMessage = (TextView) findViewById(R.id.voted);
+        votedMessage.setVisibility(View.INVISIBLE);
+        voteBtn = (ImageView) findViewById(R.id.fab);
+        voteBtn.setVisibility(View.INVISIBLE);
 
         // Initialize message ListView and its adapter
         List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
-        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.detailed_message_view, dFriendlyMessages);
+        mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
         // Initialize Firebase components
@@ -92,6 +106,18 @@ public class DetailedView extends AppCompatActivity
                 changeView();
             }
         });
+
+        voteBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+
+                vote();
+
+            }
+        });
     }
 
     private void checkChildDetails()
@@ -99,28 +125,65 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
         {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
 
-                if (!dataSnapshot.exists()) {
-
+                if (!dataSnapshot.exists())
+                {
                     findQuestion();
-                } else {
-                   // DetailedFriendlyMessage detailedFriendlyMessage = dataSnapshot.getValue(DetailedFriendlyMessage.class);
-                   // postedName = String.valueOf(detailedFriendlyMessage.getName());
 
-                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername))) {
+                }
+                else {
+
+                    if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
+                    {
                         mSendButton.setEnabled(true);
-
                         mMessageEditText.setFocusable(true);
-                    } else {
-                        mSendButton.setEnabled(false);
 
+                        voteBtn.setVisibility(View.INVISIBLE);
+                        votedMessage.setVisibility(View.INVISIBLE);
+
+                    }
+                    else if (dataSnapshot.getChildrenCount() > 1 && (selectetUserName.equals(mUsername)))
+                    {
+                        mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);
+
+                        switch (vote)
+                        {
+                            case "Yes":
+                                voteBtn.setVisibility(View.INVISIBLE);
+                                votedMessage.setVisibility(View.VISIBLE);
+                                break;
+
+                            case "No":
+                                votedMessage.setVisibility(View.INVISIBLE);
+                                voteBtn.setVisibility(View.VISIBLE);
+                        }
+
+                        //hide keyboard
+                        EditText editText = (EditText) findViewById(R.id.messageEditText);
+                        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
+                    }
+                    else
+                    {
+                        mSendButton.setEnabled(false);
+                        mMessageEditText.setFocusable(false);
+
+                        voteBtn.setVisibility(View.INVISIBLE);
+                        votedMessage.setVisibility(View.INVISIBLE);
+
+                        //hide keyboard
+                        EditText editText = (EditText) findViewById(R.id.messageEditText);
+                        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     }
                 }
             }
-
-
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -132,13 +195,13 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null);
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey","No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 
     private void readData()
     {
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         if (mDChildEventListener == null)
         {
@@ -172,5 +235,14 @@ public class DetailedView extends AppCompatActivity
         intent.putExtra("selectedMainText", selectedMainText);
         intent.putExtra("userText", userText);
         startActivity(intent);
+    }
+
+    private void vote()
+    {
+        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+        VoteActivity voteB = new VoteActivity();
+        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter);
+        voteBtn.setVisibility(View.INVISIBLE);
+        votedMessage.setVisibility(View.VISIBLE);
     }
 }

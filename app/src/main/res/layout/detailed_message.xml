@@ -15,20 +15,39 @@
         android:id="@+id/listViewAs_detailed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout"
-        android:stackFromBottom="true"
-        android:dividerHeight="15.0sp"
+        android:layout_above="@+id/fab"
         android:transcriptMode="alwaysScroll"
-        android:background="@color/com_facebook_blue"
-        tools:listitem="@layout/detailed_message_view"/>
+        tools:listitem="@layout/question_message_view"/>
+
+    <ImageView
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/baseline_thumb_up_alt_black_48"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/voted"
+        android:layout_margin="@dimen/already_vote"
+        android:layout_below="@+id/listViewAs_detailed"
+        android:layout_alignParentRight="true"
+        android:background="@color/voted"
+        android:text="@string/already_vote"
+        android:textColor="@color/com_facebook_blue"
+        android:gravity="center"
+        android:layout_toLeftOf="@+id/fab"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fui_body_padding_bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:background="@color/browser_actions_bg_grey"
         android:orientation="horizontal">
 
@@ -54,6 +73,7 @@
             android:text="@string/send_button_label1"/>
 
     </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"

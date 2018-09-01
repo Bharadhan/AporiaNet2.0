@@ -6,8 +6,6 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:layout_margin="@dimen/activity_horizontal_margin"
-    android:layout_marginStart="@dimen/activity_horizontal_margin"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:id="@+id/detailed_message_view"
     android:orientation="vertical" >
 
@@ -17,7 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:gravity="center"
+        android:layout_marginBottom="@dimen/detailed_message_textView_marginBottom"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         tools:text="@string/subject_message" />
 
     <TextView
@@ -25,23 +25,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:paddingLeft="@dimen/paddingTop"
+        android:paddingLeft="@dimen/detailed_message_textView_padding"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.2dp"
-        android:id="@+id/separator"
-        android:visibility="visible"
-        android:background="@android:color/background_dark"/>
 
     <TextView
         android:id="@+id/main_question_detailed_message_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="@dimen/fui_body_padding_bottom"
+        android:background="@drawable/question_border"
+        android:gravity="left"
+        android:paddingBottom="@dimen/detailed_message_textView_padding"
+        android:paddingTop="@dimen/detailed_message_textView_padding"
+        android:paddingLeft="@dimen/detailed_message_textView_padding"
+        android:paddingRight="@dimen/detailed_message_textView_padding"
+        android:layout_marginRight="@dimen/detailed_message_textView_marginRight"
         android:layout_weight="0"
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="@string/main_message" />

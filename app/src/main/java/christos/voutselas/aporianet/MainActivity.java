@@ -26,7 +26,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -88,7 +87,11 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
 
-        //Dont Delete this, is a useful function for force update, keep it for future reference
+
+        /**
+         *
+         *Dont Delete this, is a useful function for force update, keep it for future reference
+         */
         //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         mUsername = ANONYMOUS;
@@ -209,7 +212,11 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             case R.id.about_us:
                 Intent intent = new Intent(getApplicationContext(), AboutUs.class);
                 startActivity(intent);
-
+                return true;
+            case R.id.user_profile:
+                Intent intentUserProfile = new Intent(getApplicationContext(), UserProlife.class);
+                startActivity(intentUserProfile);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -8,19 +8,25 @@ public class FriendlyMessage
     private String photoUrl;
     private String subject;
     private String key;
+    private Integer potition;
+    private String votes;
+
 
     public FriendlyMessage()
     {
 
     }
 
-    public FriendlyMessage(String text, String name, String subject, String photoUrl)
+    public FriendlyMessage(String text, String name, String subject, String photoUrl, String votes)
     {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.subject = subject;
         this.key = key;
+        this.potition = potition;
+        this.votes = votes;
+
     }
 
     public String getText() {
@@ -53,5 +59,22 @@ public class FriendlyMessage
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+
+    public Integer getPotition() {
+        return potition;
+    }
+
+    public void setPotition(Integer potition) {
+        this.potition = potition;
+    }
+
+    public String getVotes() {
+        return votes;
+    }
+
+    public void setVotes(String votes) {
+        this.votes = votes;
     }
 }
