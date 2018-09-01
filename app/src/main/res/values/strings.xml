@@ -12,6 +12,8 @@
     <string name="category_third_year">Γ´ ΛΥΚΕΙΟΥ</string>
     <!-- Category name for robotic [CHAR LIMIT=20] -->
     <string name="category_robotic">ΡΟΜΠΟΤΙΚΗ</string>
+    <string name="roboKid">RoboKid</string>
+    <string name="roboBaby">RoboBaby</string>
     <string name="algevra">ΑΛΓΕΒΡΑ</string>
     <string name="arxaia">ΑΡΧΑΙΑ</string>
     <string name="ekuesi">ΕΚΘΕΣΗ</string>

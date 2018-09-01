@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     public static final int RC_SIGN_IN = 1;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private FirebaseStorage mFirebaseStorage;
-    private DatabaseReference mMessagesDatabaseReferenceV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
