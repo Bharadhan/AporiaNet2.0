@@ -35,7 +35,8 @@ public class App extends Application
                 .addOnCompleteListener(new OnCompleteListener<Void>()
                 {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
                         if (task.isSuccessful())
                         {
                             Log.d(TAG, "remote config is fetched.");

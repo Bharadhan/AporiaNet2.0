@@ -2,10 +2,8 @@ package christos.voutselas.aporianet;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -13,9 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserProlife extends AppCompatActivity
 {
@@ -32,7 +27,8 @@ public class UserProlife extends AppCompatActivity
     private ProgressBar mProgressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.user_profile);
@@ -43,8 +39,6 @@ public class UserProlife extends AppCompatActivity
         setUsername.setText(mUsername);
 
         readData();
-
-
     }
 
     private void readData()

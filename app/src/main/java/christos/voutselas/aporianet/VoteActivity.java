@@ -29,7 +29,8 @@ public class VoteActivity extends AppCompatActivity {
     private Integer voteNumber = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
     }

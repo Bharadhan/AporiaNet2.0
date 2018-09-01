@@ -1,8 +1,5 @@
 package christos.voutselas.aporianet;
 
-
-import java.util.Map;
-
 public class FriendlyMessage
 {
 
