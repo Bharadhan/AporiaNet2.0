@@ -209,11 +209,11 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             case R.id.about_us:
                 Intent intent = new Intent(getApplicationContext(), AboutUs.class);
                 startActivity(intent);
-
+                return true;
             case R.id.user_profile:
                 Intent intentUserProfile = new Intent(getApplicationContext(), UserProlife.class);
                 startActivity(intentUserProfile);
-
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -29,13 +29,14 @@ public class UserProlife extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private DatabaseReference mMessagesDatabaseReferenceV;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.user_profile);
-
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mUsername = MainActivity.useName;
         setUsername = (TextView) findViewById(R.id.userName);
         creditsNumber = (TextView) findViewById(R.id.credits);
@@ -62,12 +63,15 @@ public class UserProlife extends AppCompatActivity
                 @Override
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
+                    mProgressBar.setVisibility(ProgressBar.VISIBLE);
+
                     VoteMessage voteMessage = dDataSnapshot.getValue(VoteMessage.class);
                     voteMessage.getVotesNumbres();
                     votes = votes + 1;
                     availiableCredits = votes * 8;
 
                     creditsNumber.setText("Total Credits: " +   availiableCredits);
+                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

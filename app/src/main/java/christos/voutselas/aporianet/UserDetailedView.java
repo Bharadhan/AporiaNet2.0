@@ -88,27 +88,6 @@ public class UserDetailedView extends AppCompatActivity {
         mMessageEditText.setFocusable(false);
 
         readData();
-
-   /*     // Send button sends a message and clears the EditText
-        mSendButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                userTextFinal = userInput.getText().toString();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-                DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userTextFinal, mUsername, "", "", null);
-                mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
-                // Clear input box
-                mMessageEditText.setText("");
-
-                readData();
-                mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-            }
-        }); */
-
     }
 
     private void readData()
