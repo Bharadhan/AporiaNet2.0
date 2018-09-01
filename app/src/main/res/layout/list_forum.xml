@@ -49,6 +49,17 @@
         android:textColor="@color/white"
         android:padding="@dimen/new_question_button"/>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yearClass"
+        android:id="@+id/backBtn"
+        android:paddingLeft="@dimen/list_forum_textView_padding_up"
+        android:paddingTop="@dimen/list_forum_textView_padding_up"
+        android:layout_alignParentLeft="true"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/back3"/>
+
     <ListView
         android:id="@+id/listViewAs"
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,13 +39,13 @@ public class RoboticForumView extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
-
     private String selectetUserNAme = "";
     private String selectedSubject = "";
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
     private String vote = "";
+    private ImageView backBtn;
 
 
     @Override
@@ -52,10 +53,25 @@ public class RoboticForumView extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
+        backBtn = (ImageView) findViewById(R.id.backBtn);
 
         back = getIntent().getStringExtra("back");
 
         updateView();
+
+        newQuestion = (Button) findViewById(R.id.newQuestionButton);
+        newQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
+                intent.putExtra("finalResults", strUserName);
+                intent.putExtra("lessonName", lessonName);
+                intent.putExtra("lessonDirection", lessonDirection);
+                intent.putExtra("yearOfClass", yearOfClass);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateView()
@@ -133,6 +149,15 @@ public class RoboticForumView extends AppCompatActivity
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("vote", vote);
                 startActivity(intent);
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
             }
         });
     }
