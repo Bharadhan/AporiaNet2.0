@@ -2,6 +2,7 @@ package christos.voutselas.aporianet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,9 +15,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.text.DateFormat.getDateTimeInstance;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -43,7 +53,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private MessageAdapter mMessageAdapter;
     private ListView mMessageListView;
     private List<FriendlyMessage> friendlyMessages;
-
+    private String stringdate;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -88,14 +98,14 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-
-
                 checkEmptyText();
 
                 checkSubject();
 
                 if (bHasContent && subJectHasContent)
                 {
+                    storeDatetoFirebase();
+
                     // Initialize Firebase components
                     mFirebaseDatabase = FirebaseDatabase.getInstance();
                     mFirebaseAuth = FirebaseAuth.getInstance();
@@ -105,7 +115,7 @@ public class NewQuestionActivity extends AppCompatActivity
                     mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                             .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
-                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No");
+                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No", stringdate);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
 
@@ -173,5 +183,14 @@ public class NewQuestionActivity extends AppCompatActivity
         {
             subJectHasContent = true;
         }
+    }
+
+    public void storeDatetoFirebase() {
+
+        Date date = new Date();
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        stringdate = dt.format(date);
+
+        System.out.println("Submission Date: " + stringdate);
     }
 }
