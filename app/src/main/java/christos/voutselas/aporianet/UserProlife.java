@@ -52,17 +52,17 @@ public class UserProlife extends AppCompatActivity
 
         if (mVotesChildEventListener == null)
         {
+            mProgressBar.setVisibility(ProgressBar.VISIBLE);
+
             mVotesChildEventListener = new ChildEventListener()
             {
                 @Override
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
-                    mProgressBar.setVisibility(ProgressBar.VISIBLE);
-
                     VoteMessage voteMessage = dDataSnapshot.getValue(VoteMessage.class);
                     voteMessage.getVotesNumbres();
                     votes = votes + 1;
-                    availiableCredits = votes * 8;
+                    availiableCredits = (votes - 1) * 8;
 
                     creditsNumber.setText("Total Credits: " +   availiableCredits);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
