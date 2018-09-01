@@ -51,6 +51,7 @@ public class DetailedView extends AppCompatActivity
     private ImageView voteBtn;
     private TextView votedMessage;
     private String vote = "";
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +76,7 @@ public class DetailedView extends AppCompatActivity
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         voteBtn = (ImageView) findViewById(R.id.fab);
+        backBtn = (ImageView) findViewById(R.id.backBtn);
         voteBtn.setVisibility(View.INVISIBLE);
 
         // Initialize message ListView and its adapter
@@ -116,6 +118,15 @@ public class DetailedView extends AppCompatActivity
 
                 vote();
 
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                onBackPressed();
             }
         });
     }
@@ -244,5 +255,54 @@ public class DetailedView extends AppCompatActivity
         voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter);
         voteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+
+        switch (yearOfClassNewQuestion)
+        {
+            case "Α´ ΛΥΚΕΙΟΥ" :
+                Intent  intent = new Intent(DetailedView.this, FirstYearForumView.class);
+                intent.putExtra("lessonName", lessonNameNewQuestion);
+                intent.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent.putExtra("yearClass", yearOfClassNewQuestion);
+                intent.putExtra("back", "Yes");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return;
+            case "Β´ ΛΥΚΕΙΟΥ" :
+                Intent  intent1 = new Intent(DetailedView.this, SecondYearForumView.class);
+                intent1.putExtra("lessonName", lessonNameNewQuestion);
+                intent1.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent1.putExtra("yearClass", yearOfClassNewQuestion);
+                intent1.putExtra("back", "Yes");
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
+                finish();
+
+            case "Γ´ ΛΥΚΕΙΟΥ" :
+                Intent  intent2 = new Intent(DetailedView.this, ThirdYearForumView.class);
+                intent2.putExtra("lessonName", lessonNameNewQuestion);
+                intent2.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent2.putExtra("yearClass", yearOfClassNewQuestion);
+                intent2.putExtra("back", "Yes");
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                finish();
+
+            case "ΡΟΜΠΟΤΙΚΗ" :
+                Intent  intent3 = new Intent(DetailedView.this, RoboticForumView.class);
+                intent3.putExtra("lessonName", lessonNameNewQuestion);
+                intent3.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent3.putExtra("yearClass", yearOfClassNewQuestion);
+                intent3.putExtra("back", "Yes");
+                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
+                finish();
+        }
     }
 }

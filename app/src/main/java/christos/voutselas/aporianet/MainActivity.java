@@ -23,9 +23,14 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -40,16 +45,17 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     public static String useName;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mCreditsMessagesDatabaseReferenceV;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     public static final int RC_SIGN_IN = 1;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private FirebaseStorage mFirebaseStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         //I rather using a list, this way handling providers is separeted from the login methods
         final List<AuthUI.IdpConfig> providers = Arrays.asList(
                 //new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -87,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
 
-
         /**
          *
          *Dont Delete this, is a useful function for force update, keep it for future reference
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
 
         // Find the view pager that will allow the user to swipe between fragments
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     onSignedInInitialize(user.getDisplayName());
 
                     useName = mUsername;
-
+                    checkCredits();
                 }
                 else
                 {
@@ -171,6 +177,13 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp()
+    {
+        finish();
+        return true;
     }
 
     @Override
@@ -270,4 +283,29 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    private void checkCredits()
+    {
+        mCreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+
+        mCreditsMessagesDatabaseReferenceV.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (!dataSnapshot.exists())
+                {
+                    VoteMessage votesNbr = new VoteMessage(1);
+                    mCreditsMessagesDatabaseReferenceV.push().setValue(votesNbr);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+    }
+
 }

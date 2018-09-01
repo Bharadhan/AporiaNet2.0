@@ -70,6 +70,7 @@ public class ThirdYearFragment extends Fragment
                 intent.putExtra("lessonName", lessonNameSelected);
                 intent.putExtra("courseDirection", courseDirection);
                 intent.putExtra("yearClass", yearClass);
+                intent.putExtra("back", "No");
                 startActivity(intent);
             }
         });
