@@ -1,5 +1,6 @@
 package christos.voutselas.aporianet;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -42,6 +43,7 @@ public class UserDetailedView extends AppCompatActivity {
     private String userTextFinal = "";
     private ImageView voteBtn;
     private TextView votedMessage;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class UserDetailedView extends AppCompatActivity {
         voteBtn.setVisibility(View.INVISIBLE);
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
+        backBtn = (ImageView) findViewById(R.id.backBtn);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");
@@ -87,11 +90,20 @@ public class UserDetailedView extends AppCompatActivity {
         mMessageEditText.setFocusable(false);
 
         readData();
+
+        backBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                onBackPressed();
+            }
+        });
     }
 
     private void readData()
     {
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+      //  mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
@@ -116,6 +128,55 @@ public class UserDetailedView extends AppCompatActivity {
             };
             mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
             mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+
+        switch (yearOfClassNewQuestion)
+        {
+            case "Α´ ΛΥΚΕΙΟΥ" :
+                Intent intent = new Intent(UserDetailedView.this, FirstYearForumView.class);
+                intent.putExtra("lessonName", lessonNameNewQuestion);
+                intent.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent.putExtra("yearClass", yearOfClassNewQuestion);
+                intent.putExtra("back", "Yes");
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return;
+            case "Β´ ΛΥΚΕΙΟΥ" :
+                Intent  intent1 = new Intent(UserDetailedView.this, SecondYearForumView.class);
+                intent1.putExtra("lessonName", lessonNameNewQuestion);
+                intent1.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent1.putExtra("yearClass", yearOfClassNewQuestion);
+                intent1.putExtra("back", "Yes");
+                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent1);
+                finish();
+
+            case "Γ´ ΛΥΚΕΙΟΥ" :
+                Intent  intent2 = new Intent(UserDetailedView.this, ThirdYearForumView.class);
+                intent2.putExtra("lessonName", lessonNameNewQuestion);
+                intent2.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent2.putExtra("yearClass", yearOfClassNewQuestion);
+                intent2.putExtra("back", "Yes");
+                intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                finish();
+
+            case "ΡΟΜΠΟΤΙΚΗ" :
+                Intent  intent3 = new Intent(UserDetailedView.this, RoboticForumView.class);
+                intent3.putExtra("lessonName", lessonNameNewQuestion);
+                intent3.putExtra("courseDirection", lessonDirectionNewQuestion);
+                intent3.putExtra("yearClass", yearOfClassNewQuestion);
+                intent3.putExtra("back", "Yes");
+                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
+                finish();
         }
     }
 }

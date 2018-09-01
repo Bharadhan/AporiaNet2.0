@@ -44,6 +44,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String key = "";
     private String selectedKey = "";
     private String vote = "";
+    private String back = "No";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +52,8 @@ public class FirstYearForumView extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
+
+        back = getIntent().getStringExtra("back");
 
         updateView();
 
@@ -108,21 +111,34 @@ public class FirstYearForumView extends AppCompatActivity
         words.add(new Word(R.string.firstYearDirection, R.string.fysiki, R.drawable.fusiki, R.string.category_first_year));
         words.add(new Word(R.string.firstYearDirection, R.string.xhmeia, R.drawable.xhmeia, R.string.category_first_year));
 
-        lessoonNamePotition = Integer.parseInt(getIntent().getStringExtra("lessonName"));
-        courseDirectionPotition = Integer.parseInt(getIntent().getStringExtra("courseDirection"));
-        yearClassPotition = Integer.parseInt(getIntent().getStringExtra("yearClass"));
-
         final TextView lessonNameTextView = (TextView) findViewById(R.id.lesson);
         final TextView lessonDirectionTextView = (TextView) findViewById(R.id.derection);
         final TextView yearClassTextView = (TextView) findViewById(R.id.yearClass);
 
-        lessonNameTextView.setText(lessoonNamePotition);
-        lessonDirectionTextView.setText(courseDirectionPotition);
-        yearClassTextView.setText(yearClassPotition);
+        if (back.equals("No"))
+        {
+            lessoonNamePotition = Integer.parseInt(getIntent().getStringExtra("lessonName"));
+            courseDirectionPotition = Integer.parseInt(getIntent().getStringExtra("courseDirection"));
+            yearClassPotition = Integer.parseInt(getIntent().getStringExtra("yearClass"));
 
-        lessonName = lessonNameTextView.getText().toString();
-        lessonDirection = lessonDirectionTextView.getText().toString();
-        yearOfClass = yearClassTextView.getText().toString();
+            lessonNameTextView.setText(lessoonNamePotition);
+            lessonDirectionTextView.setText(courseDirectionPotition);
+            yearClassTextView.setText(yearClassPotition);
+
+            lessonName = lessonNameTextView.getText().toString();
+            lessonDirection = lessonDirectionTextView.getText().toString();
+            yearOfClass = yearClassTextView.getText().toString();
+        }
+        else
+        {
+            lessonName = getIntent().getStringExtra("lessonName");
+            lessonDirection = getIntent().getStringExtra("courseDirection");
+            yearOfClass = getIntent().getStringExtra("yearClass");
+
+            lessonNameTextView.setText(lessonName);
+            lessonDirectionTextView.setText(lessonDirection);
+            yearClassTextView.setText(yearOfClass);
+        }
     }
 
     private void readData()

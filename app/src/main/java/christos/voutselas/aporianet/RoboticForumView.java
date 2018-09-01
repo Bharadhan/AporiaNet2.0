@@ -19,16 +19,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecondYearForumView extends AppCompatActivity
+public class RoboticForumView extends AppCompatActivity
 {
+    private String lessonName = "";
+    private String lessonDirection = "";
+    private String yearOfClass = "";
     private Integer lessoonNamePotition = 0;
     private Integer courseDirectionPotition = 0;
     private Integer yearClassPotition = 0;
     private Button newQuestion;
     private String strUserName = "";
-    private String lessonName = "";
-    private String lessonDirection = "";
-    private String yearOfClass = "";
     private String back = "No";
     private String mUsername;
     private ListView mMessageListView;
@@ -38,6 +38,7 @@ public class SecondYearForumView extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
+
     private String selectetUserNAme = "";
     private String selectedSubject = "";
     private String selectedMainText = "";
@@ -45,9 +46,9 @@ public class SecondYearForumView extends AppCompatActivity
     private String selectedKey = "";
     private String vote = "";
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
@@ -55,35 +56,14 @@ public class SecondYearForumView extends AppCompatActivity
         back = getIntent().getStringExtra("back");
 
         updateView();
-
-        newQuestion = (Button) findViewById(R.id.newQuestionButton);
-        newQuestion.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
-                intent.putExtra("finalResults", strUserName);
-                intent.putExtra("lessonName", lessonName);
-                intent.putExtra("lessonDirection", lessonDirection);
-                intent.putExtra("yearOfClass", yearOfClass);
-                startActivity(intent);
-            }
-        });
     }
 
     private void updateView()
     {
         // Create a list of words
         final ArrayList<Word> words = new ArrayList<Word>();
-        words.add(new Word(R.string.secondYearGeneralDirection, R.string.ekuesi, R.drawable.ekthesi, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearGeneralDirection, R.string.algevra, R.drawable.algevra, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearGeneralDirection, R.string.geometria, R.drawable.geometry, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearSpecialDirection, R.string.mathimatika, R.drawable.math_prosavatolismou, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearGeneralDirection, R.string.fysiki, R.drawable.fusiki, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearSpecialDirection, R.string.fysiki, R.drawable.fysiki_prosanatolismou, R.string.category_second_year));
-        words.add(new Word(R.string.secondYearGeneralDirection, R.string.xhmeia, R.drawable.xhmeia, R.string.category_second_year));
+        words.add(new Word(R.string.firstYearDirection, R.string.roboBaby, R.drawable.robotbaby, R.string.category_robotic));
+        words.add(new Word(R.string.firstYearDirection, R.string.roboKid, R.drawable.robokid, R.string.category_robotic));
 
         final TextView lessonNameTextView = (TextView) findViewById(R.id.lesson);
         final TextView lessonDirectionTextView = (TextView) findViewById(R.id.derection);
@@ -202,5 +182,4 @@ public class SecondYearForumView extends AppCompatActivity
         }
 
     }
-
 }

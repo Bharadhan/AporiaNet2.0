@@ -11,6 +11,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="christos.voutselas.aporianet.NewQuestionActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backBtn"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/back3"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listViewAs_detailed"
         android:layout_width="match_parent"

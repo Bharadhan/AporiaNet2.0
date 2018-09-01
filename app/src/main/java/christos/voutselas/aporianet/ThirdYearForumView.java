@@ -5,8 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ThirdYearForumView extends AppCompatActivity
 {
@@ -18,6 +28,15 @@ public class ThirdYearForumView extends AppCompatActivity
     private String lessonName = "";
     private String lessonDirection = "";
     private String yearOfClass = "";
+    private String back = "No";
+    private String mUsername;
+    private ListView mMessageListView;
+    private ProgressBar mProgressBar;
+    private List<FriendlyMessage> friendlyMessages;
+    private MessageAdapter mMessageAdapter;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mMessagesDatabaseReference;
+    private ChildEventListener mChildEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,6 +44,8 @@ public class ThirdYearForumView extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
+
+        back = getIntent().getStringExtra("back");
 
         updateView();
 
@@ -62,20 +83,81 @@ public class ThirdYearForumView extends AppCompatActivity
         words.add(new Word(R.string.thirdYearAnthropistikon, R.string.istoria, R.drawable.istoria, R.string.category_third_year));
         words.add(new Word(R.string.thirdYearAnthropistikon, R.string.latinika, R.drawable.latinika, R.string.category_third_year));
 
-        lessoonNamePotition = Integer.parseInt(getIntent().getStringExtra("lessonName"));
-        courseDirectionPotition = Integer.parseInt(getIntent().getStringExtra("courseDirection"));
-        yearClassPotition = Integer.parseInt(getIntent().getStringExtra("yearClass"));
-
         final TextView lessonNameTextView = (TextView) findViewById(R.id.lesson);
         final TextView lessonDirectionTextView = (TextView) findViewById(R.id.derection);
         final TextView yearClassTextView = (TextView) findViewById(R.id.yearClass);
 
-        lessonNameTextView.setText(lessoonNamePotition);
-        lessonDirectionTextView.setText(courseDirectionPotition);
-        yearClassTextView.setText(yearClassPotition);
+        if (back.equals("No"))
+        {
+            lessoonNamePotition = Integer.parseInt(getIntent().getStringExtra("lessonName"));
+            courseDirectionPotition = Integer.parseInt(getIntent().getStringExtra("courseDirection"));
+            yearClassPotition = Integer.parseInt(getIntent().getStringExtra("yearClass"));
 
-        lessonName = lessonNameTextView.getText().toString();
-        lessonDirection = lessonDirectionTextView.getText().toString();
-        yearOfClass = yearClassTextView.getText().toString();
+            lessonNameTextView.setText(lessoonNamePotition);
+            lessonDirectionTextView.setText(courseDirectionPotition);
+            yearClassTextView.setText(yearClassPotition);
+
+            lessonName = lessonNameTextView.getText().toString();
+            lessonDirection = lessonDirectionTextView.getText().toString();
+            yearOfClass = yearClassTextView.getText().toString();
+        }
+        else
+        {
+            lessonName = getIntent().getStringExtra("lessonName");
+            lessonDirection = getIntent().getStringExtra("courseDirection");
+            yearOfClass = getIntent().getStringExtra("yearClass");
+
+            lessonNameTextView.setText(lessonName);
+            lessonDirectionTextView.setText(lessonDirection);
+            yearClassTextView.setText(yearOfClass);
+
+            readData();
+        }
+    }
+
+    private void readData()
+    {
+        mUsername = MainActivity.useName;
+
+        mMessageListView = findViewById(R.id.listViewAs);
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        // Initialize message ListView and its adapter
+        friendlyMessages = new ArrayList<>();
+
+        mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
+        mMessageListView.setAdapter(mMessageAdapter);
+
+        // Initialize progress bar
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
+
+        // Initialize Firebase components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+
+        if (mChildEventListener == null)
+        {
+            mChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String key)
+                {
+                    FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
+                    System.out.println("The updated post title is: " + friendlyMessage.getName());
+                    key = dataSnapshot.getKey();
+                    mMessageAdapter.add(friendlyMessage);
+                    friendlyMessage.setKey(key);
+                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                }
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+
     }
 }

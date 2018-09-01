@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         //I rather using a list, this way handling providers is separeted from the login methods
         final List<AuthUI.IdpConfig> providers = Arrays.asList(
                 //new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -93,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         getWindow().setBackgroundDrawable(null);
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
-
 
         /**
          *
@@ -179,6 +177,13 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp()
+    {
+        finish();
+        return true;
     }
 
     @Override

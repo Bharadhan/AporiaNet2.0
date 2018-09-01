@@ -5,7 +5,7 @@
     <string name="list_item_lessonName_TextView">Lesson Name</string>
     <string name="list_item_lessonDirection_TextView">Lesson Direction</string>
     <!-- Category name for the first year  [CHAR LIMIT=20] -->
-    <string name="category_first_year">Α´ ΛΥΚΕΙΟΥ </string>
+    <string name="category_first_year">Α´ ΛΥΚΕΙΟΥ</string>
     <!-- Category name for the second year [CHAR LIMIT=20] -->
     <string name="category_second_year">Β´ ΛΥΚΕΙΟΥ</string>
     <!-- Category name for the third years [CHAR LIMIT=20] -->
