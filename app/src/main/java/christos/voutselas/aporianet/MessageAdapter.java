@@ -57,4 +57,9 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
 
         return convertView;
     }
+
+    @Override
+    public FriendlyMessage getItem(int position) {
+        return super.getItem(super.getCount() - position - 1);
+    }
 }
