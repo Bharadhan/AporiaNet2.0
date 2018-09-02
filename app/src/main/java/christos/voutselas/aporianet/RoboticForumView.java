@@ -46,6 +46,7 @@ public class RoboticForumView extends AppCompatActivity
     private String selectedKey = "";
     private String vote = "";
     private ImageView backBtn;
+    private Integer finalPos = 0;
 
 
     @Override
@@ -58,6 +59,8 @@ public class RoboticForumView extends AppCompatActivity
         back = getIntent().getStringExtra("back");
 
         updateView();
+
+        readData();
 
         newQuestion = (Button) findViewById(R.id.newQuestionButton);
         newQuestion.setOnClickListener(new View.OnClickListener() {
@@ -108,8 +111,6 @@ public class RoboticForumView extends AppCompatActivity
             lessonNameTextView.setText(lessonName);
             lessonDirectionTextView.setText(lessonDirection);
             yearClassTextView.setText(yearOfClass);
-
-            readData();
         }
 
         newQuestion = (Button) findViewById(R.id.newQuestionButton);
@@ -133,7 +134,8 @@ public class RoboticForumView extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-                FriendlyMessage message = friendlyMessages.get(position);
+                finalPos = MessageAdapter.pos;
+                FriendlyMessage message = friendlyMessages.get(finalPos - position -1);
                 selectetUserNAme =  message.getName();
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();

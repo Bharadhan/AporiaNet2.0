@@ -52,7 +52,7 @@ public class RoboticFragment extends Fragment
                 courseDirection = String.valueOf(word.getLessonDirectionId());
                 yearClass = String.valueOf(word.getYearClassId());
 
-                Intent intent = new Intent(getActivity(), FirstYearForumView.class);
+                Intent intent = new Intent(getActivity(), RoboticForumView.class);
                 intent.putExtra("lessonName", lessonNameSelected);
                 intent.putExtra("courseDirection", courseDirection);
                 intent.putExtra("yearClass", yearClass);

@@ -12,6 +12,7 @@ import java.util.List;
 
 public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
 {
+    public static Integer pos;
 
     //private Integer mPotition = FirstYearForumView.mPotition;
 
@@ -60,6 +61,7 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
 
     @Override
     public FriendlyMessage getItem(int position) {
+        pos = (super.getCount());
         return super.getItem(super.getCount() - position - 1);
     }
 }

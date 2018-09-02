@@ -48,6 +48,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String vote = "";
     private String back = "No";
     private ImageView backBtn;
+    private Integer finalPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,7 +85,8 @@ public class FirstYearForumView extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-                FriendlyMessage message = friendlyMessages.get(position);
+                finalPos = MessageAdapter.pos;
+                FriendlyMessage message = friendlyMessages.get(finalPos - position -1);
                 selectetUserNAme =  message.getName();
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
