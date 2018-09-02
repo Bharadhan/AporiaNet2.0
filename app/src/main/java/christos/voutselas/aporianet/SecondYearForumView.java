@@ -99,7 +99,9 @@ public class SecondYearForumView extends AppCompatActivity
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("vote", vote);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
