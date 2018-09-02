@@ -283,6 +283,7 @@ public class DetailedView extends AppCompatActivity
                 intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
                 finish();
+                return;
 
             case "Γ´ ΛΥΚΕΙΟΥ" :
                 Intent  intent2 = new Intent(DetailedView.this, ThirdYearForumView.class);
@@ -293,7 +294,7 @@ public class DetailedView extends AppCompatActivity
                 intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 finish();
-
+                return;
             case "ΡΟΜΠΟΤΙΚΗ" :
                 Intent  intent3 = new Intent(DetailedView.this, RoboticForumView.class);
                 intent3.putExtra("lessonName", lessonNameNewQuestion);
@@ -303,6 +304,7 @@ public class DetailedView extends AppCompatActivity
                 intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent3);
                 finish();
+                return;
         }
     }
 }
