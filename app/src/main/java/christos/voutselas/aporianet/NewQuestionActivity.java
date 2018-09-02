@@ -1,23 +1,38 @@
 package christos.voutselas.aporianet;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +58,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private DatabaseReference mMessagesDatabaseReference;
+    private DatabaseReference mMessagesDatabaseReferencePhoto;
     private EditText mMessageEditText;
     private EditText mSubbject;
     private boolean bHasContent;
@@ -52,14 +68,13 @@ public class NewQuestionActivity extends AppCompatActivity
     private ChildEventListener mChildEventListener;
     private MessageAdapter mMessageAdapter;
     private ListView mMessageListView;
-    private List<FriendlyMessage> friendlyMessages;
     private String stringdate;
+    private StorageReference mChatPhotosStorageReference;
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
-        mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
         mMessageEditText = (EditText) findViewById(R.id.questions);
         mSubbject = (EditText) findViewById(R.id.subjectArea);
         setContentView(R.layout.list_forum);
@@ -72,12 +87,22 @@ public class NewQuestionActivity extends AppCompatActivity
         mMessageAdapter = new MessageAdapter(this, R.layout.item_message, friendlyMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
+        // Initialize Firebase components
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+
+
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
+
         updateFields();
 
         // ImagePickerButton shows an image picker to upload a image for a message
+        mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton1);
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/jpeg");
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
@@ -106,14 +131,6 @@ public class NewQuestionActivity extends AppCompatActivity
                 {
                     storeDatetoFirebase();
 
-                    // Initialize Firebase components
-                    mFirebaseDatabase = FirebaseDatabase.getInstance();
-                    mFirebaseAuth = FirebaseAuth.getInstance();
-                    mFirebaseStorage = FirebaseStorage.getInstance();
-
-
-                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
-                            .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
                     FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No", stringdate);
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
@@ -137,6 +154,37 @@ public class NewQuestionActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mFirebaseStorage = FirebaseStorage.getInstance();
+
+            mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos");
+
+
+            // Get a reference to store file at chat_photos/<FILENAME>
+            StorageReference photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+
+            // Upload file to Firebase Storage
+            photoRef.putFile(selectedImageUri)
+                    .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // When the image has successfully uploaded, we get its download URL
+                            String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                            // Set the download URL to the message box, so that the user can send it to the database
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, downloadUrl, "No", stringdate);
+                            mMessagesDatabaseReference.push().setValue(friendlyMessage);
+                        }
+                    });
+        }
     }
 
     private void updateFields()

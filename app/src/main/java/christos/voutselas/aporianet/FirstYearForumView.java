@@ -50,6 +50,7 @@ public class FirstYearForumView extends AppCompatActivity
     private ImageView backBtn;
     private Integer finalPos = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

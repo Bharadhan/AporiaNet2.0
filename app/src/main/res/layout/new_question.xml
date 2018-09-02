@@ -79,12 +79,13 @@
             android:id="@+id/rejectBtn"/>
 
         <ImageButton
-            android:id="@+id/photoPickerButton"
+            android:id="@+id/photoPickerButton1"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/new_question_button"
             android:layout_width="@dimen/image_selection"
             android:layout_height="@dimen/image_selection"
             android:background="@android:drawable/ic_menu_gallery" />
+
 
         <android.support.v7.widget.AppCompatButton
             style="@style/NewQuestionButtons"
