@@ -75,6 +75,42 @@ public class RoboticForumView extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+                finalPos = MessageAdapter.pos;
+                FriendlyMessage message = friendlyMessages.get(finalPos - position -1);
+                selectetUserNAme =  message.getName();
+                selectedSubject = message.getSubject();
+                selectedMainText = message.getText();
+                selectedKey = message.getKey();
+                vote = message.getVotes();
+                Intent intent = new Intent(getApplicationContext(), DetailedView.class);
+                intent.putExtra("lessonName", lessonName);
+                intent.putExtra("lessonDirection", lessonDirection);
+                intent.putExtra("yearOfClass", yearOfClass);
+                intent.putExtra("selectedUserName", selectetUserNAme);
+                intent.putExtra("selectedSubject", selectedSubject);
+                intent.putExtra("selectedMainText", selectedMainText);
+                intent.putExtra("selectedKey", selectedKey);
+                intent.putExtra("vote", vote);
+                startActivity(intent);
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
     }
 
     private void updateView()
@@ -113,55 +149,7 @@ public class RoboticForumView extends AppCompatActivity
             yearClassTextView.setText(yearOfClass);
         }
 
-        newQuestion = (Button) findViewById(R.id.newQuestionButton);
-        newQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), NewQuestionActivity.class);
-                intent.putExtra("finalResults", strUserName);
-                intent.putExtra("lessonName", lessonName);
-                intent.putExtra("lessonDirection", lessonDirection);
-                intent.putExtra("yearOfClass", yearOfClass);
-                startActivity(intent);
-            }
-        });
-
-        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                mMessagesDatabaseReference.removeEventListener(mChildEventListener);
-                finalPos = MessageAdapter.pos;
-                FriendlyMessage message = friendlyMessages.get(finalPos - position -1);
-                selectetUserNAme =  message.getName();
-                selectedSubject = message.getSubject();
-                selectedMainText = message.getText();
-                selectedKey = message.getKey();
-                vote = message.getVotes();
-                Intent intent = new Intent(getApplicationContext(), DetailedView.class);
-                intent.putExtra("lessonName", lessonName);
-                intent.putExtra("lessonDirection", lessonDirection);
-                intent.putExtra("yearOfClass", yearOfClass);
-                intent.putExtra("selectedUserName", selectetUserNAme);
-                intent.putExtra("selectedSubject", selectedSubject);
-                intent.putExtra("selectedMainText", selectedMainText);
-                intent.putExtra("selectedKey", selectedKey);
-                intent.putExtra("vote", vote);
-                startActivity(intent);
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                finish();
-            }
-        });
     }
 
     private void readData()
