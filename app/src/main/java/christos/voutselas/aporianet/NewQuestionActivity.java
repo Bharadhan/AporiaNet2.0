@@ -1,5 +1,6 @@
 package christos.voutselas.aporianet;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -18,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -70,17 +72,24 @@ public class NewQuestionActivity extends AppCompatActivity
     private ListView mMessageListView;
     private String stringdate;
     private StorageReference mChatPhotosStorageReference;
+   // private ImageView image;
+    private Uri selectedImageUri = null;
+    private StorageReference photoRef;
+    private String selectImage = "No";
+    private ImageView imageView;
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_question);
-        mMessageEditText = (EditText) findViewById(R.id.questions);
         mSubbject = (EditText) findViewById(R.id.subjectArea);
         setContentView(R.layout.list_forum);
         mMessageListView = findViewById(R.id.listViewAs);
         setContentView(R.layout.new_question);
+        mMessageEditText = (EditText) findViewById(R.id.questions);
+        imageView = (ImageView) findViewById(R.id.imgView);
         mUsername = MainActivity.useName;
+       // image = (ImageView) findViewById(R.id.imgView);
 
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
@@ -93,9 +102,6 @@ public class NewQuestionActivity extends AppCompatActivity
         mFirebaseStorage = FirebaseStorage.getInstance();
 
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
-                .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
-
         updateFields();
 
         // ImagePickerButton shows an image picker to upload a image for a message
@@ -103,10 +109,22 @@ public class NewQuestionActivity extends AppCompatActivity
         mPhotoPickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+                checkSubject();
+
+                if (subJectHasContent)
+                {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+                }
+                else
+                {
+                    mSubbject.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
+                    mSubbject.requestFocus();
+                    return;
+                }
+
             }
         });
 
@@ -123,34 +141,46 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                checkEmptyText();
-
-                checkSubject();
-
-                if (bHasContent && subJectHasContent)
+                switch (selectImage)
                 {
-                    storeDatetoFirebase();
+                    case "Yes":
+                        uploadImage();
+                        return;
+                    case "No":
+
+                        checkEmptyText();
+
+                        checkSubject();
+
+                        if (bHasContent && subJectHasContent)
+                        {
+                            storeDatetoFirebase();
+
+                            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
 
-                    FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No", stringdate);
-                    mMessagesDatabaseReference.push().setValue(friendlyMessage);
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No", stringdate);
+                            mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
 
-                    // Clear input box
-                    mMessageEditText.setText("");
+                            // Clear input box
+                            mMessageEditText.setText("");
 
-                    finish();
-                }
-                else if (!subJectHasContent)
-                {
-                    mSubbject.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
-                    mSubbject.requestFocus();
-                    return;
-                }
-                else
-                {
-                    mMessageEditText.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
-                    mMessageEditText.requestFocus();
+                            finish();
+                        }
+                        else if (!subJectHasContent)
+                        {
+                            mSubbject.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
+                            mSubbject.requestFocus();
+                            return;
+                        }
+                        else
+                        {
+                            mMessageEditText.setError("Αυτό το πεδίο δεν μπορεί να είναι κενό.");
+                            mMessageEditText.requestFocus();
+                        }
+                        return;
                 }
             }
         });
@@ -160,30 +190,34 @@ public class NewQuestionActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
 
-            mFirebaseDatabase = FirebaseDatabase.getInstance();
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            mFirebaseStorage = FirebaseStorage.getInstance();
+            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
-            mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos");
-
+            mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
             // Get a reference to store file at chat_photos/<FILENAME>
-            StorageReference photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+            photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
 
-            // Upload file to Firebase Storage
-            photoRef.putFile(selectedImageUri)
-                    .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // When the image has successfully uploaded, we get its download URL
-                            String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
 
-                            // Set the download URL to the message box, so that the user can send it to the database
-                            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, downloadUrl, "No", stringdate);
-                            mMessagesDatabaseReference.push().setValue(friendlyMessage);
-                        }
-                    });
+        //    mMessageEditText.setText(selectedImageUri.getLastPathSegment());
+
+            selectImage = "Yes";
+
+          //  uploadImage();
+
+
         }
     }
 
@@ -240,5 +274,50 @@ public class NewQuestionActivity extends AppCompatActivity
         stringdate = dt.format(date);
 
         System.out.println("Submission Date: " + stringdate);
+    }
+
+    private void uploadImage() {
+
+
+
+
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+
+        // Upload file to Firebase Storage
+        photoRef.putFile(selectedImageUri)
+                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // When the image has successfully uploaded, we get its download URL
+                        String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                      //  Uri downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+
+                        // Set the download URL to the message box, so that the user can send it to the database
+                        FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, downloadUrl, "No", stringdate);
+                        mMessagesDatabaseReference.push().setValue(friendlyMessage);
+                        progressDialog.dismiss();
+                        Toast.makeText(NewQuestionActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(NewQuestionActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                .getTotalByteCount());
+                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    }
+                });
+
     }
 }

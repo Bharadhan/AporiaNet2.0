@@ -49,6 +49,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String back = "No";
     private ImageView backBtn;
     private Integer finalPos = 0;
+    private String selectedUrl = "";
 
 
     @Override
@@ -92,6 +93,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
+                selectedUrl = message.getPhotoUrl();
                 vote = message.getVotes();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -102,6 +104,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("vote", vote);
+                intent.putExtra("photoUrl", selectedUrl);
                 startActivity(intent);
             }
         });

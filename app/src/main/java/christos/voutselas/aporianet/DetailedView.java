@@ -52,6 +52,7 @@ public class DetailedView extends AppCompatActivity
     private TextView votedMessage;
     private String vote = "";
     private ImageView backBtn;
+    private String photoUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,6 +70,7 @@ public class DetailedView extends AppCompatActivity
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
         vote = getIntent().getStringExtra("vote");
+        photoUrl = getIntent().getStringExtra("photoUrl");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
@@ -206,7 +208,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey","No");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 

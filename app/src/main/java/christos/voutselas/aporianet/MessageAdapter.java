@@ -30,7 +30,7 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.item_message, parent, false);
         }
 
-        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
+
         TextView messageTextView = (TextView) convertView.findViewById(R.id.subjectMessageTextView);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView);
 
@@ -41,16 +41,22 @@ public class MessageAdapter extends ArrayAdapter<FriendlyMessage>
         boolean isPhoto = message1.getPhotoUrl() != null;
         if (isPhoto)
         {
-            messageTextView.setVisibility(View.GONE);
-            photoImageView.setVisibility(View.VISIBLE);
-            Glide.with(photoImageView.getContext())
-                    .load(message1.getPhotoUrl())
-                    .into(photoImageView);
+          //  messageTextView.setVisibility(View.GONE);
+        //    photoImageView.setVisibility(View.VISIBLE);
+        //    messageTextView.setVisibility(View.VISIBLE);
+      //      messageTextView.setText(message1.getSubject());
+        //    Glide.with(photoImageView.getContext())
+       //             .load(message1.getPhotoUrl())
+       //             .into(photoImageView);
+
+            messageTextView.setVisibility(View.VISIBLE);
+            //    photoImageView.setVisibility(View.VISIBLE);
+            messageTextView.setText(message1.getSubject());
         }
         else
         {
             messageTextView.setVisibility(View.VISIBLE);
-            photoImageView.setVisibility(View.GONE);
+        //    photoImageView.setVisibility(View.VISIBLE);
             messageTextView.setText(message1.getSubject());
 
         }

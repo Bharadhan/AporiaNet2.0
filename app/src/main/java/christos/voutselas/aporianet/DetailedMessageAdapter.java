@@ -9,8 +9,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.question_message_view, parent, false);
         }
+        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
         TextView subjectTextView = (TextView) convertView.findViewById(R.id.subjectMessageTextView_detailed_message_view);
         TextView messageTextView = (TextView) convertView.findViewById(R.id.main_question_detailed_message_view);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView_detailed_message_view);
@@ -40,48 +44,45 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         color = message.getColor();
 
         assert message != null;
-        boolean isPhoto = message.getPhotoUrl() != null;
-        if (isPhoto)
+        switch(color)
         {
-        //    messageTextView.setVisibility(View.GONE);
-         //   photoImageView.setVisibility(View.VISIBLE);
-        //    Glide.with(photoImageView.getContext())
-        //            .load(message.getPhotoUrl())
-         //           .into(photoImageView);
-        }
-        else
-        {
-            switch(color)
-            {
 
-                case "grey" :
+            case "grey" :
 
-                    messageTextView.setVisibility(View.VISIBLE);
-                    messageTextView.setText(message.getText());
-                    authorTextView.setText(message.getName());
-                    subjectTextView.setText(message.getSubject());
-                    messageTextView.setBackgroundResource(R.drawable.question_border);
-                    messageTextView.setTextColor(Color.parseColor("#000000"));
-                    lp.setMargins(0,0,300,0);
-                    // Apply the updated layout parameters to TextView
-                    messageTextView.setLayoutParams(lp);
-                    authorTextView.setGravity(Gravity.LEFT);
-                    break;
+                photoImageView.setVisibility(View.VISIBLE);
+                Glide.with(photoImageView.getContext())
+                        .load(message.getPhotoUrl())
+                        .into(photoImageView);
+                messageTextView.setVisibility(View.VISIBLE);
+                messageTextView.setText(message.getText());
+                authorTextView.setText(message.getName());
+                subjectTextView.setText(message.getSubject());
+                messageTextView.setBackgroundResource(R.drawable.question_border);
+                messageTextView.setTextColor(Color.parseColor("#000000"));
+                lp.setMargins(0,0,300,0);
+                // Apply the updated layout parameters to TextView
+                messageTextView.setLayoutParams(lp);
+                authorTextView.setGravity(Gravity.LEFT);
 
-                case "blue" :
+                break;
 
-                    messageTextView.setVisibility(View.VISIBLE);
-                    messageTextView.setText(message.getText());
-                    authorTextView.setText(message.getName());
-                    subjectTextView.setText(message.getSubject());
-                    messageTextView.setBackgroundResource(R.drawable.answer_boarder);
-                    messageTextView.setTextColor(Color.parseColor("#ffffff"));
-                    lp.setMargins(300,0,0,0);
-                    // Apply the updated layout parameters to TextView
-                    messageTextView.setLayoutParams(lp);
-                    authorTextView.setGravity(Gravity.RIGHT);
-                    break;
-            }
+            case "blue" :
+
+                photoImageView.setVisibility(View.VISIBLE);
+                messageTextView.setVisibility(View.VISIBLE);
+                messageTextView.setText(message.getText());
+                authorTextView.setText(message.getName());
+                subjectTextView.setText(message.getSubject());
+                messageTextView.setBackgroundResource(R.drawable.answer_boarder);
+                messageTextView.setTextColor(Color.parseColor("#ffffff"));
+                lp.setMargins(300,0,0,0);
+                // Apply the updated layout parameters to TextView
+                messageTextView.setLayoutParams(lp);
+                authorTextView.setGravity(Gravity.RIGHT);
+                Glide.with(photoImageView.getContext())
+                        .load(message.getPhotoUrl())
+                        .into(photoImageView);
+                break;
         }
         return convertView;
     }
