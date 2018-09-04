@@ -14,22 +14,19 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btnChoose"
-            android:text="Close"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:id="@+id/btnClose"
+            android:text="@string/rejectBtn"
+            style="@style/imageViewButton"/>
 
         <Button
-            android:id="@+id/btnUpload"
-            android:text="Download"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:id="@+id/btnDownload"
+            android:text="@string/download_button"
+            style="@style/imageViewButton" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageViewSelected"
+        android:layout_below="@+id/layout_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

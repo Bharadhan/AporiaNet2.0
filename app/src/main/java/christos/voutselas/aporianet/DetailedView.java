@@ -143,8 +143,18 @@ public class DetailedView extends AppCompatActivity
                 DetailedFriendlyMessage message = dFriendlyMessages.get(position);
                 selectedPhotoUri = message.getPhotoUrl();
                 Intent intent = new Intent(getApplicationContext(), ImageViewExtention.class);
-                intent.putExtra("imageUri", selectedPhotoUri);
-                startActivity(intent);
+
+                if(selectedPhotoUri.equals(""))
+                {
+                    return;
+                }
+                else
+                {
+
+                    intent.putExtra("imageUri", selectedPhotoUri);
+                    startActivity(intent);
+                }
+
 
             }
         });
