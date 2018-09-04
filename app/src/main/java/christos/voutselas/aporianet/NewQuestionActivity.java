@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -160,7 +161,7 @@ public class NewQuestionActivity extends AppCompatActivity
                                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
 
-                            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, null, "No", stringdate);
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, "", "No", stringdate);
                             mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
 
@@ -187,7 +188,7 @@ public class NewQuestionActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             selectedImageUri = data.getData();
@@ -295,6 +296,12 @@ public class NewQuestionActivity extends AppCompatActivity
                        // String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                       //  Uri downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                         Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         Uri downloadUrlFinal = downloadUrl.getResult();
 
                         // Set the download URL to the message box, so that the user can send it to the database

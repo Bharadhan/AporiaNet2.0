@@ -20,6 +20,7 @@ import java.util.List;
 public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage>
 {
     private String color = "";
+    private String image = "";
 
     public DetailedMessageAdapter( Context context, int resource, List<DetailedFriendlyMessage> objects)
     {
@@ -42,14 +43,29 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
         DetailedFriendlyMessage message = getItem(position);
         color = message.getColor();
+        image = message.getPhotoUrl();
 
         assert message != null;
+
+        if (image.equals(""))
+        {
+            photoImageView.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            photoImageView.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+
         switch(color)
         {
 
             case "grey" :
 
-                photoImageView.setVisibility(View.VISIBLE);
+
                 Glide.with(photoImageView.getContext())
                         .load(message.getPhotoUrl())
                         .into(photoImageView);
@@ -68,7 +84,6 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
             case "blue" :
 
-                photoImageView.setVisibility(View.VISIBLE);
                 messageTextView.setVisibility(View.VISIBLE);
                 messageTextView.setText(message.getText());
                 authorTextView.setText(message.getName());

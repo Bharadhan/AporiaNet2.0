@@ -83,7 +83,7 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null, "blue", "No");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
 
