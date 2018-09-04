@@ -112,5 +112,13 @@
                 android:value="christos.voutselas.aporianet.MainActivity"/>
         </activity>
 
+        <activity
+            android:name=".ImageViewExtention"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="christos.voutselas.aporianet.MainActivity"/>
+        </activity>
+
     </application>
 </manifest>

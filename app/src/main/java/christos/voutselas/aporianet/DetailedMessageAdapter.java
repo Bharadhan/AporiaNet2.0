@@ -34,7 +34,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.question_message_view, parent, false);
         }
-        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
+       // ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
         TextView subjectTextView = (TextView) convertView.findViewById(R.id.subjectMessageTextView_detailed_message_view);
         TextView messageTextView = (TextView) convertView.findViewById(R.id.main_question_detailed_message_view);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView_detailed_message_view);
@@ -49,16 +49,21 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
         if (image.equals(""))
         {
-            photoImageView.setVisibility(View.INVISIBLE);
+            //photoImageView.setVisibility(View.INVISIBLE);
+            messageTextView.setText(message.getText());
+            messageTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         else
         {
-            photoImageView.setVisibility(View.VISIBLE);
+           // photoImageView.setVisibility(View.VISIBLE);
+            messageTextView.setText(message.getText() + "\r\n " +
+                    "\r\n " +
+                    "\r\n " +
+                    "\r\n " +
+                    "\r\n " +"attachment:");
+            messageTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.image);
+
         }
-
-
-
-
 
         switch(color)
         {
@@ -66,11 +71,11 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
             case "grey" :
 
 
-                Glide.with(photoImageView.getContext())
-                        .load(message.getPhotoUrl())
-                        .into(photoImageView);
-                messageTextView.setVisibility(View.VISIBLE);
-                messageTextView.setText(message.getText());
+             //   Glide.with(photoImageView.getContext())
+              //          .load(message.getPhotoUrl())
+               //         .into(photoImageView);
+
+
                 authorTextView.setText(message.getName());
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.question_border);
@@ -84,8 +89,8 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
             case "blue" :
 
-                messageTextView.setVisibility(View.VISIBLE);
-                messageTextView.setText(message.getText());
+
+
                 authorTextView.setText(message.getName());
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.answer_boarder);
@@ -94,9 +99,9 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
                 // Apply the updated layout parameters to TextView
                 messageTextView.setLayoutParams(lp);
                 authorTextView.setGravity(Gravity.RIGHT);
-                Glide.with(photoImageView.getContext())
-                        .load(message.getPhotoUrl())
-                        .into(photoImageView);
+            //    Glide.with(photoImageView.getContext())
+             //           .load(message.getPhotoUrl())
+             //           .into(photoImageView);
                 break;
         }
         return convertView;

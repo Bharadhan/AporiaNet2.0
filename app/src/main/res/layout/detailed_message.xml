@@ -74,6 +74,7 @@
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="@dimen/elevation"
+            android:focusable="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1" />

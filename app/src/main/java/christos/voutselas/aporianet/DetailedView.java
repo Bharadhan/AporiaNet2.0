@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -53,6 +55,8 @@ public class DetailedView extends AppCompatActivity
     private String vote = "";
     private ImageView backBtn;
     private String photoUrl = "";
+    private String selectedPhotoUri = "";
+    private List<DetailedFriendlyMessage> dFriendlyMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -82,7 +86,7 @@ public class DetailedView extends AppCompatActivity
         voteBtn.setVisibility(View.INVISIBLE);
 
         // Initialize message ListView and its adapter
-        List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
+        dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
@@ -131,6 +135,19 @@ public class DetailedView extends AppCompatActivity
                 onBackPressed();
             }
         });
+
+        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                DetailedFriendlyMessage message = dFriendlyMessages.get(position);
+                selectedPhotoUri = message.getPhotoUrl();
+                Intent intent = new Intent(getApplicationContext(), ImageViewExtention.class);
+                intent.putExtra("imageUri", selectedPhotoUri);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void checkChildDetails()
@@ -151,7 +168,9 @@ public class DetailedView extends AppCompatActivity
                     if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
                     {
                         mSendButton.setEnabled(true);
-                        mMessageEditText.setFocusable(true);
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(mMessageEditText.getWindowToken(), 0);
 
                         voteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
