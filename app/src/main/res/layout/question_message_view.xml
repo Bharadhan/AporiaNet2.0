@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/detailed_message_textView_marginBottom"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
         tools:text="@string/subject_message" />
@@ -46,8 +45,8 @@
 
     <ImageView
         android:id="@+id/photoImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="top"
         android:adjustViewBounds="true" />
 

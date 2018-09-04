@@ -72,9 +72,11 @@
         android:padding="@dimen/new_question_editText_letter_padding"
         android:gravity="start" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout"
         android:gravity="center_horizontal">
 
         <android.support.v7.widget.AppCompatButton

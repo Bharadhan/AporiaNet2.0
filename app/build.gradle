@@ -48,6 +48,9 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:4.35.0'
 
     implementation 'org.jsoup:jsoup:1.10.3'
+
+    implementation 'id.zelory:compressor:2.1.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
 

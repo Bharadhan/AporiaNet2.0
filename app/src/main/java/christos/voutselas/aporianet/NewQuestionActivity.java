@@ -288,15 +288,17 @@ public class NewQuestionActivity extends AppCompatActivity
 
 
         // Upload file to Firebase Storage
-        photoRef.putFile(selectedImageUri)
+        mChatPhotosStorageReference.putFile(selectedImageUri)
                 .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // When the image has successfully uploaded, we get its download URL
-                        String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                       // String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
                       //  Uri downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                        Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+                        Uri downloadUrlFinal = downloadUrl.getResult();
 
                         // Set the download URL to the message box, so that the user can send it to the database
-                        FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, downloadUrl, "No", stringdate);
+                        FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, strSubject, downloadUrlFinal.toString(), "No", stringdate);
                         mMessagesDatabaseReference.push().setValue(friendlyMessage);
                         progressDialog.dismiss();
                         Toast.makeText(NewQuestionActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();

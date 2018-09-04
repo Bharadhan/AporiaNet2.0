@@ -121,6 +121,7 @@ public class UserDetailedView extends AppCompatActivity {
                     System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
                     mDMessageAdapter.add(detailedFriendlyMessage);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -129,7 +130,6 @@ public class UserDetailedView extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {}
             };
             mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
-            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
         }
     }
 
