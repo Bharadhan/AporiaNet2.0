@@ -197,16 +197,18 @@ public class NewQuestionActivity extends AppCompatActivity
                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
             mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
-                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(selectedImageUri.getLastPathSegment());;
 
             // Get a reference to store file at chat_photos/<FILENAME>
             photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                 imageView.setImageBitmap(bitmap);
                 imageView.setVisibility(View.VISIBLE);
             }
+
             catch (IOException e)
             {
                 e.printStackTrace();

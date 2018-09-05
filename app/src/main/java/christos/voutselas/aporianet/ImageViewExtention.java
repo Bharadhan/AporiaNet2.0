@@ -1,22 +1,20 @@
 package christos.voutselas.aporianet;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.facebook.internal.ImageDownloader;
-
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,13 +23,20 @@ import java.net.URLConnection;
 
 public class ImageViewExtention extends AppCompatActivity
 {
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     private ImageView photoImageView;
     private  String photoUri = "";
     private Button closeBtn;
     private Button downloadBtn;
+    private String finisgh = "No";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.image_view);
@@ -53,27 +58,85 @@ public class ImageViewExtention extends AppCompatActivity
             }
         });
 
-        downloadBtn.setOnClickListener(new View.OnClickListener() {
+        downloadBtn.setOnClickListener(new View.OnClickListener()
+        {
 
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DownloadFileFromURL().execute(photoUri,"/test.JPEG");
-            }
+            public void onClick(View v)
+            {
+                verifyStoragePermissions(ImageViewExtention.this);
 
+                new DownloadFileFromURL(new DownloadFileFromURL.AsynResponse()
+                {
+                    @Override
+                    public void processFinish(Boolean output)
+                    {
+                        // you can go here
+
+                        Toast.makeText(ImageViewExtention.this, "Download finished!!", Toast.LENGTH_SHORT).show();
+                    }
+                }).execute(photoUri,"/test.JPEG");
+
+                Toast.makeText(ImageViewExtention.this, "Download start...", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
+    public static void verifyStoragePermissions(Activity activity)
+    {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-    class DownloadFileFromURL extends AsyncTask<String, String, String> {
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    private static class DownloadFileFromURL extends AsyncTask<String, String, String>
+    {
+
+        public interface AsynResponse
+        {
+            void processFinish(Boolean output);
+        }
+
+        AsynResponse asynResponse = null;
+
+        public DownloadFileFromURL(AsynResponse asynResponse)
+        {
+            this.asynResponse = asynResponse;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onPostExecute(String f_url)
+        {
+           // super.onPostExecute(f_url);
+            asynResponse.processFinish(true);
+        }
 
         /**
          * Downloading file in background thread
          * */
         @Override
-        protected String doInBackground(String... f_url) {
+        protected String doInBackground(String... f_url)
+        {
+
             int count;
-            try {
+
+            try
+            {
                 URL url = new URL(f_url[0]);
                 URLConnection conection = url.openConnection();
                 conection.connect();
@@ -81,6 +144,8 @@ public class ImageViewExtention extends AppCompatActivity
                 // this will be useful so that you can show a tipical 0-100%
                 // progress bar
                 int lenghtOfFile = conection.getContentLength();
+
+                Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream(),
@@ -97,7 +162,8 @@ public class ImageViewExtention extends AppCompatActivity
 
                 while ((count = input.read(data)) != -1) {
                     total += count;
-                    // writing data to file
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+//
                     output.write(data, 0, count);
                 }
 
@@ -108,17 +174,12 @@ public class ImageViewExtention extends AppCompatActivity
                 output.close();
                 input.close();
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Log.e("Error: ", e.getMessage());
             }
-
             return null;
         }
-
     }
-    //call this async task class from somewhere like
-   // new DownloadFileFromURL().execute(file_url,"/test.pdf");
-
-
-
 }
