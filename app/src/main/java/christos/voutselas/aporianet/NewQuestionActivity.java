@@ -71,9 +71,8 @@ public class NewQuestionActivity extends AppCompatActivity
     private ChildEventListener mChildEventListener;
     private MessageAdapter mMessageAdapter;
     private ListView mMessageListView;
-    private String stringdate;
+    private String stringdate = "";
     private StorageReference mChatPhotosStorageReference;
-   // private ImageView image;
     private Uri selectedImageUri = null;
     private StorageReference photoRef;
     private String selectImage = "No";
@@ -142,6 +141,8 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+                storeDatetoFirebase();
+
                 switch (selectImage)
                 {
                     case "Yes":
@@ -155,7 +156,6 @@ public class NewQuestionActivity extends AppCompatActivity
 
                         if (bHasContent && subJectHasContent)
                         {
-                            storeDatetoFirebase();
 
                             mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
@@ -197,7 +197,7 @@ public class NewQuestionActivity extends AppCompatActivity
                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
             mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
-                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(selectedImageUri.getLastPathSegment());;
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(strSubject).child(selectedImageUri.getLastPathSegment());
 
             // Get a reference to store file at chat_photos/<FILENAME>
             photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
@@ -214,12 +214,7 @@ public class NewQuestionActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-        //    mMessageEditText.setText(selectedImageUri.getLastPathSegment());
-
             selectImage = "Yes";
-
-          //  uploadImage();
-
 
         }
     }
@@ -280,10 +275,6 @@ public class NewQuestionActivity extends AppCompatActivity
     }
 
     private void uploadImage() {
-
-
-
-
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");

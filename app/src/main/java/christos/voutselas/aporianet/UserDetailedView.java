@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +46,9 @@ public class UserDetailedView extends AppCompatActivity {
     private ImageView voteBtn;
     private TextView votedMessage;
     private ImageView backBtn;
+    private String selectImage = "No";
+    private String selectedPhotoUri = "";
+    private String selectedSubject = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +72,10 @@ public class UserDetailedView extends AppCompatActivity {
         lessonDirectionNewQuestion = getIntent().getStringExtra("lessonDirection");
         lessonNameNewQuestion = getIntent().getStringExtra("lessonName");
         userText = getIntent().getStringExtra("userText");
+        selectedSubject= getIntent().getStringExtra("selectedSubject");
 
         // Initialize message ListView and its adapter
-        List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
+        final List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
@@ -83,7 +88,7 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "ff", "blue", "No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
 
@@ -92,6 +97,31 @@ public class UserDetailedView extends AppCompatActivity {
         mMessageEditText.setFocusable(false);
 
         readData();
+
+        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                DetailedFriendlyMessage message = dFriendlyMessages.get(position);
+                selectedPhotoUri = message.getPhotoUrl();
+                Intent intent = new Intent(getApplicationContext(), ImageViewExtention.class);
+
+                if(selectedPhotoUri.equals(""))
+                {
+                    return;
+                }
+                else
+                {
+
+                    intent.putExtra("imageUri", selectedPhotoUri);
+                    intent.putExtra("subject", selectedSubject);
+                    intent.putExtra("name", mUsername);
+                    startActivity(intent);
+                }
+
+
+            }
+        });
 
         backBtn.setOnClickListener(new View.OnClickListener()
         {

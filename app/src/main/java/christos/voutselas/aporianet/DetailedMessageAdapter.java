@@ -56,10 +56,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         else
         {
            // photoImageView.setVisibility(View.VISIBLE);
-            messageTextView.setText(message.getText() + "\r\n " +
-                    "\r\n " +
-                    "\r\n " +
-                    "\r\n " +
+            messageTextView.setText(message.getText() +
                     "\r\n " +"attachment:");
             messageTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.image);
 
