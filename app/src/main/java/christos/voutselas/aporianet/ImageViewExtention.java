@@ -33,6 +33,8 @@ public class ImageViewExtention extends AppCompatActivity
     private Button closeBtn;
     private Button downloadBtn;
     private String finisgh = "No";
+    private String name = "";
+    private String subject = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +44,8 @@ public class ImageViewExtention extends AppCompatActivity
         setContentView(R.layout.image_view);
         photoImageView = (ImageView) findViewById(R.id.imageViewSelected);
         photoUri = getIntent().getStringExtra("imageUri");
+        name = getIntent().getStringExtra("name");
+        subject = getIntent().getStringExtra("subject");
         closeBtn = (Button) findViewById(R.id.btnClose);
         downloadBtn = (Button) findViewById(R.id.btnDownload);
 
@@ -75,7 +79,7 @@ public class ImageViewExtention extends AppCompatActivity
 
                         Toast.makeText(ImageViewExtention.this, "Download finished!!", Toast.LENGTH_SHORT).show();
                     }
-                }).execute(photoUri,"/test.JPEG");
+                }).execute(photoUri,"/Download/" + subject + "-" + name + ".JPEG");
 
                 Toast.makeText(ImageViewExtention.this, "Download start...", Toast.LENGTH_SHORT).show();
             }

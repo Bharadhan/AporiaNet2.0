@@ -152,6 +152,8 @@ public class DetailedView extends AppCompatActivity
                 {
 
                     intent.putExtra("imageUri", selectedPhotoUri);
+                    intent.putExtra("subject", selectedSubject);
+                    intent.putExtra("name", selectetUserName);
                     startActivity(intent);
                 }
 
