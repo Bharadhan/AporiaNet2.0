@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UserDetailedView extends AppCompatActivity {
@@ -45,6 +44,9 @@ public class UserDetailedView extends AppCompatActivity {
     private ImageView voteBtn;
     private TextView votedMessage;
     private ImageView backBtn;
+    private String selectImage = "No";
+    private String selectedPhotoUri = "";
+    private String selectedSubject = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +64,18 @@ public class UserDetailedView extends AppCompatActivity {
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         backBtn = (ImageView) findViewById(R.id.backBtn);
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");
         lessonDirectionNewQuestion = getIntent().getStringExtra("lessonDirection");
         lessonNameNewQuestion = getIntent().getStringExtra("lessonName");
         userText = getIntent().getStringExtra("userText");
+        selectedSubject = getIntent().getStringExtra("selectedSubject");
+        selectImage = getIntent().getStringExtra("selectImage");
 
         // Initialize message ListView and its adapter
-        List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
+        final List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
@@ -83,15 +88,41 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", null, "blue", "No");
-        mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
-
-
+        if (selectImage.equals("No"))
+        {
+            DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No");
+            mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
+        }
 
         mSendButton.setEnabled(false);
         mMessageEditText.setFocusable(false);
 
         readData();
+
+        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                DetailedFriendlyMessage message = dFriendlyMessages.get(position);
+                selectedPhotoUri = message.getPhotoUrl();
+                Intent intent = new Intent(getApplicationContext(), ImageViewExtention.class);
+
+                if(selectedPhotoUri.equals(""))
+                {
+                    return;
+                }
+                else
+                {
+
+                    intent.putExtra("imageUri", selectedPhotoUri);
+                    intent.putExtra("subject", selectedSubject);
+                    intent.putExtra("name", mUsername);
+                    startActivity(intent);
+                }
+
+
+            }
+        });
 
         backBtn.setOnClickListener(new View.OnClickListener()
         {
@@ -108,7 +139,6 @@ public class UserDetailedView extends AppCompatActivity {
       //  mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Initialize progress bar
-        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         if (mDChildEventListener == null)
         {
@@ -121,6 +151,7 @@ public class UserDetailedView extends AppCompatActivity {
                     System.out.println("The updated post title is: " + detailedFriendlyMessage.getName());
                     mDMessageAdapter.add(detailedFriendlyMessage);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -129,7 +160,6 @@ public class UserDetailedView extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {}
             };
             mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
-            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
         }
     }
 

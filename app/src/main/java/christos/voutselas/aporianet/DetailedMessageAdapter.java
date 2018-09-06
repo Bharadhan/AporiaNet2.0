@@ -9,14 +9,18 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage>
 {
     private String color = "";
+    private String image = "";
 
     public DetailedMessageAdapter( Context context, int resource, List<DetailedFriendlyMessage> objects)
     {
@@ -30,6 +34,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.question_message_view, parent, false);
         }
+       // ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
         TextView subjectTextView = (TextView) convertView.findViewById(R.id.subjectMessageTextView_detailed_message_view);
         TextView messageTextView = (TextView) convertView.findViewById(R.id.main_question_detailed_message_view);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView_detailed_message_view);
@@ -38,50 +43,63 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
         DetailedFriendlyMessage message = getItem(position);
         color = message.getColor();
+        image = message.getPhotoUrl();
 
         assert message != null;
-        boolean isPhoto = message.getPhotoUrl() != null;
-        if (isPhoto)
+
+        if (image.equals(""))
         {
-        //    messageTextView.setVisibility(View.GONE);
-         //   photoImageView.setVisibility(View.VISIBLE);
-        //    Glide.with(photoImageView.getContext())
-        //            .load(message.getPhotoUrl())
-         //           .into(photoImageView);
+            //photoImageView.setVisibility(View.INVISIBLE);
+            messageTextView.setText(message.getText());
+            messageTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         else
         {
-            switch(color)
-            {
+           // photoImageView.setVisibility(View.VISIBLE);
+            messageTextView.setText(message.getText() +
+                    "\r\n " +"attachment:");
+            messageTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.image);
 
-                case "grey" :
+        }
 
-                    messageTextView.setVisibility(View.VISIBLE);
-                    messageTextView.setText(message.getText());
-                    authorTextView.setText(message.getName());
-                    subjectTextView.setText(message.getSubject());
-                    messageTextView.setBackgroundResource(R.drawable.question_border);
-                    messageTextView.setTextColor(Color.parseColor("#000000"));
-                    lp.setMargins(0,0,300,0);
-                    // Apply the updated layout parameters to TextView
-                    messageTextView.setLayoutParams(lp);
-                    authorTextView.setGravity(Gravity.LEFT);
-                    break;
+        switch(color)
+        {
 
-                case "blue" :
+            case "grey" :
 
-                    messageTextView.setVisibility(View.VISIBLE);
-                    messageTextView.setText(message.getText());
-                    authorTextView.setText(message.getName());
-                    subjectTextView.setText(message.getSubject());
-                    messageTextView.setBackgroundResource(R.drawable.answer_boarder);
-                    messageTextView.setTextColor(Color.parseColor("#ffffff"));
-                    lp.setMargins(300,0,0,0);
-                    // Apply the updated layout parameters to TextView
-                    messageTextView.setLayoutParams(lp);
-                    authorTextView.setGravity(Gravity.RIGHT);
-                    break;
-            }
+
+             //   Glide.with(photoImageView.getContext())
+              //          .load(message.getPhotoUrl())
+               //         .into(photoImageView);
+
+
+                authorTextView.setText(message.getName());
+                subjectTextView.setText(message.getSubject());
+                messageTextView.setBackgroundResource(R.drawable.question_border);
+                messageTextView.setTextColor(Color.parseColor("#000000"));
+                lp.setMargins(0,0,300,0);
+                // Apply the updated layout parameters to TextView
+                messageTextView.setLayoutParams(lp);
+                authorTextView.setGravity(Gravity.LEFT);
+
+                break;
+
+            case "blue" :
+
+
+
+                authorTextView.setText(message.getName());
+                subjectTextView.setText(message.getSubject());
+                messageTextView.setBackgroundResource(R.drawable.answer_boarder);
+                messageTextView.setTextColor(Color.parseColor("#ffffff"));
+                lp.setMargins(300,0,0,0);
+                // Apply the updated layout parameters to TextView
+                messageTextView.setLayoutParams(lp);
+                authorTextView.setGravity(Gravity.RIGHT);
+            //    Glide.with(photoImageView.getContext())
+             //           .load(message.getPhotoUrl())
+             //           .into(photoImageView);
+                break;
         }
         return convertView;
     }

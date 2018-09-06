@@ -13,7 +13,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/btn">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -26,8 +27,9 @@
     <ListView
         android:id="@+id/listViewAs_detailed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/fab"
+        android:layout_below="@+id/btn"
         android:transcriptMode="alwaysScroll"
         tools:listitem="@layout/question_message_view"/>
 
@@ -64,7 +66,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/photoPickerButton"
+            android:id="@+id/photoPickerButtonAnwnser"
             android:layout_width="@dimen/answer_btn1"
             android:layout_height="@dimen/answer_btn1"
             android:background="@android:drawable/ic_menu_gallery" />
@@ -72,6 +74,7 @@
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="@dimen/elevation"
+            android:focusable="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1" />

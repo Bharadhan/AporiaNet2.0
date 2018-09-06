@@ -39,4 +39,7 @@
     <dimen name="user_profile_layout_height">250dp</dimen>
     <dimen name="user_profile_margin">32dp</dimen>
     <dimen name="user_profile_margin_height">100dp</dimen>
+    <dimen name="image">60dp</dimen>
+    <dimen name="image_button_weight">1</dimen>
+    <dimen name="image_button_width">0dp</dimen>
 </resources>

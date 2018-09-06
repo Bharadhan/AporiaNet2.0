@@ -2,6 +2,8 @@
     package="christos.voutselas.aporianet">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -11,6 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
+        android:configChanges="orientation"
+
         android:theme="@style/AppTheme">
 
         <activity android:name=".MainActivity">
@@ -66,7 +70,8 @@
         <activity
             android:name=".NewQuestionActivity"
             android:windowSoftInputMode="adjustResize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize">
 
 
         </activity>
@@ -86,7 +91,8 @@
 
         <activity
             android:name=".UserDetailedView"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="christos.voutselas.aporianet.MainActivity"/>
@@ -102,6 +108,14 @@
 
         <activity
             android:name=".RoboticForumView"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="christos.voutselas.aporianet.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ImageViewExtention"
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

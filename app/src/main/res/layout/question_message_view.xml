@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:gravity="center"
-        android:layout_marginBottom="@dimen/detailed_message_textView_marginBottom"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
         tools:text="@string/subject_message" />
@@ -28,6 +27,8 @@
         android:paddingLeft="@dimen/detailed_message_textView_padding"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
+
+
 
     <TextView
         android:id="@+id/main_question_detailed_message_view"

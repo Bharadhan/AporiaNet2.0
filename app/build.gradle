@@ -4,11 +4,12 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "christos.voutselas.aporianet"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
-        versionCode 39
-        versionName "0.9.2"
+        versionCode 40
+        versionName "0.10.0"
         resConfigs "en"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -48,6 +49,14 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:4.35.0'
 
     implementation 'org.jsoup:jsoup:1.10.3'
+
+    implementation 'id.zelory:compressor:2.1.0'
+
+    implementation 'com.github.sachinvarma:EasyPermission:1.0.1'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
 

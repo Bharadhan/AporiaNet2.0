@@ -1,18 +1,27 @@
 package christos.voutselas.aporianet;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +30,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DetailedView extends AppCompatActivity
@@ -52,6 +66,16 @@ public class DetailedView extends AppCompatActivity
     private TextView votedMessage;
     private String vote = "";
     private ImageView backBtn;
+    private String photoUrl = "";
+    private String selectedPhotoUri = "";
+    private List<DetailedFriendlyMessage> dFriendlyMessages;
+    private ImageButton photoPickerButtonAnwnser;
+    private static final int RC_PHOTO_PICKER =  2;
+    private Uri selectedImageUri = null;
+    private StorageReference mChatPhotosStorageReference;
+    private StorageReference photoRef;
+    private String selectImage = "No";
+    private String stringdate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,6 +93,7 @@ public class DetailedView extends AppCompatActivity
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
         vote = getIntent().getStringExtra("vote");
+        photoUrl = getIntent().getStringExtra("photoUrl");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
@@ -78,9 +103,10 @@ public class DetailedView extends AppCompatActivity
         voteBtn = (ImageView) findViewById(R.id.fab);
         backBtn = (ImageView) findViewById(R.id.backBtn);
         voteBtn.setVisibility(View.INVISIBLE);
+        photoPickerButtonAnwnser = (ImageButton) findViewById(R.id.photoPickerButtonAnwnser);
 
         // Initialize message ListView and its adapter
-        List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
+        dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
         mMessageListView.setAdapter(mDMessageAdapter);
 
@@ -102,10 +128,21 @@ public class DetailedView extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
-                userText = userInput.getText().toString();
 
-                changeView();
+                userText = userInput.getText().toString();
+                storeDatetoFirebase();
+
+                switch (selectImage) {
+                    case "Yes":
+                        uploadImage();
+
+                        readData();
+                        return;
+                    case "No":
+                        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+                        changeView();
+                        return;
+                }
             }
         });
 
@@ -121,6 +158,42 @@ public class DetailedView extends AppCompatActivity
             }
         });
 
+        photoPickerButtonAnwnser.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+            }
+        });
+
+        mMessageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                DetailedFriendlyMessage message = dFriendlyMessages.get(position);
+                selectedPhotoUri = message.getPhotoUrl();
+                Intent intent = new Intent(getApplicationContext(), ImageViewExtention.class);
+
+                if(selectedPhotoUri.equals(""))
+                {
+                    return;
+                }
+                else
+                {
+                    intent.putExtra("imageUri", selectedPhotoUri);
+                    intent.putExtra("subject", selectedSubject);
+                    intent.putExtra("name", selectetUserName);
+                    startActivity(intent);
+                }
+
+
+            }
+        });
+
         backBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -131,6 +204,27 @@ public class DetailedView extends AppCompatActivity
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+            selectedImageUri = data.getData();
+
+            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
+
+            mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
+                    .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(selectedSubject).child(selectedImageUri.getLastPathSegment());
+
+            // Get a reference to store file at chat_photos/<FILENAME>
+            photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+
+            Toast.makeText(DetailedView.this, "Attachment has been selected", Toast.LENGTH_SHORT).show();
+
+            selectImage = "Yes";
+
+        }
+    }
     private void checkChildDetails()
     {
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
@@ -149,7 +243,10 @@ public class DetailedView extends AppCompatActivity
                     if (dataSnapshot.getChildrenCount() < 2 && !(selectetUserName.equals(mUsername)))
                     {
                         mSendButton.setEnabled(true);
-                        mMessageEditText.setFocusable(true);
+                        photoPickerButtonAnwnser.setEnabled(true);
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(mMessageEditText.getWindowToken(), 0);
 
                         voteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
@@ -159,6 +256,7 @@ public class DetailedView extends AppCompatActivity
                     {
                         mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);
+                        photoPickerButtonAnwnser.setEnabled(false);
 
                         switch (vote)
                         {
@@ -183,7 +281,7 @@ public class DetailedView extends AppCompatActivity
                     {
                         mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);
-
+                        photoPickerButtonAnwnser.setEnabled(false);
                         voteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
 
@@ -206,7 +304,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, null, "grey","No");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No");
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 
@@ -245,6 +343,7 @@ public class DetailedView extends AppCompatActivity
         intent.putExtra("selectedSubject", selectedSubject);
         intent.putExtra("selectedMainText", selectedMainText);
         intent.putExtra("userText", userText);
+        intent.putExtra("selectImage", selectImage);
         startActivity(intent);
     }
 
@@ -307,4 +406,63 @@ public class DetailedView extends AppCompatActivity
                 return;
         }
     }
+
+    private void uploadImage() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        // Upload file to Firebase Storage
+        mChatPhotosStorageReference.putFile(selectedImageUri)
+                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // When the image has successfully uploaded, we get its download URL
+                        // String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                        //  Uri downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                        Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Uri downloadUrlFinal = downloadUrl.getResult();
+
+                        // Set the download URL to the message box, so that the user can send it to the database
+
+                        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, "", downloadUrlFinal.toString(), "blue", "No");
+                        mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
+
+                        progressDialog.dismiss();
+                        Toast.makeText(DetailedView.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(DetailedView.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                .getTotalByteCount());
+                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    }
+                });
+    }
+
+    public void storeDatetoFirebase()
+    {
+
+        Date date = new Date();
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        stringdate = dt.format(date);
+
+        System.out.println("Submission Date: " + stringdate);
+    }
+
 }
