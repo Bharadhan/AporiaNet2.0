@@ -13,6 +13,7 @@ import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -77,6 +80,10 @@ public class NewQuestionActivity extends AppCompatActivity
     private StorageReference photoRef;
     private String selectImage = "No";
     private ImageView imageView;
+    private DatabaseReference mMessagesDatabaseReferenceV;
+    private ChildEventListener mCreditDChildEventListener;
+    private Integer creditNumber = 0;
+    private String userHaveCredit = "Yes";
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -89,7 +96,6 @@ public class NewQuestionActivity extends AppCompatActivity
         mMessageEditText = (EditText) findViewById(R.id.questions);
         imageView = (ImageView) findViewById(R.id.imgView);
         mUsername = MainActivity.useName;
-       // image = (ImageView) findViewById(R.id.imgView);
 
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
@@ -101,6 +107,7 @@ public class NewQuestionActivity extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
+        checkUserCredit();
 
         updateFields();
 
@@ -137,10 +144,12 @@ public class NewQuestionActivity extends AppCompatActivity
         });
 
         sudmitBtn = (Button) findViewById(R.id.submitBtn);
-        sudmitBtn.setOnClickListener(new View.OnClickListener() {
+        sudmitBtn.setVisibility(View.VISIBLE);
+        sudmitBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
                 storeDatetoFirebase();
 
                 switch (selectImage)
@@ -321,5 +330,45 @@ public class NewQuestionActivity extends AppCompatActivity
                     }
                 });
 
+    }
+
+    private void checkUserCredit()
+    {
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+
+
+        if (mCreditDChildEventListener == null)
+        {
+            mCreditDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+                {
+                    VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                    creditNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+
+                    if (creditNumber < 20)
+                    {
+                        userHaveCredit = "No";
+                        Toast toast = Toast.makeText(NewQuestionActivity.this,"You don't have enough credit for new question!!", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        sudmitBtn.setVisibility(View.INVISIBLE);
+                        return;
+                    }
+                    else
+                    {
+                        creditNumber = creditNumber - 20;
+                        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername).child(MainActivity.userKey);
+                        mMessagesDatabaseReferenceV.child("votesNumbres").setValue( creditNumber);
+                    }
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
+        }
     }
 }

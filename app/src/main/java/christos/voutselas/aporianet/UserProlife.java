@@ -1,6 +1,7 @@
 package christos.voutselas.aporianet;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class UserProlife extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
-        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername).child(MainActivity.userKey);
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
 
         if (mVotesChildEventListener == null)
         {
@@ -58,13 +59,13 @@ public class UserProlife extends AppCompatActivity
             mVotesChildEventListener = new ChildEventListener()
             {
                 @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                public void onChildAdded(@NonNull DataSnapshot dDataSnapshot, String keyOne)
                 {
                     VoteMessage voteMessage = dDataSnapshot.getValue(VoteMessage.class);
                     votes = voteMessage.getVotesNumbres();
                     voteNumber = Integer.parseInt(votes);
 
-                    availiableCredits = (voteNumber - 1) * 8;
+                    availiableCredits = (voteNumber - 1);
 
                     creditsNumber.setText("Total Credits: " +  availiableCredits);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);

@@ -299,11 +299,34 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             {
                 if (!dataSnapshot.exists())
                 {
-                    VoteMessage votesNbr = new VoteMessage("1");
-                    mCreditsMessagesDatabaseReferenceV.push().setValue(votesNbr);
+                    mCreditsMessagesDatabaseReferenceV.push().child("votesNumbres").setValue("1");
+                }
+                else
+                {
+                    mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+
+                    if (mDChildEventListener == null)
+                    {
+                        mDChildEventListener = new ChildEventListener()
+                        {
+                            @Override
+                            public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                            {
+                                VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
+                                userCredit = Integer.parseInt(voteNbr.getVotesNumbres());
+                                userKey = dDataSnapshot.getKey();
+                                System.out.print("aaaa");
+                            }
+                            public void onChildChanged(DataSnapshot dDataSnapshot, String s) {}
+                            public void onChildRemoved(DataSnapshot dDataSnapshot) {}
+                            public void onChildMoved(DataSnapshot dDataSnapshot, String s) {}
+                            public void onCancelled(DatabaseError dDataSnapshot) {}
+                        };
+                        mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+                    }
                 }
 
-                findCreditNumber();
+               // findCreditNumber();
             }
 
             @Override
@@ -330,12 +353,12 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     userKey = dDataSnapshot.getKey();
                     System.out.print("aaaa");
                 }
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onChildChanged(DataSnapshot dDataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dDataSnapshot) {}
+                public void onChildMoved(DataSnapshot dDataSnapshot, String s) {}
+                public void onCancelled(DatabaseError dDataSnapshot) {}
             };
-            mACreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+            mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
         }
     }
 
