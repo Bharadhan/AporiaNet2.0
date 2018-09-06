@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.firebase.ui.auth.AuthUI;
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     public static final int RC_SIGN_IN = 1;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private FirebaseStorage mFirebaseStorage;
+    private ChildEventListener mDChildEventListener;
+    private static String creditsNumber;
+    private static String creditKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -306,6 +310,34 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
 
             }
         });
+
+        readCreditKey();
+    }
+
+    private void readCreditKey()
+    {
+        if (mDChildEventListener == null)
+        {
+            mDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                {
+
+                    VoteMessage vote = dDataSnapshot.getValue(VoteMessage.class);
+                    creditsNumber = String.valueOf(vote.getVotesNumbres());
+                    creditKey = dDataSnapshot.getKey();
+
+                    System.out.print("a");
+
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+        }
     }
 
 }
