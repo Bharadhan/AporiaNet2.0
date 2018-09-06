@@ -3,10 +3,8 @@ package christos.voutselas.aporianet;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -21,7 +19,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -36,8 +33,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,21 +128,21 @@ public class DetailedView extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+
                 userText = userInput.getText().toString();
                 storeDatetoFirebase();
 
                 switch (selectImage) {
                     case "Yes":
                         uploadImage();
-                        changeView();
+
+                        readData();
                         return;
                     case "No":
+                        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
                         changeView();
                         return;
                 }
-
-
             }
         });
 
@@ -189,7 +184,6 @@ public class DetailedView extends AppCompatActivity
                 }
                 else
                 {
-
                     intent.putExtra("imageUri", selectedPhotoUri);
                     intent.putExtra("subject", selectedSubject);
                     intent.putExtra("name", selectetUserName);
@@ -349,15 +343,7 @@ public class DetailedView extends AppCompatActivity
         intent.putExtra("selectedSubject", selectedSubject);
         intent.putExtra("selectedMainText", selectedMainText);
         intent.putExtra("userText", userText);
-
-
         intent.putExtra("selectImage", selectImage);
-
-
-
-
-
-
         startActivity(intent);
     }
 
@@ -423,14 +409,9 @@ public class DetailedView extends AppCompatActivity
 
     private void uploadImage() {
 
-
-
-
-
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
-
 
         // Upload file to Firebase Storage
         mChatPhotosStorageReference.putFile(selectedImageUri)
@@ -442,18 +423,19 @@ public class DetailedView extends AppCompatActivity
                         Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
 
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(3000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         Uri downloadUrlFinal = downloadUrl.getResult();
 
                         // Set the download URL to the message box, so that the user can send it to the database
-                        FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, downloadUrlFinal.toString(), "No", stringdate);
-                        mMessagesDatabaseReference.push().setValue(friendlyMessage);
+
+                        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, "", downloadUrlFinal.toString(), "blue", "No");
+                        mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
+
                         progressDialog.dismiss();
                         Toast.makeText(DetailedView.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -471,10 +453,10 @@ public class DetailedView extends AppCompatActivity
                         progressDialog.setMessage("Uploaded "+(int)progress+"%");
                     }
                 });
-
     }
 
-    public void storeDatetoFirebase() {
+    public void storeDatetoFirebase()
+    {
 
         Date date = new Date();
         SimpleDateFormat dt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import java.io.BufferedInputStream;
@@ -35,6 +36,7 @@ public class ImageViewExtention extends AppCompatActivity
     private String finisgh = "No";
     private String name = "";
     private String subject = "";
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +44,8 @@ public class ImageViewExtention extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.image_view);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarImageView);
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
         photoImageView = (ImageView) findViewById(R.id.imageViewSelected);
         photoUri = getIntent().getStringExtra("imageUri");
         name = getIntent().getStringExtra("name");
@@ -49,9 +53,12 @@ public class ImageViewExtention extends AppCompatActivity
         closeBtn = (Button) findViewById(R.id.btnClose);
         downloadBtn = (Button) findViewById(R.id.btnDownload);
 
+
         Glide.with(photoImageView.getContext())
                 .load(photoUri)
                 .into(photoImageView);
+
+        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
         closeBtn.setOnClickListener(new View.OnClickListener()
         {

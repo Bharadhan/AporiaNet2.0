@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UserDetailedView extends AppCompatActivity {
@@ -66,13 +64,15 @@ public class UserDetailedView extends AppCompatActivity {
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         backBtn = (ImageView) findViewById(R.id.backBtn);
+        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
         key = getIntent().getStringExtra("key");
         lessonDirectionNewQuestion = getIntent().getStringExtra("lessonDirection");
         lessonNameNewQuestion = getIntent().getStringExtra("lessonName");
         userText = getIntent().getStringExtra("userText");
-        selectedSubject= getIntent().getStringExtra("selectedSubject");
+        selectedSubject = getIntent().getStringExtra("selectedSubject");
+        selectImage = getIntent().getStringExtra("selectImage");
 
         // Initialize message ListView and its adapter
         final List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
@@ -88,10 +88,11 @@ public class UserDetailedView extends AppCompatActivity {
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "ff", "blue", "No");
-        mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
-
-
+        if (selectImage.equals("No"))
+        {
+            DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No");
+            mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
+        }
 
         mSendButton.setEnabled(false);
         mMessageEditText.setFocusable(false);
@@ -138,7 +139,6 @@ public class UserDetailedView extends AppCompatActivity {
       //  mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         // Initialize progress bar
-        mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         if (mDChildEventListener == null)
         {
