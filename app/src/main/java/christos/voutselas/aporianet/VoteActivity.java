@@ -23,10 +23,11 @@ public class VoteActivity extends AppCompatActivity {
     private DatabaseReference mMessagesDatabaseReferenceV;
     private Task<Void> mMessagesDatabaseReference1;
     private ChildEventListener mDChildEventListener;
+    private ChildEventListener mCreditDChildEventListener;
     private String answerName = "";
     private Integer votedName = 0;
-    private String keyNumber = "";
     private Integer voteNumber = 0;
+    private String crKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,7 +63,7 @@ public class VoteActivity extends AppCompatActivity {
 
                     if (votedName == 2)
                     {
-                        setVote();
+                      //  setVote();
                     }
 
                     System.out.print("a");
@@ -77,11 +78,35 @@ public class VoteActivity extends AppCompatActivity {
         }
     }
 
-    private void setVote() {
+ /*   private void setVote() {
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
 
         mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName);
-        VoteMessage votesNbr = new VoteMessage(1);
-        mMessagesDatabaseReferenceV.push().setValue(votesNbr);
-    }
+
+
+        if (mCreditDChildEventListener == null)
+        {
+            mCreditDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                {
+              //      VoteMessage vote = dDataSnapshot.getValue(VoteMessage.class);
+               //     crKey = dDataSnapshot.getKey();
+                 //   voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+        }
+
+
+
+    //    mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName).child(crKey);
+     //   mMessagesDatabaseReferenceV.child("votesNumbres").setValue( voteNumber  + 1);
+    } */
 }

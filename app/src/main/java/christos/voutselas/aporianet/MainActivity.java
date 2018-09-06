@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.firebase.ui.auth.AuthUI;
@@ -47,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference mCreditsMessagesDatabaseReferenceV;
+    private DatabaseReference mACreditsMessagesDatabaseReferenceV;
     private ChildEventListener mChildEventListener;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private FirebaseStorage mFirebaseStorage;
     private ChildEventListener mDChildEventListener;
-    private static String creditsNumber;
-    private static String creditKey;
+    public static Integer userCredit;
+    public static String userKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -302,6 +302,8 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     VoteMessage votesNbr = new VoteMessage(1);
                     mCreditsMessagesDatabaseReferenceV.push().setValue(votesNbr);
                 }
+
+                findCreditNumber();
             }
 
             @Override
@@ -310,12 +312,12 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
 
             }
         });
-
-        readCreditKey();
     }
 
-    private void readCreditKey()
+    private void findCreditNumber()
     {
+        mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+
         if (mDChildEventListener == null)
         {
             mDChildEventListener = new ChildEventListener()
@@ -323,20 +325,17 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                 @Override
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
-
-                    VoteMessage vote = dDataSnapshot.getValue(VoteMessage.class);
-                    creditsNumber = String.valueOf(vote.getVotesNumbres());
-                    creditKey = dDataSnapshot.getKey();
-
-                    System.out.print("a");
-
+                    VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
+                    userCredit = voteNbr.getVotesNumbres();
+                    userKey = dDataSnapshot.getKey();
+                    System.out.print("aaaa");
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+            mACreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
         }
     }
 
