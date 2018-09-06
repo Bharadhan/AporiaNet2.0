@@ -2,24 +2,24 @@ package christos.voutselas.aporianet;
 
 public class VoteMessage
 {
-    public Integer votesNumbres;
+    public String  votesNumbres;
 
     public VoteMessage()
     {
 
     }
 
-    public VoteMessage(Integer votesNumbres)
+    public VoteMessage(String votesNumbres)
     {
         this.votesNumbres = votesNumbres;
 
     }
 
-    public Integer getVotesNumbres() {
+    public String getVotesNumbres() {
         return votesNumbres;
     }
 
-    public void setVotesNumbres(Integer votesNumbres) {
+    public void setVotesNumbres(String votesNumbres) {
         this.votesNumbres = votesNumbres;
     }
 }

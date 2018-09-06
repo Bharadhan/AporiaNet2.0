@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             {
                 if (!dataSnapshot.exists())
                 {
-                    VoteMessage votesNbr = new VoteMessage(1);
+                    VoteMessage votesNbr = new VoteMessage("1");
                     mCreditsMessagesDatabaseReferenceV.push().setValue(votesNbr);
                 }
 
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
                     VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
-                    userCredit = voteNbr.getVotesNumbres();
+                    userCredit = Integer.parseInt(voteNbr.getVotesNumbres());
                     userKey = dDataSnapshot.getKey();
                     System.out.print("aaaa");
                 }

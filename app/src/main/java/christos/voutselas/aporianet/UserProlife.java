@@ -18,13 +18,14 @@ public class UserProlife extends AppCompatActivity
     private TextView setUsername;
     private TextView creditsNumber;
     private ChildEventListener mVotesChildEventListener;
-    private Integer votes = 0;
+    private String votes = "";
     private Integer availiableCredits;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseStorage mFirebaseStorage;
     private DatabaseReference mMessagesDatabaseReferenceV;
     private ProgressBar mProgressBar;
+    private Integer voteNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,7 +49,7 @@ public class UserProlife extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
-        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername).child(MainActivity.userKey);
 
         if (mVotesChildEventListener == null)
         {
@@ -60,11 +61,12 @@ public class UserProlife extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                 {
                     VoteMessage voteMessage = dDataSnapshot.getValue(VoteMessage.class);
-                    voteMessage.getVotesNumbres();
-                    votes = votes + 1;
-                    availiableCredits = (votes - 1) * 8;
+                    votes = voteMessage.getVotesNumbres();
+                    voteNumber = Integer.parseInt(votes);
 
-                    creditsNumber.setText("Total Credits: " +   availiableCredits);
+                    availiableCredits = (voteNumber - 1) * 8;
+
+                    creditsNumber.setText("Total Credits: " +  availiableCredits);
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
                 }

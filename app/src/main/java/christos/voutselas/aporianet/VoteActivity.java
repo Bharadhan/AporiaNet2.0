@@ -36,7 +36,7 @@ public class VoteActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(null);
     }
 
-    public void vote (String lessonName, String lessonDirection, String yearOfClass, String keyNumber, ListView mMessageListView, DetailedMessageAdapter mDMessageAdapter)
+    public void vote (String lessonName, String lessonDirection, String yearOfClass, String keyNumber, ListView mMessageListView, DetailedMessageAdapter mDMessageAdapter, String postedName)
     {
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -50,38 +50,15 @@ public class VoteActivity extends AppCompatActivity {
                 .child(lessonDirection).child(lessonName).child(keyNumber);
         mMessagesDatabaseReferenceSecondary.child("votes").setValue("Yes");
 
-        if (mDChildEventListener == null)
-        {
-            mDChildEventListener = new ChildEventListener()
-            {
-                @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
-                {
-                    DetailedFriendlyMessage detailedFriendlyMessage = dDataSnapshot.getValue(DetailedFriendlyMessage.class);
-                    answerName = detailedFriendlyMessage.getName();
-                    votedName = votedName +1;
-
-                    if (votedName == 2)
-                    {
-                      //  setVote();
-                    }
-
-                    System.out.print("a");
-
-                }
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
-        }
+        setVote(postedName);
     }
 
- /*   private void setVote() {
-        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+    private void setVote(final String postedName) {
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
 
-        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName);
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName);
 
 
         if (mCreditDChildEventListener == null)
@@ -89,11 +66,15 @@ public class VoteActivity extends AppCompatActivity {
             mCreditDChildEventListener = new ChildEventListener()
             {
                 @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
                 {
-              //      VoteMessage vote = dDataSnapshot.getValue(VoteMessage.class);
-               //     crKey = dDataSnapshot.getKey();
-                 //   voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+                    VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                    crKey = dADataSnapshot.getKey();
+                    voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+
+                    mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
+                    String finalVote =  String.valueOf(voteNumber  + 1);
+                    mMessagesDatabaseReferenceV.child("votesNumbres").setValue( finalVote);
 
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -101,12 +82,7 @@ public class VoteActivity extends AppCompatActivity {
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
+            mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
         }
-
-
-
-    //    mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName).child(crKey);
-     //   mMessagesDatabaseReferenceV.child("votesNumbres").setValue( voteNumber  + 1);
-    } */
+    }
 }
