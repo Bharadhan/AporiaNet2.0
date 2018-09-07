@@ -62,7 +62,8 @@ public class UserProlife extends AppCompatActivity
                 public void onChildAdded(@NonNull DataSnapshot dDataSnapshot, String keyOne)
                 {
                     VoteMessage voteMessage = dDataSnapshot.getValue(VoteMessage.class);
-                    votes = voteMessage.getVotesNumbres();
+                    Long creditN = voteMessage.getVotesNumbres();
+                    votes = String.valueOf(creditN);
                     voteNumber = Integer.parseInt(votes);
 
                     availiableCredits = (voteNumber - 1);

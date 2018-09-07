@@ -84,6 +84,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private ChildEventListener mCreditDChildEventListener;
     private Integer creditNumber = 0;
     private String userHaveCredit = "Yes";
+    private String creditRemoved = "No";
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -106,6 +107,8 @@ public class NewQuestionActivity extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
+
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
 
         checkUserCredit();
 
@@ -151,6 +154,8 @@ public class NewQuestionActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 storeDatetoFirebase();
+
+                removeUserCredit();
 
                 switch (selectImage)
                 {
@@ -334,8 +339,6 @@ public class NewQuestionActivity extends AppCompatActivity
 
     private void checkUserCredit()
     {
-        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
-
 
         if (mCreditDChildEventListener == null)
         {
@@ -356,12 +359,7 @@ public class NewQuestionActivity extends AppCompatActivity
                         sudmitBtn.setVisibility(View.INVISIBLE);
                         return;
                     }
-                    else
-                    {
-                        creditNumber = creditNumber - 20;
-                        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername).child(MainActivity.userKey);
-                        mMessagesDatabaseReferenceV.child("votesNumbres").setValue( creditNumber);
-                    }
+
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}
@@ -371,4 +369,15 @@ public class NewQuestionActivity extends AppCompatActivity
             mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
         }
     }
+
+    private void removeUserCredit()
+    {
+        mMessagesDatabaseReferenceV.removeEventListener(mCreditDChildEventListener);
+
+        CreditRemoval creditRemoval = new CreditRemoval();
+        creditRemoval.removeCredit();
+        //creditRemoval.DownloadFileFromURL()
+    }
+
+
 }

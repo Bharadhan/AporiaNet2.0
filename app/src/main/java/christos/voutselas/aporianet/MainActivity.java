@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             {
                 if (!dataSnapshot.exists())
                 {
-                    mCreditsMessagesDatabaseReferenceV.push().child("votesNumbres").setValue("1");
+                    mCreditsMessagesDatabaseReferenceV.push().child("votesNumbres").setValue(801);
                 }
                 else
                 {
@@ -313,7 +313,9 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                             public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
                             {
                                 VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
-                                userCredit = Integer.parseInt(voteNbr.getVotesNumbres());
+                                Long creditN = voteNbr.getVotesNumbres();
+                                String creditNB = String.valueOf(creditN);
+                                userCredit = Integer.parseInt(creditNB);
                                 userKey = dDataSnapshot.getKey();
                                 System.out.print("aaaa");
                             }
@@ -337,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         });
     }
 
-    private void findCreditNumber()
+ /*   private void findCreditNumber()
     {
         mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
 
@@ -360,6 +362,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             };
             mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
         }
-    }
+    } */
 
 }

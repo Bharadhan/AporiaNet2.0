@@ -73,8 +73,9 @@ public class VoteActivity extends AppCompatActivity {
                     voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
 
                     mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
-                    String finalVote =  String.valueOf(voteNumber  + 1);
-                    mMessagesDatabaseReferenceV.child("votesNumbres").setValue( finalVote);
+                    String finalVote =  String.valueOf(voteNumber  + 8);
+                    long longCreditNumber = Long.parseLong(finalVote);
+                    mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
 
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
