@@ -49,6 +49,7 @@ public class SecondYearForumView extends AppCompatActivity
     private ImageView backBtn;
     private Integer finalPos = 0;
     private String time = "";
+    private String selectedUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -92,6 +93,7 @@ public class SecondYearForumView extends AppCompatActivity
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
                 vote = message.getVotes();
+                selectedUrl = message.getPhotoUrl();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -101,6 +103,7 @@ public class SecondYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
+                intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("vote", vote);
                 intent.putExtra("time", time);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

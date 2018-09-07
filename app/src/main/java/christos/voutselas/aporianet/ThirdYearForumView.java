@@ -48,6 +48,7 @@ public class ThirdYearForumView extends AppCompatActivity
     private String vote = "";
     private Integer finalPos = 0;
     private String time = "";
+    private String selectedUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -92,6 +93,7 @@ public class ThirdYearForumView extends AppCompatActivity
                 selectedKey = message.getKey();
                 vote = message.getVotes();
                 time = message.getDate();
+                selectedUrl = message.getPhotoUrl();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
                 intent.putExtra("lessonDirection", lessonDirection);
@@ -99,6 +101,7 @@ public class ThirdYearForumView extends AppCompatActivity
                 intent.putExtra("selectedUserName", selectetUserNAme);
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
+                intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("vote", vote);
                 intent.putExtra("time", time);

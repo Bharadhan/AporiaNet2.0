@@ -2,18 +2,13 @@ package christos.voutselas.aporianet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -45,7 +40,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         color = message.getColor();
         image = message.getPhotoUrl();
 
-        assert message != null;
+        //assert message != null;
 
         if (image.equals(""))
         {
