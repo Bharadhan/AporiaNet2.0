@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,14 +31,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static java.text.DateFormat.getDateTimeInstance;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -194,9 +190,11 @@ public class NewQuestionActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK)
+        {
             selectedImageUri = data.getData();
 
             mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)

@@ -23,14 +23,10 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -54,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private FirebaseStorage mFirebaseStorage;
     private ChildEventListener mDChildEventListener;
-    public static Integer userCredit;
-    public static String userKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -242,13 +236,11 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private void onSignedInInitialize(String username)
     {
         mUsername = username;
-        //       attachDatabaseReadListener();
     }
 
     private void onSignedOutCleanup()
     {
         mUsername = ANONYMOUS;
-        //mMessageAdapter.clear();
         detachDatabaseReadListener();
     }
 

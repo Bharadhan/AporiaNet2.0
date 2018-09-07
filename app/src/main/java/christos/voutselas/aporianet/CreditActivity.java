@@ -11,12 +11,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class CreditActivity extends AppCompatActivity
 {
-
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -46,7 +44,6 @@ public class CreditActivity extends AppCompatActivity
         }).execute("check credit");
 
     }
-
 
     public static class DownloadFileFromURL extends AsyncTask<String, String, String>
     {
@@ -94,7 +91,6 @@ public class CreditActivity extends AppCompatActivity
             mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName);
 
 
-
             if (mCreditDChildEventListener == null)
             {
                 mCreditDChildEventListener = new ChildEventListener()
@@ -122,13 +118,6 @@ public class CreditActivity extends AppCompatActivity
             return null;
         }
     }
-
-
-
-
-
-
-
 
     public static class CheckUserCreditNumber extends AsyncTask<String, String, String>
     {
