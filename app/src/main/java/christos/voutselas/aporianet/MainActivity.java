@@ -290,78 +290,8 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
 
     private void checkCredits()
     {
-        mCreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
-
-        mCreditsMessagesDatabaseReferenceV.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if (!dataSnapshot.exists())
-                {
-                    mCreditsMessagesDatabaseReferenceV.push().child("votesNumbres").setValue(801);
-                }
-                else
-                {
-                    mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
-
-                    if (mDChildEventListener == null)
-                    {
-                        mDChildEventListener = new ChildEventListener()
-                        {
-                            @Override
-                            public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
-                            {
-                                VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
-                                Long creditN = voteNbr.getVotesNumbres();
-                                String creditNB = String.valueOf(creditN);
-                                userCredit = Integer.parseInt(creditNB);
-                                userKey = dDataSnapshot.getKey();
-                                System.out.print("aaaa");
-                            }
-                            public void onChildChanged(DataSnapshot dDataSnapshot, String s) {}
-                            public void onChildRemoved(DataSnapshot dDataSnapshot) {}
-                            public void onChildMoved(DataSnapshot dDataSnapshot, String s) {}
-                            public void onCancelled(DatabaseError dDataSnapshot) {}
-                        };
-                        mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
-                    }
-                }
-
-               // findCreditNumber();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
-
-            }
-        });
+        CreditActivity creditCheck = new CreditActivity();
+        creditCheck.checkUserCredits();
     }
-
- /*   private void findCreditNumber()
-    {
-        mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
-
-        if (mDChildEventListener == null)
-        {
-            mDChildEventListener = new ChildEventListener()
-            {
-                @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
-                {
-                    VoteMessage voteNbr = dDataSnapshot.getValue(VoteMessage.class);
-                    userCredit = Integer.parseInt(voteNbr.getVotesNumbres());
-                    userKey = dDataSnapshot.getKey();
-                    System.out.print("aaaa");
-                }
-                public void onChildChanged(DataSnapshot dDataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dDataSnapshot) {}
-                public void onChildMoved(DataSnapshot dDataSnapshot, String s) {}
-                public void onCancelled(DatabaseError dDataSnapshot) {}
-            };
-            mCreditsMessagesDatabaseReferenceV.addChildEventListener(mDChildEventListener);
-        }
-    } */
 
 }
