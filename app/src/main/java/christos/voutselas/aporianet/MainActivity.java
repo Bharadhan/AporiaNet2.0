@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
          *
          *Dont Delete this, is a useful function for force update, keep it for future reference
          */
-      //  ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         mUsername = ANONYMOUS;
 
