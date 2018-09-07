@@ -141,6 +141,7 @@ public class NewQuestionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+
                 storeDatetoFirebase();
 
                 removeUserCredit();
@@ -272,7 +273,7 @@ public class NewQuestionActivity extends AppCompatActivity
     public void storeDatetoFirebase() {
 
         Date date = new Date();
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         stringdate = dt.format(date);
 
         System.out.println("Submission Date: " + stringdate);

@@ -34,7 +34,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
         {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.question_message_view, parent, false);
         }
-       // ImageView photoImageView = (ImageView) convertView.findViewById(R.id.photoImageView);
+
         TextView subjectTextView = (TextView) convertView.findViewById(R.id.subjectMessageTextView_detailed_message_view);
         TextView messageTextView = (TextView) convertView.findViewById(R.id.main_question_detailed_message_view);
         TextView authorTextView = (TextView) convertView.findViewById(R.id.nameTextView_detailed_message_view);
@@ -67,13 +67,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
             case "grey" :
 
-
-             //   Glide.with(photoImageView.getContext())
-              //          .load(message.getPhotoUrl())
-               //         .into(photoImageView);
-
-
-                authorTextView.setText(message.getName());
+                authorTextView.setText(message.getName() + " " + message.getTime());
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.question_border);
                 messageTextView.setTextColor(Color.parseColor("#000000"));
@@ -88,7 +82,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
 
 
-                authorTextView.setText(message.getName());
+                authorTextView.setText(message.getName() + " " + message.getTime());
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.answer_boarder);
                 messageTextView.setTextColor(Color.parseColor("#ffffff"));
@@ -96,9 +90,6 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
                 // Apply the updated layout parameters to TextView
                 messageTextView.setLayoutParams(lp);
                 authorTextView.setGravity(Gravity.RIGHT);
-            //    Glide.with(photoImageView.getContext())
-             //           .load(message.getPhotoUrl())
-             //           .into(photoImageView);
                 break;
         }
         return convertView;

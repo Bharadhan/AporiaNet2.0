@@ -47,6 +47,7 @@ public class UserDetailedView extends AppCompatActivity {
     private String selectImage = "No";
     private String selectedPhotoUri = "";
     private String selectedSubject = "";
+    private String time = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class UserDetailedView extends AppCompatActivity {
         userText = getIntent().getStringExtra("userText");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectImage = getIntent().getStringExtra("selectImage");
+        time = getIntent().getStringExtra("time");
 
         // Initialize message ListView and its adapter
         final List<DetailedFriendlyMessage> dFriendlyMessages = new ArrayList<>();
@@ -90,7 +92,7 @@ public class UserDetailedView extends AppCompatActivity {
 
         if (selectImage.equals("No"))
         {
-            DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No");
+            DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(userText, mUsername, "", "", "", "blue", "No", time);
             mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
         }
 

@@ -28,8 +28,6 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
 
-
-
     <TextView
         android:id="@+id/main_question_detailed_message_view"
         android:layout_width="match_parent"

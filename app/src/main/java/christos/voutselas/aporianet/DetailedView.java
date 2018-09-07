@@ -75,6 +75,7 @@ public class DetailedView extends AppCompatActivity
     private StorageReference mChatPhotosStorageReference;
     private StorageReference photoRef;
     private String selectImage = "No";
+    private String time = "";
     private String stringdate = "";
 
     @Override
@@ -94,6 +95,7 @@ public class DetailedView extends AppCompatActivity
         selectedMainText = getIntent().getStringExtra("selectedMainText");
         vote = getIntent().getStringExtra("vote");
         photoUrl = getIntent().getStringExtra("photoUrl");
+        time = getIntent().getStringExtra("time");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
         mUsername = MainActivity.useName;
@@ -304,7 +306,7 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
-        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No");
+        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No", time);
         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
     }
 
@@ -344,6 +346,7 @@ public class DetailedView extends AppCompatActivity
         intent.putExtra("selectedMainText", selectedMainText);
         intent.putExtra("userText", userText);
         intent.putExtra("selectImage", selectImage);
+        intent.putExtra("time", stringdate);
         startActivity(intent);
     }
 
@@ -431,7 +434,7 @@ public class DetailedView extends AppCompatActivity
 
                         // Set the download URL to the message box, so that the user can send it to the database
 
-                        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, "", downloadUrlFinal.toString(), "blue", "No");
+                        DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, "", downloadUrlFinal.toString(), "blue", "No", stringdate);
                         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
 
                         // Clear input box
@@ -462,7 +465,7 @@ public class DetailedView extends AppCompatActivity
     {
 
         Date date = new Date();
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         stringdate = dt.format(date);
 
         System.out.println("Submission Date: " + stringdate);

@@ -50,6 +50,7 @@ public class FirstYearForumView extends AppCompatActivity
     private ImageView backBtn;
     private Integer finalPos = 0;
     private String selectedUrl = "";
+    private String time = "";
 
 
     @Override
@@ -95,6 +96,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
                 vote = message.getVotes();
+                time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
                 intent.putExtra("lessonDirection", lessonDirection);
@@ -105,6 +107,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("vote", vote);
                 intent.putExtra("photoUrl", selectedUrl);
+                intent.putExtra("time", time);
                 startActivity(intent);
             }
         });
