@@ -202,6 +202,19 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         detachDatabaseReadListener();
     }
 
+    /**
+     * When users close the app to sign off
+     * @param menu
+     * @return
+     */
+    /*
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FirebaseAuth.getInstance().signOut();
+    } */
+
     @Override
     // This method initialize the contents of the Activity's options menu.
     public boolean onCreateOptionsMenu(Menu menu)
