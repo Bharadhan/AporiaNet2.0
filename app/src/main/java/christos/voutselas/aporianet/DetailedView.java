@@ -351,7 +351,7 @@ public class DetailedView extends AppCompatActivity
     {
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
-        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter);
+        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName);
         voteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);
     }
@@ -433,6 +433,9 @@ public class DetailedView extends AppCompatActivity
 
                         DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(mMessageEditText.getText().toString(), mUsername, selectedSubject, "", downloadUrlFinal.toString(), "blue", "No");
                         mMessagesDatabaseReference.push().setValue(dFriendlyMessage);
+
+                        // Clear input box
+                        mMessageEditText.setText("");
 
                         progressDialog.dismiss();
                         Toast.makeText(DetailedView.this, "Uploaded", Toast.LENGTH_SHORT).show();

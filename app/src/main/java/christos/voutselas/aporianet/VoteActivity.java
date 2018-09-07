@@ -23,10 +23,11 @@ public class VoteActivity extends AppCompatActivity {
     private DatabaseReference mMessagesDatabaseReferenceV;
     private Task<Void> mMessagesDatabaseReference1;
     private ChildEventListener mDChildEventListener;
+    private ChildEventListener mCreditDChildEventListener;
     private String answerName = "";
     private Integer votedName = 0;
-    private String keyNumber = "";
     private Integer voteNumber = 0;
+    private String crKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +36,7 @@ public class VoteActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawable(null);
     }
 
-    public void vote (String lessonName, String lessonDirection, String yearOfClass, String keyNumber, ListView mMessageListView, DetailedMessageAdapter mDMessageAdapter)
+    public void vote (String lessonName, String lessonDirection, String yearOfClass, String keyNumber, ListView mMessageListView, DetailedMessageAdapter mDMessageAdapter, String postedName)
     {
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -49,23 +50,32 @@ public class VoteActivity extends AppCompatActivity {
                 .child(lessonDirection).child(lessonName).child(keyNumber);
         mMessagesDatabaseReferenceSecondary.child("votes").setValue("Yes");
 
-        if (mDChildEventListener == null)
+        setVote(postedName);
+    }
+
+    private void setVote(final String postedName) {
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName);
+
+
+        if (mCreditDChildEventListener == null)
         {
-            mDChildEventListener = new ChildEventListener()
+            mCreditDChildEventListener = new ChildEventListener()
             {
                 @Override
-                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
                 {
-                    DetailedFriendlyMessage detailedFriendlyMessage = dDataSnapshot.getValue(DetailedFriendlyMessage.class);
-                    answerName = detailedFriendlyMessage.getName();
-                    votedName = votedName +1;
+                    VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                    crKey = dADataSnapshot.getKey();
+                    voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
 
-                    if (votedName == 2)
-                    {
-                        setVote();
-                    }
-
-                    System.out.print("a");
+                    mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
+                    String finalVote =  String.valueOf(voteNumber  + 8);
+                    long longCreditNumber = Long.parseLong(finalVote);
+                    mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
 
                 }
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -73,15 +83,7 @@ public class VoteActivity extends AppCompatActivity {
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mMessagesDatabaseReference.addChildEventListener(mDChildEventListener);
+            mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
         }
-    }
-
-    private void setVote() {
-        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
-
-        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(answerName);
-        VoteMessage votesNbr = new VoteMessage(1);
-        mMessagesDatabaseReferenceV.push().setValue(votesNbr);
     }
 }

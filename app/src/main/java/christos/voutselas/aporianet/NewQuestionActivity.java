@@ -3,16 +3,13 @@ package christos.voutselas.aporianet;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,30 +18,24 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static java.text.DateFormat.getDateTimeInstance;
 
 public class NewQuestionActivity extends AppCompatActivity
 {
@@ -77,6 +68,11 @@ public class NewQuestionActivity extends AppCompatActivity
     private StorageReference photoRef;
     private String selectImage = "No";
     private ImageView imageView;
+    private DatabaseReference mMessagesDatabaseReferenceV;
+    private ChildEventListener mCreditDChildEventListener;
+    private Integer creditNumber = 0;
+    private String userHaveCredit = "Yes";
+    private String creditRemoved = "No";
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -89,7 +85,6 @@ public class NewQuestionActivity extends AppCompatActivity
         mMessageEditText = (EditText) findViewById(R.id.questions);
         imageView = (ImageView) findViewById(R.id.imgView);
         mUsername = MainActivity.useName;
-       // image = (ImageView) findViewById(R.id.imgView);
 
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
@@ -101,6 +96,9 @@ public class NewQuestionActivity extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
+        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(mUsername);
+
+        checkUserCredit();
 
         updateFields();
 
@@ -137,11 +135,15 @@ public class NewQuestionActivity extends AppCompatActivity
         });
 
         sudmitBtn = (Button) findViewById(R.id.submitBtn);
-        sudmitBtn.setOnClickListener(new View.OnClickListener() {
+        sudmitBtn.setVisibility(View.VISIBLE);
+        sudmitBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
                 storeDatetoFirebase();
+
+                removeUserCredit();
 
                 switch (selectImage)
                 {
@@ -188,9 +190,11 @@ public class NewQuestionActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
+        if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK)
+        {
             selectedImageUri = data.getData();
 
             mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
@@ -321,5 +325,46 @@ public class NewQuestionActivity extends AppCompatActivity
                     }
                 });
 
+    }
+
+    private void checkUserCredit()
+    {
+
+        if (mCreditDChildEventListener == null)
+        {
+            mCreditDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+                {
+                    VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                    creditNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+
+                    if (creditNumber < 20)
+                    {
+                        userHaveCredit = "No";
+                        Toast toast = Toast.makeText(NewQuestionActivity.this,"You don't have enough credit for new question!!", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                        sudmitBtn.setVisibility(View.INVISIBLE);
+                        return;
+                    }
+
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
+        }
+    }
+
+    private void removeUserCredit()
+    {
+        mMessagesDatabaseReferenceV.removeEventListener(mCreditDChildEventListener);
+
+        CreditActivity creditRemoval = new CreditActivity();
+        creditRemoval.removeCredit();
     }
 }
