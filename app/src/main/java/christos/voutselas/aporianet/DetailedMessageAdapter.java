@@ -75,8 +75,6 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
             case "blue" :
 
-
-
                 authorTextView.setText(message.getName() + " " + message.getTime());
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.answer_boarder);

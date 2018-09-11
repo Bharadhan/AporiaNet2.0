@@ -82,8 +82,6 @@ public class ImageViewExtention extends AppCompatActivity
                     @Override
                     public void processFinish(Boolean output)
                     {
-                        // you can go here
-
                         Toast.makeText(ImageViewExtention.this, "Download finished!!", Toast.LENGTH_SHORT).show();
                     }
                 }).execute(photoUri,"/Download/" + subject + "-" + name + ".JPEG");

@@ -3,11 +3,9 @@ package christos.voutselas.aporianet;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-
 import java.util.HashMap;
 import java.util.Map;
 
