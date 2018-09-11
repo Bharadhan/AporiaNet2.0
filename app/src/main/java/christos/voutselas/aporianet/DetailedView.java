@@ -63,6 +63,7 @@ public class DetailedView extends AppCompatActivity
     private String userText = "";
     private String postedName = "";
     private ImageView voteBtn;
+    private ImageView reectVoteBtn;
     private TextView votedMessage;
     private String vote = "";
     private ImageView backBtn;
@@ -103,8 +104,10 @@ public class DetailedView extends AppCompatActivity
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         voteBtn = (ImageView) findViewById(R.id.fab);
+        reectVoteBtn  = (ImageView) findViewById(R.id.rejectAnwser);
         backBtn = (ImageView) findViewById(R.id.backBtn);
         voteBtn.setVisibility(View.INVISIBLE);
+        reectVoteBtn.setVisibility(View.INVISIBLE);
         photoPickerButtonAnwnser = (ImageButton) findViewById(R.id.photoPickerButtonAnwnser);
 
         // Initialize message ListView and its adapter
@@ -251,6 +254,7 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(mMessageEditText.getWindowToken(), 0);
 
                         voteBtn.setVisibility(View.INVISIBLE);
+                        reectVoteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
 
                     }
@@ -264,12 +268,14 @@ public class DetailedView extends AppCompatActivity
                         {
                             case "Yes":
                                 voteBtn.setVisibility(View.INVISIBLE);
+                                reectVoteBtn.setVisibility(View.INVISIBLE);
                                 votedMessage.setVisibility(View.VISIBLE);
                                 break;
 
                             case "No":
                                 votedMessage.setVisibility(View.INVISIBLE);
                                 voteBtn.setVisibility(View.VISIBLE);
+                                reectVoteBtn.setVisibility(View.VISIBLE);
                         }
 
                         //hide keyboard
@@ -286,6 +292,7 @@ public class DetailedView extends AppCompatActivity
                         photoPickerButtonAnwnser.setEnabled(false);
                         voteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
+                        reectVoteBtn.setVisibility(View.INVISIBLE);
 
                         //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
@@ -356,6 +363,7 @@ public class DetailedView extends AppCompatActivity
         VoteActivity voteB = new VoteActivity();
         voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName);
         voteBtn.setVisibility(View.INVISIBLE);
+        reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);
     }
 
