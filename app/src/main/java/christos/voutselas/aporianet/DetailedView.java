@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -56,6 +57,7 @@ public class DetailedView extends AppCompatActivity
     private String key = "";
     private ProgressBar mProgressBar;
     private ChildEventListener mDChildEventListener;
+    private ChildEventListener mVoteDChildEventListener;
     private EditText mMessageEditText;
     private Button mSendButton;
     private EditText userInput;
@@ -65,7 +67,7 @@ public class DetailedView extends AppCompatActivity
     private ImageView voteBtn;
     private ImageView reectVoteBtn;
     private TextView votedMessage;
-    private String vote = "";
+    private String vote = "No";
     private ImageView backBtn;
     private String photoUrl = "";
     private String selectedPhotoUri = "";
@@ -94,7 +96,7 @@ public class DetailedView extends AppCompatActivity
         selectetUserName = getIntent().getStringExtra("selectedUserName");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
-        vote = getIntent().getStringExtra("vote");
+        //vote = FirstYearForumView.vote;
         photoUrl = getIntent().getStringExtra("photoUrl");
         time = getIntent().getStringExtra("time");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
@@ -122,6 +124,8 @@ public class DetailedView extends AppCompatActivity
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
+
+        checkMyVote();
 
         checkChildDetails();
 
@@ -285,7 +289,7 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
                     }
-                    else if (dataSnapshot.getChildrenCount() > 1 && !(selectetUserName.equals(mUsername)))
+                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername)))
                     {
                         mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);
@@ -293,8 +297,8 @@ public class DetailedView extends AppCompatActivity
                         switch (vote)
                         {
                             case "Yes":
-                                voteBtn.setVisibility(View.VISIBLE);
-                                reectVoteBtn.setVisibility(View.VISIBLE);
+                                voteBtn.setVisibility(View.INVISIBLE);
+                                reectVoteBtn.setVisibility(View.INVISIBLE);
                                 votedMessage.setVisibility(View.VISIBLE);
                                 break;
 
@@ -334,6 +338,38 @@ public class DetailedView extends AppCompatActivity
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+    private void checkMyVote()
+    {
+        mVoteMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClassNewQuestion)
+                .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(selectedSubject);
+
+        if (mVoteDChildEventListener == null)
+        {
+            mVoteDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                {
+                    VotedMessage voteMessage = dDataSnapshot.getValue(VotedMessage.class);
+                    String votedName = voteMessage.getName();
+
+                    if (votedName.equals(mUsername))
+                    {
+                        vote = "Yes";
+                    }
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mVoteMessagesDatabaseReference.addChildEventListener(mVoteDChildEventListener);
+        }
+    }
+
+
+
 
     private void findQuestion()
     {

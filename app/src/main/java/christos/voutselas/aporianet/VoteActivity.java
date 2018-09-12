@@ -117,8 +117,6 @@ public class VoteActivity extends AppCompatActivity
                 VotedMessage votedMessage = new VotedMessage(votedUserName);
                 mVotedMessagesDatabaseReference.push().setValue(votedMessage);
 
-              //  setVote(postedName);
-
                 mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName);
 
 
@@ -134,7 +132,7 @@ public class VoteActivity extends AppCompatActivity
                             voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
 
                             mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
-                            String finalVote =  String.valueOf(voteNumber  + 8);
+                            String finalVote =  String.valueOf(voteNumber  + 4);
                             long longCreditNumber = Long.parseLong(finalVote);
                             mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
 

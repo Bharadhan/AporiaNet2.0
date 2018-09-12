@@ -3,12 +3,15 @@ package christos.voutselas.aporianet;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String strSubject = "";
     private String mUsername;
     private ChildEventListener mChildEventListener;
+    private ChildEventListener mVoteDChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference sizeMessagesDatabaseReference;
     private DatabaseReference mVoteMessagesDatabaseReference;
@@ -40,7 +44,6 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
-    private String vote = "";
     private String back = "No";
     private ImageView backBtn;
     private Integer finalPos = 0;
@@ -93,7 +96,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
 
-                checkMyVote();
+
 
 
                 //vote = message.getVotes();
@@ -106,7 +109,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
-                intent.putExtra("vote", vote);
+                //intent.putExtra("vote", vote);
                 intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("time", time);
                 startActivity(intent);
@@ -123,60 +126,6 @@ public class FirstYearForumView extends AppCompatActivity
         });
     }
 
-    private void checkMyVote()
-    {
-        mVoteMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
-            .child(lessonDirection).child(lessonName).child(selectedSubject).child(mUsername);
-
-
-
-        mVoteMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-
-                if (!dataSnapshot.exists())
-                {
-                    vote = "No";
-
-                }
-                else
-                {
-                    vote = "Yes";
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
 
     private void updateView()
     {
@@ -217,8 +166,6 @@ public class FirstYearForumView extends AppCompatActivity
             lessonDirectionTextView.setText(lessonDirection);
             yearClassTextView.setText(yearOfClass);
         }
-
-
     }
 
     private void readData()
