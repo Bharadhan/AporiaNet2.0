@@ -1,21 +1,16 @@
 package christos.voutselas.aporianet;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +29,7 @@ public class FirstYearForumView extends AppCompatActivity
     private ChildEventListener mChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference sizeMessagesDatabaseReference;
+    private DatabaseReference mVoteMessagesDatabaseReference;
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
@@ -52,6 +48,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String time = "";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -59,7 +56,8 @@ public class FirstYearForumView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
         backBtn = (ImageView) findViewById(R.id.backBtn);
-
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUsername = MainActivity.useName;
         back = getIntent().getStringExtra("back");
 
         updateView();
@@ -94,7 +92,11 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
-                vote = message.getVotes();
+
+                checkMyVote();
+
+
+                //vote = message.getVotes();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -119,6 +121,61 @@ public class FirstYearForumView extends AppCompatActivity
                 finish();
             }
         });
+    }
+
+    private void checkMyVote()
+    {
+        mVoteMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
+            .child(lessonDirection).child(lessonName).child(selectedSubject).child(mUsername);
+
+
+
+        mVoteMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+
+                if (!dataSnapshot.exists())
+                {
+                    vote = "No";
+
+                }
+                else
+                {
+                    vote = "Yes";
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private void updateView()
@@ -166,8 +223,6 @@ public class FirstYearForumView extends AppCompatActivity
 
     private void readData()
     {
-        mUsername = MainActivity.useName;
-
         mMessageListView = findViewById(R.id.listViewAs);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -180,7 +235,7 @@ public class FirstYearForumView extends AppCompatActivity
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         // Initialize Firebase components
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
 
