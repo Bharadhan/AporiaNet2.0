@@ -285,6 +285,33 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
                     }
+                    else if (dataSnapshot.getChildrenCount() > 1 && !(selectetUserName.equals(mUsername)))
+                    {
+                        mSendButton.setEnabled(false);
+                        mMessageEditText.setFocusable(false);
+                        photoPickerButtonAnwnser.setEnabled(false);
+                        switch (vote)
+                        {
+                            case "Yes":
+                                voteBtn.setVisibility(View.VISIBLE);
+                                reectVoteBtn.setVisibility(View.VISIBLE);
+                                votedMessage.setVisibility(View.VISIBLE);
+                                break;
+
+                            case "No":
+                                votedMessage.setVisibility(View.INVISIBLE);
+                                voteBtn.setVisibility(View.VISIBLE);
+                                reectVoteBtn.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+
+
+
+
+
+
+
                     else
                     {
                         mSendButton.setEnabled(false);
@@ -361,7 +388,7 @@ public class DetailedView extends AppCompatActivity
     {
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
-        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName);
+        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName, selectedSubject);
         voteBtn.setVisibility(View.INVISIBLE);
         reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);

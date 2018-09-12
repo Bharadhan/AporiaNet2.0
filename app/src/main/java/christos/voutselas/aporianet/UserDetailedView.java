@@ -42,6 +42,7 @@ public class UserDetailedView extends AppCompatActivity {
     private String userText = "";
     private String userTextFinal = "";
     private ImageView voteBtn;
+    private ImageView rejectAnswerBtn;
     private TextView votedMessage;
     private ImageView backBtn;
     private String selectImage = "No";
@@ -61,7 +62,9 @@ public class UserDetailedView extends AppCompatActivity {
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         voteBtn = (ImageView) findViewById(R.id.fab);
+        rejectAnswerBtn = (ImageView) findViewById(R.id.rejectAnwser);
         voteBtn.setVisibility(View.INVISIBLE);
+        rejectAnswerBtn.setVisibility(View.INVISIBLE);
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         backBtn = (ImageView) findViewById(R.id.backBtn);
