@@ -66,7 +66,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.question_border);
                 messageTextView.setTextColor(Color.parseColor("#000000"));
-                lp.setMargins(0,0,300,0);
+                lp.setMargins(0,0,150,0);
                 // Apply the updated layout parameters to TextView
                 messageTextView.setLayoutParams(lp);
                 authorTextView.setGravity(Gravity.LEFT);
@@ -79,7 +79,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
                 subjectTextView.setText(message.getSubject());
                 messageTextView.setBackgroundResource(R.drawable.answer_boarder);
                 messageTextView.setTextColor(Color.parseColor("#ffffff"));
-                lp.setMargins(300,0,0,0);
+                lp.setMargins(150,0,0,0);
                 // Apply the updated layout parameters to TextView
                 messageTextView.setLayoutParams(lp);
                 authorTextView.setGravity(Gravity.RIGHT);

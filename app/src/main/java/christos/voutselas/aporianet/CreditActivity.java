@@ -175,7 +175,7 @@ public class CreditActivity extends AppCompatActivity
                     if (!dataSnapshot.exists()) {
                         mCreditsMessagesDatabaseReferenceVC.push().child("votesNumbres").setValue(801);
                     } else {
-                        mACreditsMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName);
+                        mCreditsMessagesDatabaseReferenceVC = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName);
 
                         if (mDChildEventListener == null) {
                             mDChildEventListener = new ChildEventListener() {

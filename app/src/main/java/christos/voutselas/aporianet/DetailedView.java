@@ -56,6 +56,7 @@ public class DetailedView extends AppCompatActivity
     private String key = "";
     private ProgressBar mProgressBar;
     private ChildEventListener mDChildEventListener;
+    private ChildEventListener mVoteDChildEventListener;
     private EditText mMessageEditText;
     private Button mSendButton;
     private EditText userInput;
@@ -63,8 +64,9 @@ public class DetailedView extends AppCompatActivity
     private String userText = "";
     private String postedName = "";
     private ImageView voteBtn;
+    private ImageView reectVoteBtn;
     private TextView votedMessage;
-    private String vote = "";
+    private String vote = "No";
     private ImageView backBtn;
     private String photoUrl = "";
     private String selectedPhotoUri = "";
@@ -93,7 +95,7 @@ public class DetailedView extends AppCompatActivity
         selectetUserName = getIntent().getStringExtra("selectedUserName");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
-        vote = getIntent().getStringExtra("vote");
+        //vote = FirstYearForumView.vote;
         photoUrl = getIntent().getStringExtra("photoUrl");
         time = getIntent().getStringExtra("time");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
@@ -103,8 +105,10 @@ public class DetailedView extends AppCompatActivity
         votedMessage = (TextView) findViewById(R.id.voted);
         votedMessage.setVisibility(View.INVISIBLE);
         voteBtn = (ImageView) findViewById(R.id.fab);
+        reectVoteBtn  = (ImageView) findViewById(R.id.rejectAnwser);
         backBtn = (ImageView) findViewById(R.id.backBtn);
         voteBtn.setVisibility(View.INVISIBLE);
+        reectVoteBtn.setVisibility(View.INVISIBLE);
         photoPickerButtonAnwnser = (ImageButton) findViewById(R.id.photoPickerButtonAnwnser);
 
         // Initialize message ListView and its adapter
@@ -119,6 +123,8 @@ public class DetailedView extends AppCompatActivity
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
+
+        checkMyVote();
 
         checkChildDetails();
 
@@ -191,8 +197,6 @@ public class DetailedView extends AppCompatActivity
                     intent.putExtra("name", selectetUserName);
                     startActivity(intent);
                 }
-
-
             }
         });
 
@@ -251,6 +255,7 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(mMessageEditText.getWindowToken(), 0);
 
                         voteBtn.setVisibility(View.INVISIBLE);
+                        reectVoteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
 
                     }
@@ -264,12 +269,14 @@ public class DetailedView extends AppCompatActivity
                         {
                             case "Yes":
                                 voteBtn.setVisibility(View.INVISIBLE);
+                                reectVoteBtn.setVisibility(View.INVISIBLE);
                                 votedMessage.setVisibility(View.VISIBLE);
                                 break;
 
                             case "No":
                                 votedMessage.setVisibility(View.INVISIBLE);
                                 voteBtn.setVisibility(View.VISIBLE);
+                                reectVoteBtn.setVisibility(View.VISIBLE);
                         }
 
                         //hide keyboard
@@ -279,6 +286,38 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
                     }
+                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername)))
+                    {
+                        mSendButton.setEnabled(false);
+                        mMessageEditText.setFocusable(false);
+                        photoPickerButtonAnwnser.setEnabled(false);
+                        switch (vote)
+                        {
+                            case "Yes":
+                                voteBtn.setVisibility(View.INVISIBLE);
+                                reectVoteBtn.setVisibility(View.INVISIBLE);
+                                votedMessage.setVisibility(View.VISIBLE);
+
+                                //hide keyboard
+                                EditText editText = (EditText) findViewById(R.id.messageEditText);
+                                editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                                break;
+
+                            case "No":
+                                votedMessage.setVisibility(View.INVISIBLE);
+                                voteBtn.setVisibility(View.VISIBLE);
+                                reectVoteBtn.setVisibility(View.VISIBLE);
+
+                                //hide keyboard
+                                EditText editText1 = (EditText) findViewById(R.id.messageEditText);
+                                editText1.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                                InputMethodManager imm1 = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm1.hideSoftInputFromWindow(editText1.getWindowToken(), 0);
+                                break;
+                        }
+                    }
                     else
                     {
                         mSendButton.setEnabled(false);
@@ -286,6 +325,7 @@ public class DetailedView extends AppCompatActivity
                         photoPickerButtonAnwnser.setEnabled(false);
                         voteBtn.setVisibility(View.INVISIBLE);
                         votedMessage.setVisibility(View.INVISIBLE);
+                        reectVoteBtn.setVisibility(View.INVISIBLE);
 
                         //hide keyboard
                         EditText editText = (EditText) findViewById(R.id.messageEditText);
@@ -299,6 +339,35 @@ public class DetailedView extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    private void checkMyVote()
+    {
+        mVoteMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClassNewQuestion)
+                .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(selectedSubject);
+
+        if (mVoteDChildEventListener == null)
+        {
+            mVoteDChildEventListener = new ChildEventListener()
+            {
+                @Override
+                public void onChildAdded(DataSnapshot dDataSnapshot, String keyOne)
+                {
+                    VotedMessage voteMessage = dDataSnapshot.getValue(VotedMessage.class);
+                    String votedName = voteMessage.getName();
+
+                    if (votedName.equals(mUsername))
+                    {
+                        vote = "Yes";
+                    }
+                }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mVoteMessagesDatabaseReference.addChildEventListener(mVoteDChildEventListener);
+        }
     }
 
     private void findQuestion()
@@ -354,8 +423,9 @@ public class DetailedView extends AppCompatActivity
     {
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
-        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName);
+        voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName, selectedSubject);
         voteBtn.setVisibility(View.INVISIBLE);
+        reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);
     }
 

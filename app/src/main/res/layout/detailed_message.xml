@@ -43,7 +43,7 @@
             android:id="@+id/rejectAnwser"
             style="@style/voteButtons"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/rejectAnswer"/>
+            android:src="@drawable/reject_answer"/>
 
     <TextView
         android:layout_width="match_parent"

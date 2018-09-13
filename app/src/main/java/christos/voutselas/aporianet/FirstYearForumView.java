@@ -1,21 +1,19 @@
 package christos.voutselas.aporianet;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.FirebaseError;
+import com.google.firebase.database.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +30,10 @@ public class FirstYearForumView extends AppCompatActivity
     private String strSubject = "";
     private String mUsername;
     private ChildEventListener mChildEventListener;
+    private ChildEventListener mVoteDChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference sizeMessagesDatabaseReference;
+    private DatabaseReference mVoteMessagesDatabaseReference;
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
@@ -44,12 +44,12 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
-    private String vote = "";
     private String back = "No";
     private ImageView backBtn;
     private Integer finalPos = 0;
     private String selectedUrl = "";
     private String time = "";
+
 
 
     @Override
@@ -59,7 +59,8 @@ public class FirstYearForumView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
         backBtn = (ImageView) findViewById(R.id.backBtn);
-
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUsername = MainActivity.useName;
         back = getIntent().getStringExtra("back");
 
         updateView();
@@ -94,7 +95,11 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
-                vote = message.getVotes();
+
+
+
+
+                //vote = message.getVotes();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -104,7 +109,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
-                intent.putExtra("vote", vote);
+                //intent.putExtra("vote", vote);
                 intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("time", time);
                 startActivity(intent);
@@ -120,6 +125,7 @@ public class FirstYearForumView extends AppCompatActivity
             }
         });
     }
+
 
     private void updateView()
     {
@@ -160,14 +166,10 @@ public class FirstYearForumView extends AppCompatActivity
             lessonDirectionTextView.setText(lessonDirection);
             yearClassTextView.setText(yearOfClass);
         }
-
-
     }
 
     private void readData()
     {
-        mUsername = MainActivity.useName;
-
         mMessageListView = findViewById(R.id.listViewAs);
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -180,7 +182,7 @@ public class FirstYearForumView extends AppCompatActivity
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
         // Initialize Firebase components
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
 
