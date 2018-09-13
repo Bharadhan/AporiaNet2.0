@@ -6,7 +6,7 @@ android {
         applicationId "christos.voutselas.aporianet"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 48
+        versionCode 49
         versionName "0.12.0"
         resConfigs "en"
         multiDexEnabled true
