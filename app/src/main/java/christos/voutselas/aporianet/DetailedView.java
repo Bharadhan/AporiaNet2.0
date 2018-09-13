@@ -300,12 +300,25 @@ public class DetailedView extends AppCompatActivity
                                 voteBtn.setVisibility(View.INVISIBLE);
                                 reectVoteBtn.setVisibility(View.INVISIBLE);
                                 votedMessage.setVisibility(View.VISIBLE);
+
+                                //hide keyboard
+                                EditText editText = (EditText) findViewById(R.id.messageEditText);
+                                editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                                 break;
 
                             case "No":
                                 votedMessage.setVisibility(View.INVISIBLE);
                                 voteBtn.setVisibility(View.VISIBLE);
                                 reectVoteBtn.setVisibility(View.VISIBLE);
+
+                                //hide keyboard
+                                EditText editText1 = (EditText) findViewById(R.id.messageEditText);
+                                editText1.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                                InputMethodManager imm1 = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm1.hideSoftInputFromWindow(editText1.getWindowToken(), 0);
+                                break;
                         }
 
                     }
