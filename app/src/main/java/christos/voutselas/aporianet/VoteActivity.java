@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class VoteActivity extends AppCompatActivity
@@ -37,6 +40,16 @@ public class VoteActivity extends AppCompatActivity
         mKeyNumber = keyNumber;
         mPostedName = postedName;
         mSubject = subject;
+
+
+
+
+
+
+
+
+
+
 
 
         new VoteActivity.VoteFromURL(new VoteActivity.VoteFromURL.AsynResponse()
@@ -75,7 +88,6 @@ public class VoteActivity extends AppCompatActivity
         private FirebaseStorage mFirebaseStorage;
         private DatabaseReference mVotedMessagesDatabaseReference;
         private DatabaseReference mMessagesDatabaseReferenceV;
-        private DatabaseReference mUMessagesDatabaseReferenceV;
         private ChildEventListener mCreditDChildEventListener;
 
         public interface AsynResponse
@@ -128,41 +140,51 @@ public class VoteActivity extends AppCompatActivity
                 VotedMessage votedMessage = new VotedMessage(votedUserName);
                 mVotedMessagesDatabaseReference.push().setValue(votedMessage);
 
-                mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName);
-                mUMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName);
 
-
-                if (mCreditDChildEventListener == null)
+                mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
                 {
-                    mCreditDChildEventListener = new ChildEventListener()
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
                     {
-                        @Override
-                        public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+
+                        if (dataSnapshot.getChildrenCount() < 6)
                         {
-                            VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
-                            crKey = dADataSnapshot.getKey();
-                            voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
-
-                            mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
-                            String finalVote =  String.valueOf(voteNumber  + 2);
-                            long longCreditNumber = Long.parseLong(finalVote);
-                            mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
+                            mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName);
 
 
-                      //      mUMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(CreditActivity.CheckUserCreditNumber.userKey);
-                     //       String finalVoteU =  String.valueOf(voteNumber  + 2);
-                     //       long longCreditNumberU = Long.parseLong(finalVoteU);/   mUMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumberU);
+                            if (mCreditDChildEventListener == null)
+                            {
+                                mCreditDChildEventListener = new ChildEventListener()
+                                {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+                                    {
+                                        VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                                        crKey = dADataSnapshot.getKey();
+                                        voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
 
-
-
+                                        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(crKey);
+                                        String finalVote =  String.valueOf(voteNumber  + 2);
+                                        long longCreditNumber = Long.parseLong(finalVote);
+                                        mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
+                                    }
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                    public void onCancelled(DatabaseError databaseError) {}
+                                };
+                                mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
+                            }
                         }
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    mMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
-                }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+
+
+
 
             }
             catch (Exception e)
@@ -175,15 +197,7 @@ public class VoteActivity extends AppCompatActivity
 
     private static class VoteMySelfFromURL extends AsyncTask<String, String, String>
     {
-        private String lessonName = "";
-        private String lessonDirection = "";
-        private String yearOfClass = "";
-        private String keyNumber = "";
-        private String postedName = "";
-        private String subject = "";
-        private String votedUserName = "";
         private Integer voteNumber = 0;
-        private String crKey = "";
         private FirebaseDatabase mFirebaseDatabase;
         private FirebaseAuth mFirebaseAuth;
         private FirebaseStorage mFirebaseStorage;
@@ -191,6 +205,10 @@ public class VoteActivity extends AppCompatActivity
         private DatabaseReference mMessagesDatabaseReferenceV;
         private DatabaseReference mUMessagesDatabaseReferenceV;
         private ChildEventListener mCreditDChildEventListener;
+        private String lessonName = "";
+        private String lessonDirection = "";
+        private String yearOfClass = "";
+        private String subject = "";
 
         public interface AsynResponse
         {
@@ -224,52 +242,60 @@ public class VoteActivity extends AppCompatActivity
             lessonName = VoteActivity.mLessonName;
             lessonDirection = VoteActivity.mLessonDirection;
             yearOfClass = VoteActivity.mYearOfClass;
-            keyNumber = VoteActivity.mKeyNumber;
-            postedName = VoteActivity.mPostedName;
             subject = VoteActivity.mSubject;
+
 
             try
             {
-                votedUserName = MainActivity.useName;
                 // Initialize Firebase components
                 mFirebaseDatabase = FirebaseDatabase.getInstance();
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 mFirebaseStorage = FirebaseStorage.getInstance();
 
                 mUMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName);
+                mVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
+                        .child(lessonDirection).child(lessonName).child(subject);
 
-
-                if (mCreditDChildEventListener == null)
+                mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
                 {
-                    mCreditDChildEventListener = new ChildEventListener()
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
                     {
-                        @Override
-                        public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+
+                        if (dataSnapshot.getChildrenCount() < 6)
                         {
-                            VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
-                            crKey = dADataSnapshot.getKey();
-                            voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
+                            if (mCreditDChildEventListener == null)
+                            {
+                                mCreditDChildEventListener = new ChildEventListener()
+                                {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dADataSnapshot, String keyOne)
+                                    {
+                                        VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
+                                        voteNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
 
-                            mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName).child(CreditActivity.CheckUserCreditNumber.userKey);
-                            String finalVote =  String.valueOf(voteNumber  + 2);
-                            long longCreditNumber = Long.parseLong(finalVote);
-                            mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
-
-
-                            //      mUMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(postedName).child(CreditActivity.CheckUserCreditNumber.userKey);
-                            //       String finalVoteU =  String.valueOf(voteNumber  + 2);
-                            //       long longCreditNumberU = Long.parseLong(finalVoteU);/   mUMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumberU);
-
-
+                                        mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName).child(CreditActivity.CheckUserCreditNumber.userKey);
+                                        String finalVote =  String.valueOf(voteNumber  + 2);
+                                        long longCreditNumber = Long.parseLong(finalVote);
+                                        mMessagesDatabaseReferenceV.child("votesNumbres").setValue( longCreditNumber);
+                                    }
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                                    public void onCancelled(DatabaseError databaseError) {}
+                                };
+                                mUMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
+                            }
 
                         }
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    mUMessagesDatabaseReferenceV.addChildEventListener(mCreditDChildEventListener);
-                }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+
+
 
             }
             catch (Exception e)

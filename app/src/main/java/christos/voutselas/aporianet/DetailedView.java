@@ -28,7 +28,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -198,8 +197,6 @@ public class DetailedView extends AppCompatActivity
                     intent.putExtra("name", selectetUserName);
                     startActivity(intent);
                 }
-
-
             }
         });
 
@@ -320,15 +317,7 @@ public class DetailedView extends AppCompatActivity
                                 imm1.hideSoftInputFromWindow(editText1.getWindowToken(), 0);
                                 break;
                         }
-
                     }
-
-
-
-
-
-
-
                     else
                     {
                         mSendButton.setEnabled(false);
@@ -380,9 +369,6 @@ public class DetailedView extends AppCompatActivity
             mVoteMessagesDatabaseReference.addChildEventListener(mVoteDChildEventListener);
         }
     }
-
-
-
 
     private void findQuestion()
     {
@@ -438,8 +424,6 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
         voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName, selectedSubject);
-
-
         voteBtn.setVisibility(View.INVISIBLE);
         reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);
