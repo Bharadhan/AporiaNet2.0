@@ -49,6 +49,7 @@ public class FirstYearForumView extends AppCompatActivity
     private Integer finalPos = 0;
     private String selectedUrl = "";
     private String time = "";
+    private String wrongAnwser = "";
 
 
 
@@ -95,11 +96,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
-
-
-
-
-                //vote = message.getVotes();
+                wrongAnwser = message.getVotes();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -109,7 +106,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
-                //intent.putExtra("vote", vote);
+                intent.putExtra("wrongAnwser", wrongAnwser);
                 intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("time", time);
                 startActivity(intent);
