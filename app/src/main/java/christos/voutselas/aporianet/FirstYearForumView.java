@@ -1,19 +1,12 @@
 package christos.voutselas.aporianet;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,9 +171,6 @@ public class FirstYearForumView extends AppCompatActivity
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
-        // Initialize Firebase components
-
-
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
@@ -191,11 +181,16 @@ public class FirstYearForumView extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    System.out.println("The updated post title is: " + friendlyMessage.getName());
-                    key = dataSnapshot.getKey();
-                    mMessageAdapter.add(friendlyMessage);
-                    friendlyMessage.setKey(key);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    String wrongMesage = friendlyMessage.getVotes();
+
+                    if (wrongMesage.equals("No"))
+                    {
+                        key = dataSnapshot.getKey();
+                        mMessageAdapter.add(friendlyMessage);
+                        friendlyMessage.setKey(key);
+                        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    }
+
                 }
 
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

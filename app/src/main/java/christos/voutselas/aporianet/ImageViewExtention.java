@@ -141,7 +141,6 @@ public class ImageViewExtention extends AppCompatActivity
         @Override
         protected String doInBackground(String... f_url)
         {
-
             int count;
 
             try

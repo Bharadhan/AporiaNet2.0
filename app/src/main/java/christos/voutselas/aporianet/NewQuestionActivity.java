@@ -122,7 +122,6 @@ public class NewQuestionActivity extends AppCompatActivity
                     mSubbject.requestFocus();
                     return;
                 }
-
             }
         });
 
@@ -207,7 +206,6 @@ public class NewQuestionActivity extends AppCompatActivity
             // Get a reference to store file at chat_photos/<FILENAME>
             photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
 
-
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                 imageView.setImageBitmap(bitmap);
@@ -220,7 +218,6 @@ public class NewQuestionActivity extends AppCompatActivity
             }
 
             selectImage = "Yes";
-
         }
     }
 
@@ -285,7 +282,6 @@ public class NewQuestionActivity extends AppCompatActivity
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-
         // Upload file to Firebase Storage
         mChatPhotosStorageReference.putFile(selectedImageUri)
                 .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -325,7 +321,6 @@ public class NewQuestionActivity extends AppCompatActivity
                         progressDialog.setMessage("Uploaded "+(int)progress+"%");
                     }
                 });
-
     }
 
     private void checkUserCredit()

@@ -2,13 +2,9 @@ package christos.voutselas.aporianet;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -91,8 +87,6 @@ public class VoteActivity extends AppCompatActivity
         }).execute();
 
     }
-
-
 
     private static class VoteFromURL extends AsyncTask<String, String, String>
     {
@@ -204,10 +198,6 @@ public class VoteActivity extends AppCompatActivity
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
-
-
-
-
             }
             catch (Exception e)
             {
@@ -266,7 +256,6 @@ public class VoteActivity extends AppCompatActivity
             yearOfClass = VoteActivity.mYearOfClass;
             subject = VoteActivity.mSubject;
 
-
             try
             {
                 // Initialize Firebase components
@@ -316,9 +305,6 @@ public class VoteActivity extends AppCompatActivity
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
-
-
-
             }
             catch (Exception e)
             {
@@ -346,6 +332,7 @@ public class VoteActivity extends AppCompatActivity
         private DatabaseReference mAVotedMessagesDatabaseReference;
         private DatabaseReference mMessagesDatabaseReferenceV;
         private DatabaseReference mResudmitMessagesDatabaseReference;
+        private DatabaseReference mResudmitTheMessagesDatabaseReference;
         private ChildEventListener mCreditDChildEventListener;
         private ChildEventListener mDChildEventListener;
         private String time = "";
@@ -417,9 +404,6 @@ public class VoteActivity extends AppCompatActivity
                 VotedMessage votedMessage1 = new VotedMessage(votedUserName);
                 mAVotedMessagesDatabaseReference.push().setValue(votedMessage1);
 
-
-
-
                 mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
                 {
                     @Override
@@ -462,21 +446,17 @@ public class VoteActivity extends AppCompatActivity
                             mResudmitMessagesDatabaseReference.child("votes").setValue("Yes");
 
 
+                            mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
+                                    .child(lessonDirection).child(lessonName);
 
-
-
-
-
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + " **submitted", photUri, "No", time);
+                            mResudmitTheMessagesDatabaseReference.push().setValue(friendlyMessage);
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
-
-
-
-
             }
             catch (Exception e)
             {

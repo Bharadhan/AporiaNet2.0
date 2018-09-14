@@ -179,10 +179,6 @@ public class DetailedView extends AppCompatActivity
             }
         });
 
-
-
-
-
         photoPickerButtonAnwnser.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -245,9 +241,9 @@ public class DetailedView extends AppCompatActivity
             Toast.makeText(DetailedView.this, "Attachment has been selected", Toast.LENGTH_SHORT).show();
 
             selectImage = "Yes";
-
         }
     }
+
     private void checkChildDetails()
     {
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
@@ -450,7 +446,7 @@ public class DetailedView extends AppCompatActivity
     {
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteRemoval = new VoteActivity();
-        voteRemoval.voteRemoval(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, postedName, selectedSubject, time, photoUrl,selectedMainText, wrongAnwser);
+        voteRemoval.voteRemoval(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, selectetUserName, selectedSubject, time, photoUrl,selectedMainText, wrongAnwser);
         voteBtn.setVisibility(View.INVISIBLE);
         reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);

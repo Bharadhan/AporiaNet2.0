@@ -10,13 +10,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ public class ThirdYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
-    private String vote = "";
+    private String wrongAnwser = "";
     private Integer finalPos = 0;
     private String time = "";
     private String selectedUrl = "";
@@ -91,7 +89,7 @@ public class ThirdYearForumView extends AppCompatActivity
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
-                vote = message.getVotes();
+                wrongAnwser = message.getVotes();
                 time = message.getDate();
                 selectedUrl = message.getPhotoUrl();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
@@ -103,7 +101,7 @@ public class ThirdYearForumView extends AppCompatActivity
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("selectedKey", selectedKey);
-                intent.putExtra("vote", vote);
+                intent.putExtra("vote", wrongAnwser);
                 intent.putExtra("time", time);
                 startActivity(intent);
             }
@@ -117,9 +115,6 @@ public class ThirdYearForumView extends AppCompatActivity
                 finish();
             }
         });
-
-
-
     }
 
     private void updateView()
@@ -200,11 +195,15 @@ public class ThirdYearForumView extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    System.out.println("The updated post title is: " + friendlyMessage.getName());
-                    key = dataSnapshot.getKey();
-                    mMessageAdapter.add(friendlyMessage);
-                    friendlyMessage.setKey(key);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    String wrongMesage = friendlyMessage.getVotes();
+
+                    if (wrongMesage.equals("No"))
+                    {
+                        key = dataSnapshot.getKey();
+                        mMessageAdapter.add(friendlyMessage);
+                        friendlyMessage.setKey(key);
+                        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    }
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
