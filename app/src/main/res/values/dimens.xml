@@ -50,4 +50,5 @@
     <dimen name="list_forum_margin">5dp</dimen>
     <dimen name="list_forum_linearlout_layout_width">0dp</dimen>
     <dimen name="list_forum_view_layout_height">1dp</dimen>
+    <dimen name="image_view_pading">16dp</dimen>
 </resources>

@@ -30,6 +30,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/user_name"
             android:textStyle="bold"
+            android:fontFamily="@font/avenirnext_medium"
             android:textColor="@color/white"
             android:textSize="@dimen/user_profile_text_size"/>
 
