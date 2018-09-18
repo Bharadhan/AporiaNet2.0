@@ -449,7 +449,7 @@ public class VoteActivity extends AppCompatActivity
                             mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
                                     .child(lessonDirection).child(lessonName);
 
-                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + " **submitted", photUri, "No", time);
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + "     **αναδημοσίευση", photUri, "No", time);
                             mResudmitTheMessagesDatabaseReference.push().setValue(friendlyMessage);
                         }
                     }
