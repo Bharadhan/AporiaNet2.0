@@ -1,19 +1,12 @@
 package christos.voutselas.aporianet;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +42,7 @@ public class FirstYearForumView extends AppCompatActivity
     private Integer finalPos = 0;
     private String selectedUrl = "";
     private String time = "";
+    private String wrongAnwser = "";
 
 
 
@@ -95,11 +89,7 @@ public class FirstYearForumView extends AppCompatActivity
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
                 selectedUrl = message.getPhotoUrl();
-
-
-
-
-                //vote = message.getVotes();
+                wrongAnwser = message.getVotes();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
                 intent.putExtra("lessonName", lessonName);
@@ -109,7 +99,7 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("selectedSubject", selectedSubject);
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
-                //intent.putExtra("vote", vote);
+                intent.putExtra("wrongAnwser", wrongAnwser);
                 intent.putExtra("photoUrl", selectedUrl);
                 intent.putExtra("time", time);
                 startActivity(intent);
@@ -181,9 +171,6 @@ public class FirstYearForumView extends AppCompatActivity
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
-        // Initialize Firebase components
-
-
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
@@ -194,11 +181,16 @@ public class FirstYearForumView extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    System.out.println("The updated post title is: " + friendlyMessage.getName());
-                    key = dataSnapshot.getKey();
-                    mMessageAdapter.add(friendlyMessage);
-                    friendlyMessage.setKey(key);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    String wrongMesage = friendlyMessage.getVotes();
+
+                    if (wrongMesage.equals("No"))
+                    {
+                        key = dataSnapshot.getKey();
+                        mMessageAdapter.add(friendlyMessage);
+                        friendlyMessage.setKey(key);
+                        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    }
+
                 }
 
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

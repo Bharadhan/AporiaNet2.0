@@ -124,8 +124,6 @@ public class UserDetailedView extends AppCompatActivity {
                     intent.putExtra("name", mUsername);
                     startActivity(intent);
                 }
-
-
             }
         });
 
@@ -141,10 +139,6 @@ public class UserDetailedView extends AppCompatActivity {
 
     private void readData()
     {
-      //  mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        // Initialize progress bar
-
         if (mDChildEventListener == null)
         {
             mDChildEventListener = new ChildEventListener()
@@ -158,7 +152,6 @@ public class UserDetailedView extends AppCompatActivity {
                     mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
                 }
-
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -204,6 +197,7 @@ public class UserDetailedView extends AppCompatActivity {
                 intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
                 finish();
+                return;
 
             case "ΡΟΜΠΟΤΙΚΗ" :
                 Intent  intent3 = new Intent(UserDetailedView.this, RoboticForumView.class);
@@ -214,6 +208,7 @@ public class UserDetailedView extends AppCompatActivity {
                 intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent3);
                 finish();
+                return;
         }
     }
 }

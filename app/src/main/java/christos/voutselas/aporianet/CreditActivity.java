@@ -190,12 +190,15 @@ public class CreditActivity extends AppCompatActivity
                                 }
 
                                 public void onChildChanged(DataSnapshot dDataSnapshot, String s) {
+                                    System.out.print("aaa");
                                 }
 
                                 public void onChildRemoved(DataSnapshot dDataSnapshot) {
+                                    System.out.print("aaa");
                                 }
 
                                 public void onChildMoved(DataSnapshot dDataSnapshot, String s) {
+                                    System.out.print("aaa");
                                 }
 
                                 public void onCancelled(DatabaseError dDataSnapshot) {

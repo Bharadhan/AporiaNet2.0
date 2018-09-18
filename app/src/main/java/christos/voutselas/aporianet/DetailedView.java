@@ -79,6 +79,7 @@ public class DetailedView extends AppCompatActivity
     private String selectImage = "No";
     private String time = "";
     private String stringdate = "";
+    private String wrongAnwser = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -95,7 +96,7 @@ public class DetailedView extends AppCompatActivity
         selectetUserName = getIntent().getStringExtra("selectedUserName");
         selectedSubject = getIntent().getStringExtra("selectedSubject");
         selectedMainText = getIntent().getStringExtra("selectedMainText");
-        //vote = FirstYearForumView.vote;
+        wrongAnwser = getIntent().getStringExtra("wrongAnwser");
         photoUrl = getIntent().getStringExtra("photoUrl");
         time = getIntent().getStringExtra("time");
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
@@ -166,6 +167,18 @@ public class DetailedView extends AppCompatActivity
             }
         });
 
+        reectVoteBtn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+
+                voteRemoval();
+
+            }
+        });
+
         photoPickerButtonAnwnser.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -228,9 +241,9 @@ public class DetailedView extends AppCompatActivity
             Toast.makeText(DetailedView.this, "Attachment has been selected", Toast.LENGTH_SHORT).show();
 
             selectImage = "Yes";
-
         }
     }
+
     private void checkChildDetails()
     {
         mMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
@@ -424,6 +437,16 @@ public class DetailedView extends AppCompatActivity
         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
         VoteActivity voteB = new VoteActivity();
         voteB.vote(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName, selectedSubject);
+        voteBtn.setVisibility(View.INVISIBLE);
+        reectVoteBtn.setVisibility(View.INVISIBLE);
+        votedMessage.setVisibility(View.VISIBLE);
+    }
+
+    private void voteRemoval()
+    {
+        mMessagesDatabaseReference.removeEventListener(mDChildEventListener);
+        VoteActivity voteRemoval = new VoteActivity();
+        voteRemoval.voteRemoval(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, selectetUserName, selectedSubject, time, photoUrl,selectedMainText, wrongAnwser);
         voteBtn.setVisibility(View.INVISIBLE);
         reectVoteBtn.setVisibility(View.INVISIBLE);
         votedMessage.setVisibility(View.VISIBLE);

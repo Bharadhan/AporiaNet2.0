@@ -14,9 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold"
+        android:fontFamily="@font/avenirnext_bold"
+        android:textColor="@color/white"
         tools:text="@string/subject_message" />
 
     <TextView
@@ -24,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:fontFamily="@font/avenirnext_medium"
         android:paddingLeft="@dimen/detailed_message_textView_padding"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
@@ -34,6 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/question_border"
         android:gravity="left"
+        android:fontFamily="@font/avenirnext_medium"
         android:paddingBottom="@dimen/detailed_message_textView_padding"
         android:paddingTop="@dimen/detailed_message_textView_padding"
         android:paddingLeft="@dimen/detailed_message_textView_padding"
@@ -43,4 +48,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="@string/main_message" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/cardview_shadow_start_color" />
 </LinearLayout>

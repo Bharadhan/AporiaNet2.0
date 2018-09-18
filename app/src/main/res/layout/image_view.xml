@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="@dimen/image_view_pading">
 
     <LinearLayout
         android:id="@+id/layout_button"
@@ -16,11 +16,16 @@
         <Button
             android:id="@+id/btnClose"
             android:text="@string/rejectBtn"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/white"
             style="@style/imageViewButton"/>
 
         <Button
             android:id="@+id/btnDownload"
             android:text="@string/download_button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:fontFamily="@font/avenirnext_medium"
             style="@style/imageViewButton" />
     </LinearLayout>
 

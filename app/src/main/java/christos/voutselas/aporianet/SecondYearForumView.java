@@ -45,7 +45,7 @@ public class SecondYearForumView extends AppCompatActivity
     private String selectedMainText = "";
     private String key = "";
     private String selectedKey = "";
-    private String vote = "";
+    private String wrongAnwser = "";
     private ImageView backBtn;
     private Integer finalPos = 0;
     private String time = "";
@@ -92,7 +92,7 @@ public class SecondYearForumView extends AppCompatActivity
                 selectedSubject = message.getSubject();
                 selectedMainText = message.getText();
                 selectedKey = message.getKey();
-                vote = message.getVotes();
+                wrongAnwser = message.getVotes();
                 selectedUrl = message.getPhotoUrl();
                 time = message.getDate();
                 Intent intent = new Intent(getApplicationContext(), DetailedView.class);
@@ -104,7 +104,7 @@ public class SecondYearForumView extends AppCompatActivity
                 intent.putExtra("selectedMainText", selectedMainText);
                 intent.putExtra("selectedKey", selectedKey);
                 intent.putExtra("photoUrl", selectedUrl);
-                intent.putExtra("vote", vote);
+                intent.putExtra("wrongAnwser", wrongAnwser);
                 intent.putExtra("time", time);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -193,11 +193,16 @@ public class SecondYearForumView extends AppCompatActivity
                 public void onChildAdded(DataSnapshot dataSnapshot, String key)
                 {
                     FriendlyMessage friendlyMessage = dataSnapshot.getValue(FriendlyMessage.class);
-                    System.out.println("The updated post title is: " + friendlyMessage.getName());
-                    key = dataSnapshot.getKey();
-                    mMessageAdapter.add(friendlyMessage);
-                    friendlyMessage.setKey(key);
-                    mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    String wrongMesage = friendlyMessage.getVotes();
+
+                    if (wrongMesage.equals("No"))
+                    {
+                        key = dataSnapshot.getKey();
+                        mMessageAdapter.add(friendlyMessage);
+                        friendlyMessage.setKey(key);
+                        mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                    }
+
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#1d5482</color>
+    <color name="colorPrimaryDark">#1d5482</color>
+    <color name="colorAccent">#ce1818</color>
     <!-- Primary color of the app (shown in the app bar) -->
     <color name="primary_color">#4A312A</color>
     <!-- Background color for app -->
@@ -14,4 +14,8 @@
     <color name="graylight">#fafafa</color>
     <color name="starblue">#09c6df</color>
     <color name="endblue">#0bcce6</color>
+    <color name="browser_actions_bg_grey">#F5F5F5</color>
+    <color name="com_facebook_blue">#0000FF</color>
+    <color name="dark_cyan">#1d5482</color>
+    <color name="firstListTextView">#FF3E3D3D</color>
 </resources>

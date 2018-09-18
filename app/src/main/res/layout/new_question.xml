@@ -8,7 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/dark_cyan">
 
         <TextView
             style="@style/NewQuestionTextView"
@@ -40,17 +41,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/list_forum_margin">
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/new_question_subject_hint"
-            android:background="@color/browser_actions_bg_grey"
-            android:padding="@dimen/new_question_editText_letter_padding"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/subjectArea"
-            android:textStyle="bold"/>
+            android:paddingLeft="@dimen/new_question_subject_padding"
+            android:paddingRight="@dimen/new_question_subject_padding">
+
+            <EditText
+                android:id="@+id/subjectArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/new_question_subject_hint"
+                android:padding="@dimen/new_question_editText_letter_padding"
+                android:fontFamily="@font/avenirnext_medium"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <ImageView
@@ -67,6 +76,7 @@
         android:layout_weight="1"
         android:inputType="text|textMultiLine|textCapSentences"
         android:focusable="true"
+        android:hint="@string/enter_question_subject_hint"
         android:imeOptions="actionDone"
         android:background="@color/white"
         android:padding="@dimen/new_question_editText_letter_padding"
@@ -80,29 +90,31 @@
         android:gravity="center_horizontal">
 
         <android.support.v7.widget.AppCompatButton
-            style="@style/NewQuestionButtons"
-            android:layout_alignParentLeft="true"
+            android:id="@+id/rejectBtn"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="@string/rejectBtn"
-            android:id="@+id/rejectBtn"/>
+            style="@style/NewQuestionButtons"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/avenirnext_medium"
+            android:text="@string/rejectBtn" />
 
         <ImageButton
             android:id="@+id/photoPickerButton1"
-            android:layout_centerHorizontal="true"
-            android:padding="@dimen/new_question_button"
             android:layout_width="@dimen/image_selection"
             android:layout_height="@dimen/image_selection"
-            android:background="@android:drawable/ic_menu_gallery" />
+            android:layout_centerInParent="true"
+            android:background="@android:drawable/ic_menu_gallery"
+            android:padding="@dimen/new_question_button" />
 
 
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/submitBtn"
             style="@style/NewQuestionButtons"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:layout_alignParentEnd="true"
+            android:fontFamily="@font/avenirnext_medium"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:text="@string/submitBtn"
-            android:id="@+id/submitBtn"/>
+            android:text="@string/submitBtn" />
 
     </RelativeLayout>
 
