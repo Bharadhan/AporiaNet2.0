@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:fontFamily="@font/avenirnext_medium"
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="@string/subject_message" />
 
@@ -19,9 +20,16 @@
         android:id="@+id/nameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/avenirnext_medium"
         android:layout_weight="0"
         android:textAppearance="?android:attr/textAppearanceSmall"
         tools:text="@string/name_message" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_forum_view_layout_height"
+        android:layout_marginTop="@dimen/list_forum_margin"
+        android:background="@color/cardview_shadow_start_color" />
 
 </LinearLayout>
 

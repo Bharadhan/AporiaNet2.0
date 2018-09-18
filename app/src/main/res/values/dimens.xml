@@ -42,4 +42,12 @@
     <dimen name="image">60dp</dimen>
     <dimen name="image_button_weight">1</dimen>
     <dimen name="image_button_width">0dp</dimen>
+    <dimen name="new_question_subject_padding">10dp</dimen>
+    <dimen name="new_question_layout_marginStart">5dp</dimen>
+    <dimen name="list_item_icon_marginTop">5dp</dimen>
+    <dimen name="list_item_icon_view_layout_height">1dp</dimen>
+    <dimen name="list_item_icon_view_margin">5dp</dimen>
+    <dimen name="list_forum_margin">5dp</dimen>
+    <dimen name="list_forum_linearlout_layout_width">0dp</dimen>
+    <dimen name="list_forum_view_layout_height">1dp</dimen>
 </resources>

@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.github.sachinvarma:EasyPermission:1.0.1'
 
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 
 }

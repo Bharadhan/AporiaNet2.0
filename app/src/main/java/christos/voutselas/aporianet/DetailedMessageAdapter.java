@@ -77,6 +77,7 @@ public class DetailedMessageAdapter extends ArrayAdapter<DetailedFriendlyMessage
 
                 authorTextView.setText(message.getName() + " " + message.getTime());
                 subjectTextView.setText(message.getSubject());
+                subjectTextView.setVisibility(View.INVISIBLE);
                 messageTextView.setBackgroundResource(R.drawable.answer_boarder);
                 messageTextView.setTextColor(Color.parseColor("#ffffff"));
                 lp.setMargins(150,0,0,0);

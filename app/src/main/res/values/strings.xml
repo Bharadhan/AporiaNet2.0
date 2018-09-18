@@ -50,6 +50,7 @@
     <string name="facebook_application_id" translatable="false">679206265746885</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb679206265746885</string>
     <string name="new_question_subject_hint">ΘΕΜΑ</string>
+    <string name="enter_question_subject_hint">Enter your question here</string>
     <string name="subject_message">subject</string>
     <string name="send_button_label1">Send</string>
     <string name="main_message">main message from user</string>
