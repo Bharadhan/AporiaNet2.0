@@ -112,6 +112,7 @@ public class DetailedView extends AppCompatActivity
         reectVoteBtn.setVisibility(View.INVISIBLE);
         photoPickerButtonAnwnser = (ImageButton) findViewById(R.id.photoPickerButtonAnwnser);
 
+
         // Initialize message ListView and its adapter
         dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
@@ -127,9 +128,11 @@ public class DetailedView extends AppCompatActivity
 
         checkMyVote();
 
+        readData();
+
         checkChildDetails();
 
-        readData();
+
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
@@ -299,7 +302,7 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
                     }
-                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername)))
+                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername) ))
                     {
                         mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);

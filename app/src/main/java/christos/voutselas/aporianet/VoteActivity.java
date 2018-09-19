@@ -328,11 +328,12 @@ public class VoteActivity extends AppCompatActivity
         private FirebaseDatabase mFirebaseDatabase;
         private FirebaseAuth mFirebaseAuth;
         private FirebaseStorage mFirebaseStorage;
-        private DatabaseReference mVotedMessagesDatabaseReference;
+        private DatabaseReference mCVotedMessagesDatabaseReference;
         private DatabaseReference mAVotedMessagesDatabaseReference;
         private DatabaseReference mMessagesDatabaseReferenceV;
         private DatabaseReference mResudmitMessagesDatabaseReference;
         private DatabaseReference mResudmitTheMessagesDatabaseReference;
+        private DatabaseReference mCAVotedMessagesDatabaseReference;
         private ChildEventListener mCreditDChildEventListener;
         private ChildEventListener mDChildEventListener;
         private String time = "";
@@ -388,23 +389,26 @@ public class VoteActivity extends AppCompatActivity
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 mFirebaseStorage = FirebaseStorage.getInstance();
 
-                mVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass)
-                        .child(lessonDirection).child(lessonName).child(subject);
-
-                VotedMessage votedMessage = new VotedMessage(votedUserName);
-                mVotedMessagesDatabaseReference.push().setValue(votedMessage);
 
 
-
-
-
-                mAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
-                        .child(lessonDirection).child(lessonName).child(subject);
+                mAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass).child(lessonDirection).child(lessonName).child(subject);
 
                 VotedMessage votedMessage1 = new VotedMessage(votedUserName);
                 mAVotedMessagesDatabaseReference.push().setValue(votedMessage1);
 
-                mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+
+
+                mCVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass).child(lessonDirection).child(lessonName).child(subject);
+
+                VotedMessage votedMessage = new VotedMessage(votedUserName);
+                mCVotedMessagesDatabaseReference.push().setValue(votedMessage);
+
+                System.out.print("aa");
+
+                mCAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass)
+                        .child(lessonDirection).child(lessonName).child(subject);
+
+                mCAVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
                 {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
@@ -449,7 +453,7 @@ public class VoteActivity extends AppCompatActivity
                             mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
                                     .child(lessonDirection).child(lessonName);
 
-                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + "     **αναδημοσίευση", photUri, "No", time);
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + "     **1αναδημοσίευση", photUri, "No", time);
                             mResudmitTheMessagesDatabaseReference.push().setValue(friendlyMessage);
                         }
                     }
