@@ -67,4 +67,6 @@
     <string name="user_profile">Προφίλ</string>
     <string name="credits">Total Credits: 0</string>
     <string name="download_button">Κατέβασε</string>
+    <string name="subscribe">Συνδρομή</string>
+    <string name="unsubscribe">Αναίρεση συνδρομής</string>
 </resources>
