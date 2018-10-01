@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
 
                     useName = mUsername;
                     checkCredits();
+                    subscribeCheck();
                 }
                 else
                 {
@@ -298,4 +299,10 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
         creditCheck.checkUserCredits();
     }
 
+    private void subscribeCheck()
+    {
+        SubscribeCheck subscribeCheck = new SubscribeCheck();
+        subscribeCheck.checkUserSubs();
+
+    }
 }
