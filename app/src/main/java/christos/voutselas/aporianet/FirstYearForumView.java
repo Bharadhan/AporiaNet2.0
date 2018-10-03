@@ -52,8 +52,6 @@ public class FirstYearForumView extends AppCompatActivity
     private Button subscribe;
     private Button unSubscribe;
     private String sub = "";
-    private Integer numberBtn = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
