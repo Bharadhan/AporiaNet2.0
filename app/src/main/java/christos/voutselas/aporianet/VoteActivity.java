@@ -572,6 +572,7 @@ public class VoteActivity extends AppCompatActivity
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
+
             }
             catch (Exception e)
             {
