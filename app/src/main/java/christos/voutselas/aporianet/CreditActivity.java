@@ -100,7 +100,7 @@ public class CreditActivity extends AppCompatActivity
                     {
                         VoteMessage vote = dADataSnapshot.getValue(VoteMessage.class);
                         creditNumber = Integer.parseInt(String.valueOf(vote.getVotesNumbres()));
-                        creditNumber -= 20;
+                        creditNumber -= 80;
                         String creditN = String.valueOf(creditNumber);
                         long longCredit = Long.parseLong(creditN);
                         mMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("xVotesNumbers").child(MainActivity.useName).child(CheckUserCreditNumber.userKey);
