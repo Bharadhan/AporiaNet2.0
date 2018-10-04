@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     mMessagesDatabaseReference.push().setValue(friendlyMessage);
 
                 }
+
                 else
                 {
                     onSignedOutCleanup();
