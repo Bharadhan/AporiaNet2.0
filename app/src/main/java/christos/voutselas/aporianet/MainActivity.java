@@ -142,6 +142,11 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     useName = mUsername;
                     checkCredits();
                     subscribeCheck();
+
+                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("notifications").child(uid);
+                    test friendlyMessage = new test(useName, uid, deviceToken);
+                    mMessagesDatabaseReference.push().setValue(friendlyMessage);
+
                 }
                 else
                 {
