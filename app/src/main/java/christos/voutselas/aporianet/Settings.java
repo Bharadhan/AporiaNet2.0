@@ -82,7 +82,7 @@ public class Settings extends AppCompatActivity
                     {
                         if(!dataSnapshot.exists())
                         {
-                            UserMessage userMessage = new UserMessage(MainActivity.useName, MainActivity.uid);
+                            UserMessage userMessage = new UserMessage(MainActivity.useName, MainActivity.uid, MainActivity.deviceToken);
                             mAddUserSubMessagesDatabaseReferenceV.push().setValue(userMessage);
 
                         }
