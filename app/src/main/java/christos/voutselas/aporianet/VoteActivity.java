@@ -466,13 +466,13 @@ public class VoteActivity extends AppCompatActivity
                         }
                         else
                         {
-                            mResudmitMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
+                            mResudmitMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass)
                                     .child(lessonDirection).child(lessonName).child(keyNumber);
 
                             mResudmitMessagesDatabaseReference.child("votes").setValue("Yes");
 
 
-                            mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
+                            mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass)
                                     .child(lessonDirection).child(lessonName);
 
                             FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + "     **1αναδημοσίευση", photUri, "No", time);

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private FirebaseStorage mFirebaseStorage;
     private ChildEventListener mDChildEventListener;
+    public static String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                 if (user != null) {
                     onSignedInInitialize(user.getDisplayName());
 
+                    uid = user.getUid();
                     useName = mUsername;
                     checkCredits();
                     subscribeCheck();
@@ -240,6 +243,14 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
             case R.id.user_profile:
                 Intent intentUserProfile = new Intent(getApplicationContext(), UserProlife.class);
                 startActivity(intentUserProfile);
+                return true;
+            case R.id.settings:
+                Intent settings = new Intent(getApplicationContext(), Settings.class);
+                startActivity(settings);
+                return true;
+            case R.id.help:
+                Intent help = new Intent(getApplicationContext(), Help.class);
+                startActivity(help);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

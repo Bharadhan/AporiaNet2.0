@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.firebase.ui.auth.data.model.User;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ public class FirstYearForumView extends AppCompatActivity
     private DatabaseReference mCheckSubMessagesDatabaseReferenceV;
     private DatabaseReference mAddSubMessagesDatabaseReferenceV;
     private DatabaseReference mAddUserSubMessagesDatabaseReferenceV;
+    private DatabaseReference mRemoveUserSubMessagesDatabaseReferenceV;
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
@@ -49,9 +53,7 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedUrl = "";
     private String time = "";
     private String wrongAnwser = "";
-    private Button subscribe;
-    private Button unSubscribe;
-    private String sub = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,8 +62,6 @@ public class FirstYearForumView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
         backBtn = (ImageView) findViewById(R.id.backBtn);
-        subscribe = (Button) findViewById(R.id.subBTtn);
-        unSubscribe = (Button) findViewById(R.id.unSubBtn);
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUsername = MainActivity.useName;
         back = getIntent().getStringExtra("back");
@@ -69,8 +69,6 @@ public class FirstYearForumView extends AppCompatActivity
         updateView();
 
         readData();
-
-        checkSubBtn();
 
         newQuestion = (Button) findViewById(R.id.newQuestionButton);
         newQuestion.setOnClickListener(new View.OnClickListener() {
@@ -83,102 +81,6 @@ public class FirstYearForumView extends AppCompatActivity
                 intent.putExtra("lessonDirection", lessonDirection);
                 intent.putExtra("yearOfClass", yearOfClass);
                 startActivity(intent);
-            }
-        });
-
-        subscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mSubChildEventListener = null;
-
-                mAddSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("SubCheck").child(yearOfClass).child(lessonDirection).child(lessonName).child(MainActivity.useName);
-
-                if (mSubChildEventListener == null)
-                {
-                    mSubChildEventListener = new ChildEventListener()
-                    {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String key)
-                        {
-
-                            key = dataSnapshot.getKey();
-                            mAddSubMessagesDatabaseReferenceV.child(key).child("sub").setValue("Yes");
-                        }
-
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    mAddSubMessagesDatabaseReferenceV.addChildEventListener(mSubChildEventListener);
-                }
-
-                unSubscribe.setVisibility(View.VISIBLE);
-                subscribe.setVisibility(View.INVISIBLE);
-
-                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("subscriptions").child(yearOfClass).child(lessonDirection).child(lessonName);
-
-                Query queryToGetData = mAddUserSubMessagesDatabaseReferenceV.orderByChild("user").equalTo(MainActivity.useName);
-
-
-                queryToGetData.addListenerForSingleValueEvent(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        if(!dataSnapshot.exists())
-                        {
-                            mAddUserSubMessagesDatabaseReferenceV.push().child("user").setValue(MainActivity.useName);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-            }
-        });
-
-
-        unSubscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mSubRemovalChildEventListener = null;
-
-                mAddSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("SubCheck").child(yearOfClass).child(lessonDirection).child(lessonName).child(MainActivity.useName);
-
-                if (mSubRemovalChildEventListener == null)
-                {
-                    mSubRemovalChildEventListener = new ChildEventListener()
-                    {
-                        @Override
-                        public void onChildAdded(DataSnapshot dataSnapshot, String key)
-                        {
-
-                            key = dataSnapshot.getKey();
-                            mAddSubMessagesDatabaseReferenceV.child(key).child("sub").setValue("No");
-                        }
-
-                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    mAddSubMessagesDatabaseReferenceV.addChildEventListener(mSubRemovalChildEventListener);
-                }
-
-                unSubscribe.setVisibility(View.INVISIBLE);
-                subscribe.setVisibility(View.VISIBLE);
-
-                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("subscriptions").child(yearOfClass).child(lessonDirection).child(lessonName);
-
-                Query queryToGetData = mAddUserSubMessagesDatabaseReferenceV.orderByChild("user").equalTo(MainActivity.useName);
-
-                mAddUserSubMessagesDatabaseReferenceV.removeValue();
             }
         });
 
@@ -278,7 +180,7 @@ public class FirstYearForumView extends AppCompatActivity
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
         {
@@ -310,39 +212,4 @@ public class FirstYearForumView extends AppCompatActivity
 
     }
 
-    private void checkSubBtn()
-    {
-        mCheckSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("SubCheck").child(yearOfClass).child(lessonDirection).child(lessonName).child(MainActivity.useName);
-
-        if (mSubCheckChildEventListener == null)
-        {
-            mSubCheckChildEventListener = new ChildEventListener()
-            {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String key)
-                {
-                    SubMessage subMessage = dataSnapshot.getValue(SubMessage.class);
-                    sub = subMessage.getSub();
-
-                    if (sub.equals("No"))
-                    {
-                        unSubscribe.setVisibility(View.INVISIBLE);
-                        subscribe.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        unSubscribe.setVisibility(View.VISIBLE);
-                        subscribe.setVisibility(View.INVISIBLE);
-                    }
-
-                }
-
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(DatabaseError databaseError) {}
-            };
-            mCheckSubMessagesDatabaseReferenceV.addChildEventListener(mSubCheckChildEventListener);
-        }
-    }
 }

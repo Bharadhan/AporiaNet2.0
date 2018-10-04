@@ -125,7 +125,7 @@ public class DetailedView extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
 
@@ -237,7 +237,7 @@ public class DetailedView extends AppCompatActivity
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             selectedImageUri = data.getData();
 
-            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
             mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
@@ -393,7 +393,7 @@ public class DetailedView extends AppCompatActivity
 
     private void findQuestion()
     {
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
         DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No", time);

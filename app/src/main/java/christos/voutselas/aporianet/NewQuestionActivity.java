@@ -170,7 +170,7 @@ public class NewQuestionActivity extends AppCompatActivity
                         if (bHasContent && subJectHasContent)
                         {
 
-                            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
 
