@@ -18,4 +18,5 @@
     <color name="com_facebook_blue">#0000FF</color>
     <color name="dark_cyan">#1d5482</color>
     <color name="firstListTextView">#FF3E3D3D</color>
+    <color name="subBtn">#666ad1</color>
 </resources>

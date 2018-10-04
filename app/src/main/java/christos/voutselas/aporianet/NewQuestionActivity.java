@@ -1,6 +1,7 @@
 package christos.voutselas.aporianet;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,9 +9,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -73,6 +76,7 @@ public class NewQuestionActivity extends AppCompatActivity
     private Integer creditNumber = 0;
     private String userHaveCredit = "Yes";
     private String creditRemoved = "No";
+    private EditText questionFied;
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -85,6 +89,13 @@ public class NewQuestionActivity extends AppCompatActivity
         mMessageEditText = (EditText) findViewById(R.id.questions);
         imageView = (ImageView) findViewById(R.id.imgView);
         mUsername = MainActivity.useName;
+
+        //hide keyboard
+        questionFied = (EditText) findViewById(R.id.questions);
+        questionFied.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(questionFied.getWindowToken(), 0);
+
 
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();
@@ -159,7 +170,7 @@ public class NewQuestionActivity extends AppCompatActivity
                         if (bHasContent && subJectHasContent)
                         {
 
-                            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+                            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion);
 
 
@@ -234,6 +245,7 @@ public class NewQuestionActivity extends AppCompatActivity
         lessonNameTextViewNewQuestion.setText(lessonNameNewQuestion);
         lessonDirectionTextViewNewQuestion.setText(lessonDirectionNewQuestion);
         yearClassTextViewNewQuestion.setText(yearOfClassNewQuestion);
+
     }
 
     private void checkEmptyText ()

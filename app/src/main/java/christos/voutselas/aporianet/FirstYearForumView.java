@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.firebase.ui.auth.data.model.User;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,17 @@ public class FirstYearForumView extends AppCompatActivity
     private String strSubject = "";
     private String mUsername;
     private ChildEventListener mChildEventListener;
+    private ChildEventListener mSubChildEventListener;
+    private ChildEventListener mSubRemovalChildEventListener;
+    private ChildEventListener mSubCheckChildEventListener;
     private ChildEventListener mVoteDChildEventListener;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference sizeMessagesDatabaseReference;
     private DatabaseReference mVoteMessagesDatabaseReference;
+    private DatabaseReference mCheckSubMessagesDatabaseReferenceV;
+    private DatabaseReference mAddSubMessagesDatabaseReferenceV;
+    private DatabaseReference mAddUserSubMessagesDatabaseReferenceV;
+    private DatabaseReference mRemoveUserSubMessagesDatabaseReferenceV;
     private MessageAdapter mMessageAdapter;
     private FirebaseDatabase mFirebaseDatabase;
     private ListView mMessageListView;
@@ -43,7 +53,6 @@ public class FirstYearForumView extends AppCompatActivity
     private String selectedUrl = "";
     private String time = "";
     private String wrongAnwser = "";
-
 
 
     @Override
@@ -171,7 +180,7 @@ public class FirstYearForumView extends AppCompatActivity
         // Initialize progress bar
         mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
         {
@@ -202,4 +211,5 @@ public class FirstYearForumView extends AppCompatActivity
         }
 
     }
+
 }

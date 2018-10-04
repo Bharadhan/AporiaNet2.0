@@ -80,6 +80,7 @@ public class DetailedView extends AppCompatActivity
     private String time = "";
     private String stringdate = "";
     private String wrongAnwser = "";
+    public static TextView voteUserNumberText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -87,6 +88,7 @@ public class DetailedView extends AppCompatActivity
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.detailed_message);
+        voteUserNumberText = (TextView) findViewById(R.id.vote_number);
         userInput = (EditText) findViewById(R.id.messageEditText);
         mMessageListView = findViewById(R.id.listViewAs_detailed);
         yearOfClassNewQuestion = getIntent().getStringExtra("yearOfClass");
@@ -112,6 +114,7 @@ public class DetailedView extends AppCompatActivity
         reectVoteBtn.setVisibility(View.INVISIBLE);
         photoPickerButtonAnwnser = (ImageButton) findViewById(R.id.photoPickerButtonAnwnser);
 
+
         // Initialize message ListView and its adapter
         dFriendlyMessages = new ArrayList<>();
         mDMessageAdapter = new DetailedMessageAdapter(this, R.layout.question_message_view, dFriendlyMessages);
@@ -122,14 +125,19 @@ public class DetailedView extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
+
 
         checkMyVote();
 
+        readData();
+
         checkChildDetails();
 
-        readData();
+        checkVoteNumber();
+
+
 
         // Send button sends a message and clears the EditText
         mSendButton.setOnClickListener(new View.OnClickListener()
@@ -229,7 +237,7 @@ public class DetailedView extends AppCompatActivity
         if(requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             selectedImageUri = data.getData();
 
-            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+            mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                     .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
             mChatPhotosStorageReference = mFirebaseStorage.getReference().child("photos").child(yearOfClassNewQuestion)
@@ -299,7 +307,7 @@ public class DetailedView extends AppCompatActivity
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
                     }
-                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername)))
+                    else if (dataSnapshot.getChildrenCount() > 1 && !(postedName.equals(mUsername) ))
                     {
                         mSendButton.setEnabled(false);
                         mMessageEditText.setFocusable(false);
@@ -385,7 +393,7 @@ public class DetailedView extends AppCompatActivity
 
     private void findQuestion()
     {
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClassNewQuestion)
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClassNewQuestion)
                 .child(lessonDirectionNewQuestion).child(lessonNameNewQuestion).child(key).child("questions");
 
         DetailedFriendlyMessage dFriendlyMessage = new DetailedFriendlyMessage(selectedMainText, selectetUserName, selectedSubject, key, photoUrl, "grey","No", time);
@@ -562,6 +570,27 @@ public class DetailedView extends AppCompatActivity
         stringdate = dt.format(date);
 
         System.out.println("Submission Date: " + stringdate);
+    }
+
+    private void checkVoteNumber()
+    {
+        VoteActivity checkUserVoteNumber = new VoteActivity();
+        checkUserVoteNumber.voteNumber(lessonNameNewQuestion, lessonDirectionNewQuestion, yearOfClassNewQuestion, key, mMessageListView, mDMessageAdapter, postedName, selectedSubject);
+
+    }
+
+    public void updateVotes()
+    {
+        if ((VoteActivity.VoteNumber.voteUserNumber).equals(null))
+        {
+            voteUserNumberText.setText("votes: 0");
+        }
+        else
+        {
+            voteUserNumberText.setText("votes: " + String.valueOf(VoteActivity.VoteNumber.voteUserNumber));
+        }
+
+
     }
 
 }

@@ -15,6 +15,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +58,6 @@ public class ThirdYearForumView extends AppCompatActivity
         getWindow().setBackgroundDrawable(null);
         setContentView(R.layout.list_forum);
         backBtn = (ImageView) findViewById(R.id.backBtn);
-
         back = getIntent().getStringExtra("back");
 
         updateView();
@@ -185,7 +187,7 @@ public class ThirdYearForumView extends AppCompatActivity
         // Initialize Firebase components
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass).child(lessonDirection).child(lessonName);
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass).child(lessonDirection).child(lessonName);
 
         if (mChildEventListener == null)
         {

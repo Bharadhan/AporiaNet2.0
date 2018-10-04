@@ -64,6 +64,28 @@ public class VoteActivity extends AppCompatActivity
         }).execute();
     }
 
+    public void voteNumber (String lessonName, String lessonDirection, String yearOfClass, String keyNumber, ListView mMessageListView, DetailedMessageAdapter mDMessageAdapter, String postedName, String subject)
+    {
+        mLessonName  = lessonName;
+        mLessonDirection = lessonDirection;
+        mYearOfClass = yearOfClass;
+        mKeyNumber = keyNumber;
+        mPostedName = postedName;
+        mSubject = subject;
+
+
+        new VoteActivity.VoteNumber(new VoteActivity.VoteNumber.AsynResponse()
+        {
+            @Override
+            public void processFinish(Boolean output)
+            {
+            }
+        }).execute();
+
+    }
+
+
+
     public void voteRemoval (String lessonName, String lessonDirection, String yearOfClass, String keyNumber,String postedName, String subject, String time, String photoUrl, String selectedMainText, String wrongAnwser)
     {
         mLessonName  = lessonName;
@@ -328,11 +350,12 @@ public class VoteActivity extends AppCompatActivity
         private FirebaseDatabase mFirebaseDatabase;
         private FirebaseAuth mFirebaseAuth;
         private FirebaseStorage mFirebaseStorage;
-        private DatabaseReference mVotedMessagesDatabaseReference;
+        private DatabaseReference mCVotedMessagesDatabaseReference;
         private DatabaseReference mAVotedMessagesDatabaseReference;
         private DatabaseReference mMessagesDatabaseReferenceV;
         private DatabaseReference mResudmitMessagesDatabaseReference;
         private DatabaseReference mResudmitTheMessagesDatabaseReference;
+        private DatabaseReference mCAVotedMessagesDatabaseReference;
         private ChildEventListener mCreditDChildEventListener;
         private ChildEventListener mDChildEventListener;
         private String time = "";
@@ -388,23 +411,26 @@ public class VoteActivity extends AppCompatActivity
                 mFirebaseAuth = FirebaseAuth.getInstance();
                 mFirebaseStorage = FirebaseStorage.getInstance();
 
-                mVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass)
-                        .child(lessonDirection).child(lessonName).child(subject);
-
-                VotedMessage votedMessage = new VotedMessage(votedUserName);
-                mVotedMessagesDatabaseReference.push().setValue(votedMessage);
 
 
-
-
-
-                mAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
-                        .child(lessonDirection).child(lessonName).child(subject);
+                mAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass).child(lessonDirection).child(lessonName).child(subject);
 
                 VotedMessage votedMessage1 = new VotedMessage(votedUserName);
                 mAVotedMessagesDatabaseReference.push().setValue(votedMessage1);
 
-                mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+
+
+                mCVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass).child(lessonDirection).child(lessonName).child(subject);
+
+                VotedMessage votedMessage = new VotedMessage(votedUserName);
+                mCVotedMessagesDatabaseReference.push().setValue(votedMessage);
+
+                System.out.print("aa");
+
+                mCAVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("votednegative").child(yearOfClass)
+                        .child(lessonDirection).child(lessonName).child(subject);
+
+                mCAVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
                 {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
@@ -440,16 +466,16 @@ public class VoteActivity extends AppCompatActivity
                         }
                         else
                         {
-                            mResudmitMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
+                            mResudmitMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass)
                                     .child(lessonDirection).child(lessonName).child(keyNumber);
 
                             mResudmitMessagesDatabaseReference.child("votes").setValue("Yes");
 
 
-                            mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child(yearOfClass)
+                            mResudmitTheMessagesDatabaseReference = mFirebaseDatabase.getReference().child("forum").child(yearOfClass)
                                     .child(lessonDirection).child(lessonName);
 
-                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + " **submitted", photUri, "No", time);
+                            FriendlyMessage friendlyMessage = new FriendlyMessage(selectedMainText, postedName, subject + "     **1αναδημοσίευση", photUri, "No", time);
                             mResudmitTheMessagesDatabaseReference.push().setValue(friendlyMessage);
                         }
                     }
@@ -457,6 +483,96 @@ public class VoteActivity extends AppCompatActivity
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 });
+            }
+            catch (Exception e)
+            {
+                Log.e("Error: ", e.getMessage());
+            }
+            return null;
+        }
+    }
+
+    public static class VoteNumber extends AsyncTask<String, String, String>
+    {
+        private Integer voteNumber = 0;
+        private FirebaseDatabase mFirebaseDatabase;
+        private FirebaseAuth mFirebaseAuth;
+        private FirebaseStorage mFirebaseStorage;
+        private DatabaseReference mVotedMessagesDatabaseReference;
+        private DatabaseReference mMessagesDatabaseReferenceV;
+        private DatabaseReference mUMessagesDatabaseReferenceV;
+        private ChildEventListener mCreditDChildEventListener;
+        private String lessonName = "";
+        private String lessonDirection = "";
+        private String yearOfClass = "";
+        private String subject = "";
+        public static Integer voteUserNumber;
+
+        public interface AsynResponse
+        {
+            void processFinish(Boolean output);
+        }
+
+        AsynResponse asynResponse = null;
+
+        public VoteNumber(AsynResponse asynResponse)
+        {
+            this.asynResponse = asynResponse;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected void onPostExecute(String f_url)
+        {
+            // super.onPostExecute(f_url);
+            asynResponse.processFinish(true);
+        }
+
+        @Override
+        protected String doInBackground(String... f_url)
+        {
+            lessonName = VoteActivity.mLessonName;
+            lessonDirection = VoteActivity.mLessonDirection;
+            yearOfClass = VoteActivity.mYearOfClass;
+            subject = VoteActivity.mSubject;
+
+            try
+            {
+                // Initialize Firebase components
+                mFirebaseDatabase = FirebaseDatabase.getInstance();
+                mFirebaseAuth = FirebaseAuth.getInstance();
+                mFirebaseStorage = FirebaseStorage.getInstance();
+
+
+                mVotedMessagesDatabaseReference = mFirebaseDatabase.getReference().child("voted").child(yearOfClass)
+                        .child(lessonDirection).child(lessonName).child(subject);
+
+                mVotedMessagesDatabaseReference.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        if(dataSnapshot.exists())
+                        {
+                            voteUserNumber = Integer.parseInt(String.valueOf(dataSnapshot.getChildrenCount()));
+                            DetailedView.voteUserNumberText.setText("votes: " + voteUserNumber);
+                        }
+                        else
+                        {
+                            DetailedView.voteUserNumberText.setText("votes: 0");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+
             }
             catch (Exception e)
             {
