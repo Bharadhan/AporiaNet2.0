@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.storage.FirebaseStorage;
 import java.security.MessageDigest;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
     private FirebaseStorage mFirebaseStorage;
     private ChildEventListener mDChildEventListener;
     public static String uid;
+    public static String deviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     onSignedInInitialize(user.getDisplayName());
 
                     uid = user.getUid();
+                    deviceToken = FirebaseInstanceId.getInstance().getToken();
                     useName = mUsername;
                     checkCredits();
                     subscribeCheck();
