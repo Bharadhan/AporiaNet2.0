@@ -75,7 +75,7 @@ public class Settings extends AppCompatActivity
                 //mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("deviceToken").child(MainActivity.uid);
                // mAddUserSubMessagesDatabaseReferenceV.push().setValue(MainActivity.deviceToken);
 
-                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("Device Tokens").child(MainActivity.uid);
+                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("Device Tokens").child(MainActivity.uid).child("device token");
                 mAddUserSubMessagesDatabaseReferenceV.setValue(MainActivity.deviceToken);
 
               /*  Query queryToGetData = mAddUserSubMessagesDatabaseReferenceV.orderByChild("user").equalTo(MainActivity.useName);
