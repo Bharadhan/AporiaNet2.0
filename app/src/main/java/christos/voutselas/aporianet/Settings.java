@@ -70,9 +70,15 @@ public class Settings extends AppCompatActivity
                 unSubscribe.setVisibility(View.VISIBLE);
                 subscribe.setVisibility(View.INVISIBLE);
 
-                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("subscriptions");
+                //mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("notifications").child(MainActivity.uid);
 
-                Query queryToGetData = mAddUserSubMessagesDatabaseReferenceV.orderByChild("user").equalTo(MainActivity.useName);
+                //mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("deviceToken").child(MainActivity.uid);
+               // mAddUserSubMessagesDatabaseReferenceV.push().setValue(MainActivity.deviceToken);
+
+                mAddUserSubMessagesDatabaseReferenceV = mFirebaseDatabase.getReference().child("Device Tokens").child(MainActivity.uid);
+                mAddUserSubMessagesDatabaseReferenceV.setValue(MainActivity.deviceToken);
+
+              /*  Query queryToGetData = mAddUserSubMessagesDatabaseReferenceV.orderByChild("user").equalTo(MainActivity.useName);
 
 
                 queryToGetData.addListenerForSingleValueEvent(new ValueEventListener()
@@ -82,7 +88,7 @@ public class Settings extends AppCompatActivity
                     {
                         if(!dataSnapshot.exists())
                         {
-                            UserMessage userMessage = new UserMessage(MainActivity.useName, MainActivity.uid, MainActivity.deviceToken);
+                            test userMessage = new test(MainActivity.deviceToken);
                             mAddUserSubMessagesDatabaseReferenceV.push().setValue(userMessage);
 
                         }
@@ -92,7 +98,7 @@ public class Settings extends AppCompatActivity
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                });*/
 
             }
         });

@@ -143,9 +143,8 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     checkCredits();
                     subscribeCheck();
 
-                    mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("notifications").child(uid);
-                    test friendlyMessage = new test(useName, uid, deviceToken);
-                    mMessagesDatabaseReference.push().setValue(friendlyMessage);
+                  //  TestActivity test = new TestActivity();
+                  //  test.testActivity();
 
                 }
 
