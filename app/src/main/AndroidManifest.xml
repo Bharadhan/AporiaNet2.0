@@ -17,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        //New File Added for Notification added Don't delete it (Starts................)
+        
+        <service android:name=".MyFirebaseMessagingService">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
+</service>
+        
+        //New File Added for Notification added Don't delete it (Ends................)
+        
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
