@@ -154,6 +154,7 @@ public class DetailedView extends AppCompatActivity
                         uploadImage();
 
                         readData();
+                        
                         return;
                     case "No":
                         mMessagesDatabaseReference.removeEventListener(mDChildEventListener);

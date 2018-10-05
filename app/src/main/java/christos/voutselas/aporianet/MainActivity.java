@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements ForceUpdateChecke
                     checkCredits();
                     subscribeCheck();
 
-                    TestActivity test = new TestActivity();
-                    test.testActivity();
+                  //  TestActivity test = new TestActivity();
+                  //  test.testActivity();
 
                 }
 
